@@ -21,6 +21,14 @@ export interface ProfilMasjid {
   updated_at: string;
 }
 
+// Phase 9 — Galeri foto masjid (slideshow beranda)
+export interface FotoMasjid {
+  id: string;
+  url: string;
+  urutan: number;
+  created_at: string;
+}
+
 export interface Pengumuman {
   id: string;
   judul: string;
@@ -50,12 +58,34 @@ export interface Keuangan {
   jenis: JenisKeuangan;
   kategori: string;
   jumlah: number;
+  nama_donatur: string | null; // Phase 9 — hanya untuk renovasi pemasukan
   keterangan: string | null;
   tanggal: string;
   is_deleted: boolean;
   created_by: string | null;
   created_at: string;
   updated_at: string;
+}
+
+// Phase 9 — Susunan kepengurusan DKM
+export interface Kepengurusan {
+  id: string;
+  nama: string;
+  jabatan: string;
+  periode: string | null;
+  foto_url: string | null;
+  no_whatsapp: string | null; // disimpan tapi tidak ditampilkan publik
+  urutan: number;
+  is_aktif: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+// Phase 9 — Daftar donatur untuk halaman publik keuangan
+export interface DonaturRenovasi {
+  nama_donatur: string;
+  jumlah: number;
+  tanggal: string;
 }
 
 export interface RingkasanKas {
@@ -78,4 +108,4 @@ export interface JadwalSholat {
   ashar: string;
   maghrib: string;
   isya: string;
-}
+}
