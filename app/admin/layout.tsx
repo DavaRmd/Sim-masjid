@@ -11,6 +11,7 @@ const judulHalaman: Record<string, string> = {
   "/admin/dashboard": "Dashboard",
   "/admin/pengumuman": "Pengumuman & Kegiatan",
   "/admin/jadwal-jumat": "Jadwal Sholat Jumat",
+  "/admin/kepengurusan": "Kepengurusan DKM",
   "/admin/keuangan": "Keuangan",
   "/admin/laporan": "Laporan Keuangan",
   "/admin/profil-masjid": "Info Masjid",

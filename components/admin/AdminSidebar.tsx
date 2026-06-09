@@ -13,6 +13,7 @@ import {
   FileText,
   Settings,
   LogOut,
+  Users,
 } from "lucide-react";
 import {
   Dialog,
@@ -34,6 +35,7 @@ const menuItems = [
   { href: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/pengumuman", label: "Pengumuman", icon: Megaphone },
   { href: "/admin/jadwal-jumat", label: "Jadwal Jumat", icon: Calendar },
+  { href: "/admin/kepengurusan", label: "Kepengurusan", icon: Users },
   { href: "/admin/keuangan", label: "Keuangan", icon: Wallet },
   { href: "/admin/laporan", label: "Laporan", icon: FileText },
   { href: "/admin/profil-masjid", label: "Info Masjid", icon: Settings },
