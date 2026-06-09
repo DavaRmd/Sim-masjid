@@ -15,6 +15,7 @@ const menuItems = [
   { href: "/pengumuman", label: "Pengumuman" },
   { href: "/jadwal-jumat", label: "Jadwal Jumat" },
   { href: "/keuangan", label: "Keuangan" },
+  { href: "/kepengurusan", label: "Kepengurusan" },
 ];
 
 export default function Navbar({ namaMasjid }: NavbarProps) {
