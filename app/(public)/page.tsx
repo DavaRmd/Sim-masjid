@@ -1,11 +1,11 @@
 import { createClient } from "@/lib/supabase/server";
-import Image from "next/image";
 import Link from "next/link";
 import { MapPin, ExternalLink } from "lucide-react";
+import GaleriMasjid from "@/components/public/GaleriMasjid";
 import JadwalSholatSection from "@/components/public/JadwalSholat";
 import PengumumanCard from "@/components/public/PengumumanCard";
 import DonasiSection from "@/components/public/DonasiSection";
-import type { ProfilMasjid, Pengumuman } from "@/types";
+import type { ProfilMasjid, Pengumuman, FotoMasjid } from "@/types";
 
 export default async function BerandaPage() {
   const supabase = await createClient();
@@ -18,6 +18,14 @@ export default async function BerandaPage() {
     .single();
 
   const profilData: ProfilMasjid | null = profil;
+
+  // Fetch galeri foto untuk slideshow
+  const { data: fotoData } = await supabase
+    .from("foto_masjid")
+    .select("*")
+    .order("urutan", { ascending: true });
+
+  const fotoGaleri: FotoMasjid[] = fotoData ?? [];
 
   // Fetch 3 pengumuman terbaru
   const { data: pengumumanData } = await supabase
@@ -43,31 +51,36 @@ export default async function BerandaPage() {
 
   return (
     <div className="-mx-4 md:-mx-6 lg:-mx-8">
-      {/* ========== HERO ========== */}
-      <section className="relative h-[320px] overflow-hidden md:h-[400px]">
-        {profilData?.foto_url ? (
-          <Image
-            src={profilData.foto_url}
-            alt={profilData.nama_masjid}
-            fill
-            priority
-            className="object-cover"
-            sizes="100vw"
-          />
-        ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-[#346739] to-[#2A5230]" />
-        )}
-        {/* Overlay gradient */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-        {/* Teks hero */}
-        <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 lg:p-10">
-          <h1 className="text-2xl font-bold text-white md:text-3xl lg:text-4xl">
+
+      {/* ========== GALERI FOTO SLIDESHOW ========== */}
+      <GaleriMasjid
+        foto={fotoGaleri}
+        fallbackUrl={profilData?.foto_url ?? null}
+        namaMasjid={profilData?.nama_masjid ?? "Masjid"}
+      />
+
+      {/* ========== INFO SINGKAT MASJID ========== */}
+      <section className="bg-[#EAF2EB] py-6">
+        <div className="mx-auto max-w-[1200px] px-4 text-center md:px-6 lg:px-8">
+          <h1 className="text-xl font-bold text-[#346739] md:text-2xl">
             {profilData?.nama_masjid ?? "SIM Masjid"}
           </h1>
           {profilData?.alamat && (
-            <p className="mt-2 text-sm text-white/80 md:text-base">
-              {profilData.alamat}
-            </p>
+            <div className="mt-2 flex items-center justify-center gap-1.5">
+              <MapPin className="h-3.5 w-3.5 flex-shrink-0 text-[#6B7280]" />
+              {mapsOpenUrl ? (
+                <a
+                  href={mapsOpenUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-[#6B7280] hover:text-[#346739] hover:underline"
+                >
+                  {profilData.alamat}
+                </a>
+              ) : (
+                <p className="text-sm text-[#6B7280]">{profilData.alamat}</p>
+              )}
+            </div>
           )}
         </div>
       </section>
@@ -79,7 +92,6 @@ export default async function BerandaPage() {
       {mapsEmbedUrl && (
         <section className="bg-white py-12">
           <div className="mx-auto max-w-[1200px] px-4 md:px-6 lg:px-8">
-            {/* Header */}
             <div className="mb-6 flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-center gap-2">
                 <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#EAF2EB]">
@@ -102,9 +114,7 @@ export default async function BerandaPage() {
               )}
             </div>
 
-            {/* Layout: Map + Alamat Info */}
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-              {/* Peta Google Maps — Lebih lebar di desktop */}
               <div className="overflow-hidden rounded-2xl border border-[#D1D5DB] shadow-sm lg:col-span-2">
                 <iframe
                   src={mapsEmbedUrl}
@@ -119,7 +129,6 @@ export default async function BerandaPage() {
                 />
               </div>
 
-              {/* Info Alamat — Kolom kanan */}
               <div className="flex flex-col justify-between rounded-2xl border border-[#D1D5DB] bg-[#FFFAF0] p-6 shadow-sm">
                 <div>
                   <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-[#346739]">
@@ -132,7 +141,6 @@ export default async function BerandaPage() {
                     {profilData?.alamat}
                   </p>
                 </div>
-
                 {mapsOpenUrl && (
                   <div className="mt-6">
                     <a
