@@ -1,0 +1,21 @@
+{
+  "name": "SIM Masjid",
+  "short_name": "SIM Masjid",
+  "description": "Sistem Informasi Masjid — Informasi & Keuangan Masjid",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFFAF0",
+  "theme_color": "#346739",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

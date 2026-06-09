@@ -2,26 +2,123 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-}
-
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+}
+
+@layer base {
+  :root {
+    --background: #FFFAF0;
+    --foreground: #1A1A1A;
+    --card: #FFFFFF;
+    --card-foreground: #1A1A1A;
+    --popover: #FFFFFF;
+    --popover-foreground: #1A1A1A;
+    --primary: #346739;
+    --primary-foreground: #FFFFFF;
+    --secondary: #EAF2EB;
+    --secondary-foreground: #346739;
+    --muted: #F3F4F6;
+    --muted-foreground: #6B7280;
+    --accent: #EAF2EB;
+    --accent-foreground: #346739;
+    --destructive: #DC2626;
+    --border: #D1D5DB;
+    --input: #D1D5DB;
+    --ring: #346739;
+    --chart-1: #346739;
+    --chart-2: #2563EB;
+    --chart-3: #D97706;
+    --chart-4: #16A34A;
+    --chart-5: #DC2626;
+    --radius: 0.625rem;
+    --sidebar: #FFFFFF;
+    --sidebar-foreground: #1A1A1A;
+    --sidebar-primary: #346739;
+    --sidebar-primary-foreground: #FFFFFF;
+    --sidebar-accent: #EAF2EB;
+    --sidebar-accent-foreground: #346739;
+    --sidebar-border: #D1D5DB;
+    --sidebar-ring: #346739;
+  }
+
+  .dark {
+    --background: #1A1A1A;
+    --foreground: #FFFAF0;
+    --card: #1A1A1A;
+    --card-foreground: #FFFAF0;
+    --popover: #1A1A1A;
+    --popover-foreground: #FFFAF0;
+    --primary: #4ADE80;
+    --primary-foreground: #1A1A1A;
+    --secondary: #2A2A2A;
+    --secondary-foreground: #FFFAF0;
+    --muted: #2A2A2A;
+    --muted-foreground: #9CA3AF;
+    --accent: #2A2A2A;
+    --accent-foreground: #FFFAF0;
+    --destructive: #EF4444;
+    --border: #374151;
+    --input: #374151;
+    --ring: #4ADE80;
+    --chart-1: #4ADE80;
+    --chart-2: #60A5FA;
+    --chart-3: #FBBF24;
+    --chart-4: #34D399;
+    --chart-5: #F87171;
+    --sidebar: #1A1A1A;
+    --sidebar-foreground: #FFFAF0;
+    --sidebar-primary: #4ADE80;
+    --sidebar-primary-foreground: #1A1A1A;
+    --sidebar-accent: #2A2A2A;
+    --sidebar-accent-foreground: #FFFAF0;
+    --sidebar-border: #374151;
+    --sidebar-ring: #4ADE80;
+  }
+
+  * {
+    border-color: var(--border);
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  html {
+    font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  }
+}
+
+/* ========================================
+   Print Styles — window.print() + Tailwind
+   ======================================== */
+@media print {
+  @page {
+    margin: 2cm;
+    size: A4;
+  }
+
+  body {
+    background-color: #FFFFFF !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .print\\:hidden {
+    display: none !important;
+  }
+
+  .print\\:block {
+    display: block !important;
+  }
+
+  .print\\:break-inside-avoid {
+    break-inside: avoid;
   }
 }
