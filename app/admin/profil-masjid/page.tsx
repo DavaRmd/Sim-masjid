@@ -6,6 +6,7 @@ import { Loader2, Upload, Image as ImageIcon, QrCode, Trash2, MapPin, CreditCard
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import Image from "next/image";
+import GaleriManager from "@/components/admin/GaleriManager";
 import type { ProfilMasjid } from "@/types";
 
 export default function AdminProfilMasjidPage() {
@@ -713,6 +714,9 @@ export default function AdminProfilMasjidPage() {
           </div>
         </div>
       </div>
+
+      {/* ========== GALERI FOTO ========== */}
+      <GaleriManager />
     </div>
   );
 }
