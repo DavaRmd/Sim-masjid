@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { Loader2, Upload, Image as ImageIcon, QrCode, Trash2, MapPin, Phone, CreditCard } from "lucide-react";
+import { Loader2, Upload, Image as ImageIcon, QrCode, Trash2, MapPin, CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import Image from "next/image";
