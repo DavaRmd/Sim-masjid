@@ -68,6 +68,7 @@ export default function KeuanganForm({
     dataAwal ? formatAngkaKeRupiah(dataAwal.jumlah) : "",
   );
   const [jumlah, setJumlah] = useState(dataAwal?.jumlah || 0);
+  const [namaDonatur, setNamaDonatur] = useState(dataAwal?.nama_donatur || "");
   const [tanggal, setTanggal] = useState(
     dataAwal?.tanggal || formatTanggalInput(new Date()),
   );
@@ -137,6 +138,9 @@ export default function KeuanganForm({
           jenis,
           kategori,
           jumlah,
+          nama_donatur: kasType === "renovasi" && jenis === "pemasukan"
+            ? (namaDonatur.trim() || "Hamba Allah")
+            : null,
           keterangan: keterangan.trim() || null,
           tanggal,
         });
@@ -165,6 +169,9 @@ export default function KeuanganForm({
             jenis,
             kategori,
             jumlah,
+            nama_donatur: kasType === "renovasi" && jenis === "pemasukan"
+              ? (namaDonatur.trim() || "Hamba Allah")
+              : null,
             keterangan: keterangan.trim() || null,
             tanggal,
             updated_at: new Date().toISOString(),
@@ -343,6 +350,26 @@ export default function KeuanganForm({
           <p className="text-xs text-[#DC2626]">{errors.jumlah}</p>
         )}
       </div>
+
+      {/* ========== NAMA DONATUR ========== */}
+      {kasType === "renovasi" && jenis === "pemasukan" && (
+        <div className="space-y-1.5">
+          <label
+            htmlFor="nama_donatur"
+            className="text-sm font-semibold text-[#1A1A1A]"
+          >
+            Nama Donatur <span className="text-xs text-[#9CA3AF]">(Opsional - kosongkan untuk Hamba Allah)</span>
+          </label>
+          <input
+            id="nama_donatur"
+            type="text"
+            value={namaDonatur}
+            onChange={(e) => setNamaDonatur(e.target.value)}
+            placeholder="Contoh: H. Budi / Muhsinin"
+            className="w-full rounded-lg border border-[#D1D5DB] bg-white px-3 py-2.5 text-sm text-[#1A1A1A] focus:border-[#346739] focus:outline-none focus:ring-2 focus:ring-[#346739]/20"
+          />
+        </div>
+      )}
 
       {/* ========== TANGGAL ========== */}
       <div className="space-y-1.5">
