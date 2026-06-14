@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import KasBerjenjang from "@/components/public/KasBerjenjang";
 import RenovasiTerbaru from "@/components/public/RenovasiTerbaru";
+import DaftarDonatur from "@/components/public/DaftarDonatur";
 import { formatRupiah } from "@/lib/utils";
 import { TrendingUp, TrendingDown } from "lucide-react";
 import type { Keuangan, RingkasanKas } from "@/types";
@@ -110,6 +111,21 @@ export default async function KeuanganPage({ searchParams }: KeuanganPageProps) 
     .limit(5);
 
   const renovasiTerbaru = (renovasiData ?? []) as Keuangan[];
+
+  // 4. Fetch donatur renovasi (pemasukan renovasi)
+  const { data: donaturData } = await supabase
+    .from("keuangan")
+    .select("nama_donatur, jumlah, tanggal")
+    .eq("is_deleted", false)
+    .eq("kas_type", "renovasi")
+    .eq("jenis", "pemasukan")
+    .order("tanggal", { ascending: false });
+
+  const donaturRenovasi = (donaturData ?? []) as {
+    nama_donatur: string | null;
+    jumlah: number;
+    tanggal: string;
+  }[];
 
   const bulanLabel = BULAN_LIST.find((b) => b.value === bulan)?.label ?? "";
 
@@ -222,6 +238,13 @@ export default async function KeuanganPage({ searchParams }: KeuanganPageProps) 
       <section className="bg-[#EAF2EB] py-8">
         <div className="mx-auto max-w-[1200px] px-4 md:px-6 lg:px-8">
           <RenovasiTerbaru data={renovasiTerbaru} />
+        </div>
+      </section>
+
+      {/* ========== DAFTAR DONATUR KAS RENOVASI ========== */}
+      <section className="bg-white py-8">
+        <div className="mx-auto max-w-[1200px] px-4 md:px-6 lg:px-8">
+          <DaftarDonatur data={donaturRenovasi} />
         </div>
       </section>
     </div>
