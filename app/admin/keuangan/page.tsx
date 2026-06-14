@@ -13,6 +13,7 @@ import {
   ChevronLeft,
   ChevronRight,
   FileDown,
+  Upload,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -25,6 +26,7 @@ import {
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import KeuanganForm from "@/components/admin/KeuanganForm";
+import ExcelImportPreview from "@/components/admin/ExcelImportPreview";
 import type { Keuangan } from "@/types";
 import { exportKeuanganToExcel } from "@/lib/excel-helper";
 
@@ -81,6 +83,7 @@ export default function AdminKeuanganPage() {
   const [deleteTarget, setDeleteTarget] = useState<Keuangan | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
+  const [showImportDialog, setShowImportDialog] = useState(false);
 
   const daftarTahun = Array.from({ length: 5 }, (_, i) => now.getFullYear() - 2 + i);
 
@@ -291,6 +294,14 @@ export default function AdminKeuanganPage() {
           <h2 className="text-xl font-bold text-[#1A1A1A]">Kas & Keuangan Masjid</h2>
         </div>
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center w-full sm:w-auto">
+          <Button
+            onClick={() => setShowImportDialog(true)}
+            variant="outline"
+            className="w-full border-[#346739] text-[#346739] hover:bg-[#EAF2EB] sm:w-auto"
+          >
+            <Upload className="mr-2 h-4 w-4" />
+            Import Excel
+          </Button>
           <Button
             onClick={handleExportExcel}
             disabled={isExporting}
@@ -696,6 +707,12 @@ export default function AdminKeuanganPage() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      <ExcelImportPreview
+        isOpen={showImportDialog}
+        onClose={() => setShowImportDialog(false)}
+        onSuccess={fetchTransaksi}
+      />
     </div>
   );
 }
