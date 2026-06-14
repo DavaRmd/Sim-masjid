@@ -12,6 +12,7 @@ import {
   Loader2,
   ChevronLeft,
   ChevronRight,
+  FileDown,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -25,6 +26,7 @@ import {
 import { toast } from "sonner";
 import KeuanganForm from "@/components/admin/KeuanganForm";
 import type { Keuangan } from "@/types";
+import { exportKeuanganToExcel } from "@/lib/excel-helper";
 
 const BULAN_LIST = [
   { value: 0, label: "Semua" },
@@ -78,6 +80,7 @@ export default function AdminKeuanganPage() {
   const [editData, setEditData] = useState<Keuangan | undefined>(undefined);
   const [deleteTarget, setDeleteTarget] = useState<Keuangan | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
 
   const daftarTahun = Array.from({ length: 5 }, (_, i) => now.getFullYear() - 2 + i);
 
@@ -210,6 +213,76 @@ export default function AdminKeuanganPage() {
     setShowFormDialog(true);
   };
 
+  const handleExportExcel = async () => {
+    setIsExporting(true);
+    const supabase = createClient();
+
+    try {
+      // 1. Fetch nama masjid dari profil_masjid untuk nama file
+      const { data: profilData } = await supabase
+        .from("profil_masjid")
+        .select("nama_masjid")
+        .limit(1)
+        .single();
+      const namaMasjid = profilData?.nama_masjid || "Masjid";
+
+      // 2. Build query export (tanpa range/pagination)
+      let query = supabase
+        .from("keuangan")
+        .select("*")
+        .eq("is_deleted", false)
+        .order("tanggal", { ascending: false });
+
+      // Bulan filter
+      if (bulan > 0) {
+        const startDate = `${tahun}-${String(bulan).padStart(2, "0")}-01`;
+        const lastDay = new Date(tahun, bulan, 0).getDate();
+        const endDate = `${tahun}-${String(bulan).padStart(2, "0")}-${String(lastDay).padStart(2, "0")}`;
+        query = query.gte("tanggal", startDate).lte("tanggal", endDate);
+      }
+
+      // Kas type filter
+      if (kasType !== "semua") {
+        query = query.eq("kas_type", kasType);
+      }
+
+      // Jenis filter
+      if (jenis !== "semua") {
+        query = query.eq("jenis", jenis);
+      }
+
+      const { data, error } = await query;
+
+      if (error) {
+        toast.error("Gagal mengexport data", { description: error.message });
+        return;
+      }
+
+      if (!data || data.length === 0) {
+        toast.error("Tidak ada data untuk diexport");
+        return;
+      }
+
+      // 3. Panggil helper untuk export
+      const bulanLabel = bulan > 0 ? BULAN_LIST[bulan].label : "Semua-Bulan";
+      
+      exportKeuanganToExcel(
+        data as Keuangan[],
+        namaMasjid,
+        bulanLabel,
+        String(tahun)
+      );
+
+      toast.success("Data keuangan berhasil diexport ke Excel");
+    } catch (err) {
+      const errMsg = err instanceof Error ? err.message : "Gagal mengexport data ke Excel";
+      toast.error(errMsg);
+      console.error(err);
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
   return (
     <div className="space-y-6">
       {/* ========== HEADER ========== */}
@@ -217,13 +290,28 @@ export default function AdminKeuanganPage() {
         <div>
           <h2 className="text-xl font-bold text-[#1A1A1A]">Kas & Keuangan Masjid</h2>
         </div>
-        <Button
-          onClick={handleTambahClick}
-          className="w-full bg-[#346739] hover:bg-[#2A5230] text-white sm:w-auto"
-        >
-          <Plus className="mr-2 h-4 w-4" />
-          Catat Transaksi
-        </Button>
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center w-full sm:w-auto">
+          <Button
+            onClick={handleExportExcel}
+            disabled={isExporting}
+            variant="outline"
+            className="w-full border-[#346739] text-[#346739] hover:bg-[#EAF2EB] sm:w-auto"
+          >
+            {isExporting ? (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              <FileDown className="mr-2 h-4 w-4" />
+            )}
+            Export Excel
+          </Button>
+          <Button
+            onClick={handleTambahClick}
+            className="w-full bg-[#346739] hover:bg-[#2A5230] text-white sm:w-auto"
+          >
+            <Plus className="mr-2 h-4 w-4" />
+            Catat Transaksi
+          </Button>
+        </div>
       </div>
 
       {/* ========== SUMMARY BAR ========== */}
