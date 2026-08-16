@@ -44,6 +44,8 @@ interface AdminPengumumanPageProps {
   searchParams?: { kategori?: string; halaman?: string };
 }
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminPengumumanPage({
   searchParams,
 }: AdminPengumumanPageProps) {

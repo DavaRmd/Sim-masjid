@@ -33,6 +33,8 @@ const KATEGORI_ICON: Record<string, React.FC<{ className?: string }>> = {
   kajian: BookOpen,
 };
 
+export const dynamic = "force-dynamic";
+
 export default async function PengumumanPage({
   searchParams,
 }: {

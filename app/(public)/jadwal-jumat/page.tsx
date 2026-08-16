@@ -50,6 +50,8 @@ interface JadwalJumatPageProps {
   searchParams?: { bulan?: string; tahun?: string };
 }
 
+export const dynamic = "force-dynamic";
+
 export default async function JadwalJumatPage({ searchParams }: JadwalJumatPageProps) {
   const now = new Date();
   const bulanSekarang = now.getMonth() + 1;

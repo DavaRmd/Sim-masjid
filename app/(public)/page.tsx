@@ -1,4 +1,4 @@
-﻿import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
 import { MapPin, ExternalLink } from "lucide-react";
 import Image from "next/image";
@@ -7,6 +7,8 @@ import JadwalSholatSection from "@/components/public/JadwalSholat";
 import PengumumanCard from "@/components/public/PengumumanCard";
 import DonasiSection from "@/components/public/DonasiSection";
 import type { ProfilMasjid, Pengumuman } from "@/types";
+
+export const dynamic = "force-dynamic";
 
 export default async function BerandaPage() {
   const supabase = await createClient();
