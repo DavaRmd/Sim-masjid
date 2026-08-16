@@ -253,17 +253,17 @@ export default function KepengurusanForm({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <div className="relative w-full max-w-lg overflow-hidden rounded-2xl bg-white shadow-2xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+      <div className="relative w-full max-w-lg overflow-hidden rounded-2xl border border-[#F0EBE1] bg-white shadow-ambient">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-[#E5E7EB] px-6 py-4 bg-[#EAF2EB]">
-          <h3 className="text-lg font-bold text-[#1A1A1A]">
+        <div className="flex items-center justify-between border-b border-[#F0EBE1] bg-[#0A2E1F] px-6 py-4 text-white">
+          <h3 className="text-lg font-bold tracking-wide text-white">
             {editingData ? "Edit Anggota Pengurus" : "Tambah Anggota Pengurus"}
           </h3>
           <button
             onClick={onClose}
             disabled={isSaving}
-            className="rounded-lg p-1 text-[#6B7280] hover:bg-black/5 disabled:opacity-50"
+            className="rounded-full p-1.5 text-[#8D9F96] hover:bg-white/10 hover:text-white transition-colors disabled:opacity-50"
             aria-label="Tutup modal"
           >
             <X className="h-5 w-5" />
@@ -275,11 +275,11 @@ export default function KepengurusanForm({
           <div className="flex flex-col gap-5">
             {/* Foto Profil Input */}
             <div className="flex flex-col items-center gap-3">
-              <label className="text-xs font-semibold uppercase tracking-wider text-[#6B7280]">
-                Foto Profil
+              <label className="text-xs font-bold uppercase tracking-wider text-[#8D9F96]">
+                Foto Profil DKM
               </label>
               
-              <div className="relative h-28 w-28 overflow-hidden rounded-full border-2 border-dashed border-[#D1D5DB] bg-[#F9FAF9] flex items-center justify-center">
+              <div className="relative h-28 w-28 overflow-hidden rounded-full border-2 border-dashed border-[#8D9F96]/40 bg-[#F9F6F0] flex items-center justify-center">
                 {fotoPreview ? (
                   <>
                     <Image
@@ -293,7 +293,7 @@ export default function KepengurusanForm({
                       type="button"
                       onClick={handleRemovePreview}
                       disabled={isSaving}
-                      className="absolute right-0 top-0 rounded-full bg-[#DC2626] p-1 text-white shadow hover:bg-red-700 disabled:opacity-50"
+                      className="absolute right-0 top-0 rounded-full bg-rose-600 p-1 text-white shadow hover:bg-rose-700 disabled:opacity-50"
                       aria-label="Hapus foto"
                     >
                       <X className="h-3.5 w-3.5" />
@@ -303,15 +303,15 @@ export default function KepengurusanForm({
                   <button
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
-                    className="flex flex-col items-center gap-1.5 text-center text-[#9CA3AF] hover:text-[#346739]"
+                    className="flex flex-col items-center gap-1.5 text-center text-[#8D9F96] hover:text-[#0A2E1F] transition-colors"
                   >
                     <Upload className="h-6 w-6" />
-                    <span className="text-[10px] font-medium">Unggah Foto</span>
+                    <span className="text-[10px] font-bold">Unggah Foto</span>
                   </button>
                 )}
               </div>
-              <p className="text-[10px] text-[#9CA3AF]">
-                Format JPG/PNG/WebP, Maks. 5MB (otomatis dikompresi)
+              <p className="text-[11px] text-[#8D9F96]">
+                JPG/PNG/WebP, Maks. 5MB (otomatis dikompresi &lt; 500KB)
               </p>
               <input
                 ref={fileInputRef}
@@ -323,9 +323,9 @@ export default function KepengurusanForm({
             </div>
 
             {/* Nama Lengkap */}
-            <div className="flex flex-col gap-1">
-              <label htmlFor="nama" className="text-xs font-semibold text-[#6B7280]">
-                Nama Lengkap <span className="text-[#DC2626]">*</span>
+            <div className="flex flex-col gap-1.5">
+              <label htmlFor="nama" className="text-xs font-bold uppercase tracking-wider text-[#8D9F96]">
+                Nama Lengkap <span className="text-rose-600">*</span>
               </label>
               <input
                 id="nama"
@@ -333,16 +333,16 @@ export default function KepengurusanForm({
                 required
                 value={nama}
                 onChange={(e) => setNama(e.target.value)}
-                placeholder="Contoh: H. Ahmad Fauzi"
+                placeholder="Contoh: H. Ahmad Fauzi, S.Ag"
                 disabled={isSaving}
-                className="rounded-lg border border-[#D1D5DB] bg-white px-3 py-2 text-sm text-[#1A1A1A] focus:border-[#346739] focus:outline-none focus:ring-1 focus:ring-[#346739] disabled:opacity-50"
+                className="rounded-xl border border-[#F0EBE1] bg-[#F9F6F0]/50 px-3.5 py-2.5 text-sm font-semibold text-[#15221C] focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20 disabled:opacity-50"
               />
             </div>
 
             {/* Jabatan */}
-            <div className="flex flex-col gap-1">
-              <label htmlFor="jabatan" className="text-xs font-semibold text-[#6B7280]">
-                Jabatan <span className="text-[#DC2626]">*</span>
+            <div className="flex flex-col gap-1.5">
+              <label htmlFor="jabatan" className="text-xs font-bold uppercase tracking-wider text-[#8D9F96]">
+                Jabatan <span className="text-rose-600">*</span>
               </label>
               <input
                 id="jabatan"
@@ -350,15 +350,15 @@ export default function KepengurusanForm({
                 required
                 value={jabatan}
                 onChange={(e) => setJabatan(e.target.value)}
-                placeholder="Contoh: Ketua DKM / Sekretaris"
+                placeholder="Contoh: Ketua DKM / Bendahara Utama"
                 disabled={isSaving}
-                className="rounded-lg border border-[#D1D5DB] bg-white px-3 py-2 text-sm text-[#1A1A1A] focus:border-[#346739] focus:outline-none focus:ring-1 focus:ring-[#346739] disabled:opacity-50"
+                className="rounded-xl border border-[#F0EBE1] bg-[#F9F6F0]/50 px-3.5 py-2.5 text-sm font-semibold text-[#15221C] focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20 disabled:opacity-50"
               />
             </div>
 
             {/* Periode Jabatan */}
-            <div className="flex flex-col gap-1">
-              <label htmlFor="periode" className="text-xs font-semibold text-[#6B7280]">
+            <div className="flex flex-col gap-1.5">
+              <label htmlFor="periode" className="text-xs font-bold uppercase tracking-wider text-[#8D9F96]">
                 Periode Jabatan
               </label>
               <input
@@ -368,14 +368,14 @@ export default function KepengurusanForm({
                 onChange={(e) => setPeriode(e.target.value)}
                 placeholder="Contoh: 2026 - 2029"
                 disabled={isSaving}
-                className="rounded-lg border border-[#D1D5DB] bg-white px-3 py-2 text-sm text-[#1A1A1A] focus:border-[#346739] focus:outline-none focus:ring-1 focus:ring-[#346739] disabled:opacity-50"
+                className="rounded-xl border border-[#F0EBE1] bg-[#F9F6F0]/50 px-3.5 py-2.5 text-sm font-semibold text-[#15221C] focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20 disabled:opacity-50"
               />
             </div>
 
             {/* No. WhatsApp (Privat/Admin saja) */}
-            <div className="flex flex-col gap-1">
-              <label htmlFor="no_whatsapp" className="text-xs font-semibold text-[#6B7280]">
-                No. WhatsApp <span className="text-[10px] text-[#9CA3AF]">(Hanya terlihat oleh admin)</span>
+            <div className="flex flex-col gap-1.5">
+              <label htmlFor="no_whatsapp" className="text-xs font-bold uppercase tracking-wider text-[#8D9F96]">
+                No. WhatsApp <span className="text-[10px] font-normal text-[#8D9F96]">(Khusus internal admin)</span>
               </label>
               <input
                 id="no_whatsapp"
@@ -384,14 +384,14 @@ export default function KepengurusanForm({
                 onChange={(e) => setNoWhatsapp(e.target.value)}
                 placeholder="Contoh: 081234567890"
                 disabled={isSaving}
-                className="rounded-lg border border-[#D1D5DB] bg-white px-3 py-2 text-sm text-[#1A1A1A] focus:border-[#346739] focus:outline-none focus:ring-1 focus:ring-[#346739] disabled:opacity-50"
+                className="rounded-xl border border-[#F0EBE1] bg-[#F9F6F0]/50 px-3.5 py-2.5 text-sm font-semibold text-[#15221C] focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20 disabled:opacity-50"
               />
             </div>
 
             {/* Urutan & Status Aktif */}
             <div className="grid grid-cols-2 gap-4">
-              <div className="flex flex-col gap-1">
-                <label htmlFor="urutan" className="text-xs font-semibold text-[#6B7280]">
+              <div className="flex flex-col gap-1.5">
+                <label htmlFor="urutan" className="text-xs font-bold uppercase tracking-wider text-[#8D9F96]">
                   Urutan Tampil
                 </label>
                 <input
@@ -401,12 +401,12 @@ export default function KepengurusanForm({
                   value={urutan}
                   onChange={(e) => setUrutan(parseInt(e.target.value, 10) || 0)}
                   disabled={isSaving}
-                  className="rounded-lg border border-[#D1D5DB] bg-white px-3 py-2 text-sm text-[#1A1A1A] focus:border-[#346739] focus:outline-none focus:ring-1 focus:ring-[#346739] disabled:opacity-50"
+                  className="rounded-xl border border-[#F0EBE1] bg-[#F9F6F0]/50 px-3.5 py-2.5 text-sm font-semibold text-[#15221C] focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20 disabled:opacity-50"
                 />
               </div>
 
-              <div className="flex flex-col gap-1">
-                <label className="text-xs font-semibold text-[#6B7280]">Status</label>
+              <div className="flex flex-col gap-1.5">
+                <label className="text-xs font-bold uppercase tracking-wider text-[#8D9F96]">Status Tampil</label>
                 <div className="flex h-full items-center">
                   <label className="relative inline-flex cursor-pointer items-center">
                     <input
@@ -416,8 +416,8 @@ export default function KepengurusanForm({
                       disabled={isSaving}
                       className="peer sr-only"
                     />
-                    <div className="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-[#346739] peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none disabled:opacity-50" />
-                    <span className="ml-3 text-sm font-medium text-[#1A1A1A]">
+                    <div className="peer h-6 w-11 rounded-full bg-[#F0EBE1] after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-[#0A2E1F] peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none disabled:opacity-50" />
+                    <span className="ml-3 text-sm font-bold text-[#15221C]">
                       {isAktif ? "Aktif" : "Nonaktif"}
                     </span>
                   </label>
@@ -427,19 +427,19 @@ export default function KepengurusanForm({
           </div>
 
           {/* Footer buttons */}
-          <div className="mt-8 flex gap-3 border-t border-[#E5E7EB] pt-4">
+          <div className="mt-8 flex gap-3 border-t border-[#F0EBE1] pt-4">
             <button
               type="button"
               onClick={onClose}
               disabled={isSaving}
-              className="flex-1 rounded-xl border border-[#D1D5DB] px-4 py-2.5 text-sm font-medium text-[#1A1A1A] transition-colors hover:bg-[#F3F4F6] disabled:opacity-50"
+              className="flex-1 rounded-full border border-[#F0EBE1] px-5 py-2.5 text-sm font-semibold text-[#15221C] hover:bg-[#F9F6F0] transition-colors disabled:opacity-50"
             >
               Batal
             </button>
             <button
               type="submit"
               disabled={isSaving}
-              className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-[#346739] px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#2A5230] disabled:opacity-50"
+              className="flex-1 inline-flex items-center justify-center gap-2 rounded-full bg-[#0A2E1F] px-5 py-2.5 text-sm font-bold text-white shadow-ambient hover:bg-[#15221C] transition-all disabled:opacity-50"
             >
               {isSaving ? (
                 <>
@@ -447,7 +447,7 @@ export default function KepengurusanForm({
                   Menyimpan...
                 </>
               ) : (
-                "Simpan"
+                "Simpan Data"
               )}
             </button>
           </div>
@@ -456,3 +456,4 @@ export default function KepengurusanForm({
     </div>
   );
 }
+

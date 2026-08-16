@@ -1,16 +1,16 @@
-import { createClient } from "@/lib/supabase/server";
+﻿import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
 import { MapPin, ExternalLink } from "lucide-react";
-import GaleriMasjid from "@/components/public/GaleriMasjid";
+import Image from "next/image";
+import PrayerCountdown from "@/components/public/PrayerCountdown";
 import JadwalSholatSection from "@/components/public/JadwalSholat";
 import PengumumanCard from "@/components/public/PengumumanCard";
 import DonasiSection from "@/components/public/DonasiSection";
-import type { ProfilMasjid, Pengumuman, FotoMasjid } from "@/types";
+import type { ProfilMasjid, Pengumuman } from "@/types";
 
 export default async function BerandaPage() {
   const supabase = await createClient();
 
-  // Fetch profil masjid
   const { data: profil } = await supabase
     .from("profil_masjid")
     .select("*")
@@ -19,15 +19,6 @@ export default async function BerandaPage() {
 
   const profilData: ProfilMasjid | null = profil;
 
-  // Fetch galeri foto untuk slideshow
-  const { data: fotoData } = await supabase
-    .from("foto_masjid")
-    .select("*")
-    .order("urutan", { ascending: true });
-
-  const fotoGaleri: FotoMasjid[] = fotoData ?? [];
-
-  // Fetch 3 pengumuman terbaru
   const { data: pengumumanData } = await supabase
     .from("pengumuman")
     .select("*")
@@ -37,12 +28,6 @@ export default async function BerandaPage() {
 
   const pengumumanTerbaru: Pengumuman[] = pengumumanData ?? [];
 
-  // URL embed Google Maps berdasarkan alamat masjid
-  const mapsEmbedUrl = profilData?.alamat
-    ? `https://maps.google.com/maps?q=${encodeURIComponent(profilData.alamat)}&output=embed&hl=id`
-    : null;
-
-  // URL untuk tombol "Buka di Google Maps"
   const mapsOpenUrl =
     profilData?.link_maps ||
     (profilData?.alamat
@@ -52,144 +37,151 @@ export default async function BerandaPage() {
   return (
     <div className="-mx-4 md:-mx-6 lg:-mx-8">
 
-      {/* ========== GALERI FOTO SLIDESHOW ========== */}
-      <GaleriMasjid
-        foto={fotoGaleri}
-        fallbackUrl={profilData?.foto_url ?? null}
-        namaMasjid={profilData?.nama_masjid ?? "Masjid"}
-      />
+      {/* ========== HERO BANNER ========== */}
+      <div className="relative overflow-hidden bg-[#0A2E1F] py-10 md:py-14">
+        {/* Foto masjid sebagai overlay */}
+        {profilData?.foto_url && (
+          <div className="absolute inset-0 z-0">
+            <Image
+              src={profilData.foto_url}
+              alt={profilData.nama_masjid ?? "Masjid"}
+              fill
+              className="object-cover opacity-20"
+              priority
+            />
+          </div>
+        )}
+        {/* Dekoratif blur */}
+        <div className="pointer-events-none absolute -right-32 -top-32 h-96 w-96 rounded-full bg-white opacity-[0.03] blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-32 -left-32 h-96 w-96 rounded-full bg-[#D4AF37] opacity-[0.05] blur-3xl" />
 
-      {/* ========== INFO SINGKAT MASJID ========== */}
-      <section className="bg-[#EAF2EB] py-6">
-        <div className="mx-auto max-w-[1200px] px-4 text-center md:px-6 lg:px-8">
-          <h1 className="text-xl font-bold text-[#346739] md:text-2xl">
-            {profilData?.nama_masjid ?? "SIM Masjid"}
-          </h1>
-          {profilData?.alamat && (
-            <div className="mt-2 flex items-center justify-center gap-1.5">
-              <MapPin className="h-3.5 w-3.5 flex-shrink-0 text-[#6B7280]" />
-              {mapsOpenUrl ? (
-                <a
-                  href={mapsOpenUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm text-[#6B7280] hover:text-[#346739] hover:underline"
-                >
-                  {profilData.alamat}
-                </a>
-              ) : (
-                <p className="text-sm text-[#6B7280]">{profilData.alamat}</p>
-              )}
+        {/* Content */}
+        <div className="relative z-10 mx-auto flex max-w-[1200px] flex-col items-center justify-between gap-6 px-4 sm:flex-row md:px-6 lg:px-8">
+          <div>
+            <h1 className="text-2xl font-bold leading-tight tracking-tight text-white md:text-4xl">
+              Sistem Informasi Manajemen
+              <br />
+              Masjid (SIM) {profilData?.nama_masjid ?? "Al-Ittihad"}
+            </h1>
+            <p className="mt-2 text-sm font-medium text-[#D4AF37]">
+              Membangun Kemakmuran Masjid di Era Digital
+            </p>
+          </div>
+
+          {/* Avatar badge bulat */}
+          {profilData?.foto_url && (
+            <div className="h-24 w-24 shrink-0 overflow-hidden rounded-full border-4 border-[#D4AF37] shadow-lg md:h-28 md:w-28">
+              <Image
+                src={profilData.foto_url}
+                alt={profilData.nama_masjid ?? "Masjid"}
+                width={112}
+                height={112}
+                className="h-full w-full object-cover"
+              />
             </div>
           )}
         </div>
-      </section>
+      </div>
 
-      {/* ========== JADWAL SHOLAT ========== */}
-      <JadwalSholatSection />
+      {/* ========== MAIN CONTENT 60/40 SPLIT ========== */}
+      <div className="mx-auto max-w-[1200px] px-4 py-10 md:px-6 lg:px-8 lg:py-12">
+        <div className="flex flex-col gap-8 lg:flex-row lg:gap-10">
 
-      {/* ========== LOKASI MASJID ========== */}
-      {mapsEmbedUrl && (
-        <section className="bg-white py-12">
-          <div className="mx-auto max-w-[1200px] px-4 md:px-6 lg:px-8">
-            <div className="mb-6 flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
-              <div className="flex items-center gap-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#EAF2EB]">
-                  <MapPin className="h-4 w-4 text-[#346739]" />
-                </div>
-                <h2 className="text-xl font-semibold text-[#1A1A1A]">
-                  Lokasi Masjid
+          {/* ========== KOLOM KIRI (60%) ========== */}
+          <div className="flex flex-col gap-8 lg:w-[60%]">
+
+            {/* Countdown Timer */}
+            <PrayerCountdown />
+
+            {/* Pengumuman & Kegiatan */}
+            <div>
+              <div className="mb-5 flex items-center justify-between">
+                <h2 className="text-2xl font-bold tracking-tight text-[#0A2E1F]">
+                  Pengumuman &amp; Kegiatan
                 </h2>
-              </div>
-              {mapsOpenUrl && (
-                <a
-                  href={mapsOpenUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 rounded-lg border border-[#346739] px-4 py-2 text-sm font-medium text-[#346739] transition-colors hover:bg-[#EAF2EB]"
+                <Link
+                  href="/pengumuman"
+                  className="flex items-center gap-1 text-sm font-semibold text-[#D4AF37] transition-colors hover:text-[#0A2E1F]"
                 >
-                  <ExternalLink className="h-4 w-4" />
-                  Buka di Google Maps
-                </a>
+                  Lihat Semua →
+                </Link>
+              </div>
+
+              {pengumumanTerbaru.length > 0 ? (
+                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                  {pengumumanTerbaru.map((p) => (
+                    <PengumumanCard key={p.id} pengumuman={p} />
+                  ))}
+                </div>
+              ) : (
+                <div className="rounded-lg border border-[#F0EBE1] bg-white py-12 text-center shadow-ambient">
+                  <p className="text-sm text-[#8D9F96]">
+                    Tidak ada pengumuman saat ini
+                  </p>
+                </div>
               )}
             </div>
+          </div>
 
-            <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-              <div className="overflow-hidden rounded-2xl border border-[#D1D5DB] shadow-sm lg:col-span-2">
-                <iframe
-                  src={mapsEmbedUrl}
-                  width="100%"
-                  height="360"
-                  style={{ border: 0 }}
-                  allowFullScreen
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  title="Lokasi Masjid di Google Maps"
-                  className="block"
-                />
+          {/* ========== KOLOM KANAN (40%) ========== */}
+          <div className="flex flex-col gap-6 lg:w-[40%]">
+
+            {/* Jadwal Shalat Card */}
+            <JadwalSholatSection />
+
+            {/* Foto & Lokasi Widget */}
+            <div className="overflow-hidden rounded-lg border border-[#F0EBE1] bg-white shadow-ambient">
+              {/* Foto masjid */}
+              <div className="relative h-48 w-full overflow-hidden bg-[#F9F6F0] md:h-52">
+                {profilData?.foto_url ? (
+                  <Image
+                    src={profilData.foto_url}
+                    alt={profilData?.nama_masjid ?? "Foto Masjid"}
+                    fill
+                    className="object-cover transition-transform duration-500 hover:scale-105"
+                    sizes="(max-width: 768px) 100vw, 40vw"
+                  />
+                ) : (
+                  <div className="flex h-full items-center justify-center">
+                    <MapPin className="h-10 w-10 text-[#8D9F96]" />
+                  </div>
+                )}
+                <span className="absolute bottom-3 left-3 rounded-sm bg-[#0A2E1F]/80 px-2.5 py-1 text-[11px] font-medium text-white backdrop-blur-sm">
+                  {profilData?.nama_masjid ?? "Foto Masjid"}
+                </span>
               </div>
 
-              <div className="flex flex-col justify-between rounded-2xl border border-[#D1D5DB] bg-[#FFFAF0] p-6 shadow-sm">
+              {/* Info & Tombol */}
+              <div className="flex flex-col gap-4 p-5">
                 <div>
-                  <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-[#346739]">
-                    Alamat Lengkap
-                  </p>
-                  <p className="mt-2 text-sm leading-relaxed text-[#1A1A1A]">
-                    {profilData?.nama_masjid}
-                  </p>
-                  <p className="mt-1 text-sm leading-relaxed text-[#6B7280]">
-                    {profilData?.alamat}
-                  </p>
+                  <h3 className="font-bold text-[#0A2E1F]">
+                    {profilData?.nama_masjid ?? "Masjid"}
+                  </h3>
+                  {profilData?.alamat && (
+                    <p className="mt-1 text-sm leading-relaxed text-[#8D9F96]">
+                      {profilData.alamat}
+                    </p>
+                  )}
                 </div>
                 {mapsOpenUrl && (
-                  <div className="mt-6">
-                    <a
-                      href={mapsOpenUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#346739] px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#2A5230]"
-                    >
-                      <MapPin className="h-4 w-4" />
-                      Petunjuk Arah
-                    </a>
-                  </div>
+                  <a
+                    href={mapsOpenUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="ripple flex w-full items-center justify-center gap-2 rounded-full bg-[#F9F6F0] px-4 py-2.5 text-sm font-bold text-[#0A2E1F] transition-all hover:bg-[#0A2E1F] hover:text-white"
+                  >
+                    <ExternalLink className="h-4 w-4" />
+                    Dapatkan Petunjuk Arah
+                  </a>
                 )}
               </div>
             </div>
-          </div>
-        </section>
-      )}
 
-      {/* ========== PENGUMUMAN TERBARU ========== */}
-      <section className="bg-[#FFFAF0] py-12">
-        <div className="mx-auto max-w-[1200px] px-4 md:px-6 lg:px-8">
-          <div className="mb-8 flex items-center justify-between">
-            <h2 className="text-xl font-semibold text-[#1A1A1A]">
-              Pengumuman & Kegiatan Terbaru
-            </h2>
-            <Link
-              href="/pengumuman"
-              className="text-sm font-medium text-[#346739] hover:underline"
-            >
-              Lihat Semua →
-            </Link>
           </div>
-
-          {pengumumanTerbaru.length > 0 ? (
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {pengumumanTerbaru.map((p) => (
-                <PengumumanCard key={p.id} pengumuman={p} />
-              ))}
-            </div>
-          ) : (
-            <p className="py-8 text-center text-sm text-[#6B7280]">
-              Belum ada pengumuman
-            </p>
-          )}
         </div>
-      </section>
+      </div>
 
-      {/* ========== DONASI INTERAKTIF ========== */}
+      {/* ========== DONASI SECTION ========== */}
       <DonasiSection
         noRekening={profilData?.no_rekening ?? null}
         namaBank={profilData?.nama_bank ?? null}

@@ -1,7 +1,8 @@
-import { createClient } from "@/lib/supabase/server";
+﻿import { createClient } from "@/lib/supabase/server";
 import KasBerjenjang from "@/components/public/KasBerjenjang";
 import RenovasiTerbaru from "@/components/public/RenovasiTerbaru";
 import DaftarDonatur from "@/components/public/DaftarDonatur";
+import KeuanganChart from "@/components/public/KeuanganChart";
 import { formatRupiah } from "@/lib/utils";
 import { TrendingUp, TrendingDown } from "lucide-react";
 import type { Keuangan, RingkasanKas } from "@/types";
@@ -79,7 +80,7 @@ export default async function KeuanganPage({ searchParams }: KeuanganPageProps) 
 
   const ringkasanKas = hitungRingkasanKas((semuaKeuangan ?? []) as Keuangan[]);
 
-  // 2. Transaksi bulan terpilih untuk rekap
+  // 2. Transaksi bulan terpilih untuk rekap + chart
   const startDate = `${tahun}-${String(bulan).padStart(2, "0")}-01`;
   const lastDay = new Date(tahun, bulan, 0).getDate();
   const endDate = `${tahun}-${String(bulan).padStart(2, "0")}-${String(lastDay).padStart(2, "0")}`;
@@ -100,7 +101,12 @@ export default async function KeuanganPage({ searchParams }: KeuanganPageProps) 
     else pengeluaranBulanIni += t.jumlah;
   }
 
-  // 3. 5 pengeluaran renovasi terbaru
+  // 3. Transaksi terbaru bulan ini untuk ledger (max 10)
+  const transaksiTerbaru = transaksiBulanIni
+    .sort((a, b) => new Date(b.tanggal).getTime() - new Date(a.tanggal).getTime())
+    .slice(0, 10);
+
+  // 4. Pengeluaran renovasi terbaru
   const { data: renovasiData } = await supabase
     .from("keuangan")
     .select("*")
@@ -112,7 +118,7 @@ export default async function KeuanganPage({ searchParams }: KeuanganPageProps) 
 
   const renovasiTerbaru = (renovasiData ?? []) as Keuangan[];
 
-  // 4. Fetch donatur renovasi (pemasukan renovasi)
+  // 5. Donatur renovasi
   const { data: donaturData } = await supabase
     .from("keuangan")
     .select("nama_donatur, jumlah, tanggal")
@@ -131,118 +137,196 @@ export default async function KeuanganPage({ searchParams }: KeuanganPageProps) 
 
   return (
     <div className="-mx-4 md:-mx-6 lg:-mx-8">
-      {/* ========== HEADER HALAMAN ========== */}
-      <section className="bg-[#EAF2EB] py-8 md:py-10">
+
+      {/* ========== HEADER ========== */}
+      <section className="bg-[#0A2E1F] py-10 md:py-14">
         <div className="mx-auto max-w-[1200px] px-4 md:px-6 lg:px-8">
-          <h1 className="text-2xl font-bold text-[#1A1A1A] md:text-3xl">
+          <h1 className="text-2xl font-bold text-white md:text-3xl">
             Transparansi Keuangan Masjid
           </h1>
+          <p className="mt-1 text-sm text-[#8D9F96]">
+            Laporan keuangan terbuka untuk seluruh jamaah
+          </p>
         </div>
       </section>
 
-      {/* ========== KAS BERJENJANG KESELURUHAN ========== */}
-      <section className="bg-[#FFFAF0] py-10">
+      {/* ========== RINGKASAN KAS KESELURUHAN ========== */}
+      <section className="bg-[#F9F6F0] py-10">
         <div className="mx-auto max-w-[1200px] px-4 md:px-6 lg:px-8">
           <KasBerjenjang ringkasan={ringkasanKas} />
         </div>
       </section>
 
-      {/* ========== FILTER BULAN & TAHUN ========== */}
-      <section className="bg-white py-4">
+      {/* ========== REKAP BULANAN + DONUT CHART ========== */}
+      <section className="bg-white py-10">
         <div className="mx-auto max-w-[1200px] px-4 md:px-6 lg:px-8">
-          <form className="flex flex-wrap items-end gap-3">
-            <div className="flex flex-col gap-1">
-              <label htmlFor="bulan" className="text-xs font-medium text-[#6B7280]">
-                Bulan
-              </label>
-              <select
-                id="bulan"
-                name="bulan"
-                defaultValue={bulan}
-                className="rounded-lg border border-[#D1D5DB] bg-white px-3 py-2 text-sm text-[#1A1A1A] focus:border-[#346739] focus:outline-none focus:ring-1 focus:ring-[#346739]"
-              >
-                {BULAN_LIST.map((b) => (
-                  <option key={b.value} value={b.value}>
-                    {b.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="flex flex-col gap-1">
-              <label htmlFor="tahun" className="text-xs font-medium text-[#6B7280]">
-                Tahun
-              </label>
-              <select
-                id="tahun"
-                name="tahun"
-                defaultValue={tahun}
-                className="rounded-lg border border-[#D1D5DB] bg-white px-3 py-2 text-sm text-[#1A1A1A] focus:border-[#346739] focus:outline-none focus:ring-1 focus:ring-[#346739]"
-              >
-                {daftarTahun.map((t) => (
-                  <option key={t} value={t}>
-                    {t}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <button
-              type="submit"
-              className="rounded-lg bg-[#346739] px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#2A5230]"
-            >
-              Tampilkan
-            </button>
-          </form>
-        </div>
-      </section>
-
-      {/* ========== REKAP BULAN TERPILIH ========== */}
-      <section className="py-8">
-        <div className="mx-auto max-w-[1200px] px-4 md:px-6 lg:px-8">
-          <h2 className="mb-4 text-lg font-semibold text-[#1A1A1A]">
-            Rekap Bulan {bulanLabel} {tahun}
-          </h2>
-
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            {/* Card Pemasukan */}
-            <div className="rounded-xl border border-[#16A34A]/30 bg-[#F0FDF4] p-6">
-              <div className="flex items-center gap-2">
-                <TrendingUp className="h-5 w-5 text-[#16A34A]" />
-                <span className="text-sm font-medium text-[#6B7280]">
-                  Total Pemasukan
-                </span>
-              </div>
-              <p className="mt-2 text-[28px] font-bold text-[#16A34A]">
-                {formatRupiah(pemasukanBulanIni)}
+          {/* Filter Bulan & Tahun */}
+          <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <h2 className="text-xl font-bold text-[#0A2E1F]">
+                Rekap Bulan {bulanLabel} {tahun}
+              </h2>
+              <p className="mt-0.5 text-sm text-[#8D9F96]">
+                Ringkasan pemasukan dan pengeluaran bulan ini
               </p>
             </div>
-
-            {/* Card Pengeluaran */}
-            <div className="rounded-xl border border-[#DC2626]/30 bg-[#FEF2F2] p-6">
-              <div className="flex items-center gap-2">
-                <TrendingDown className="h-5 w-5 text-[#DC2626]" />
-                <span className="text-sm font-medium text-[#6B7280]">
-                  Total Pengeluaran
-                </span>
+            <form className="flex flex-wrap items-end gap-3">
+              <div className="flex flex-col gap-1">
+                <label htmlFor="bulan" className="text-xs font-semibold uppercase tracking-wider text-[#8D9F96]">
+                  Bulan
+                </label>
+                <select
+                  id="bulan"
+                  name="bulan"
+                  defaultValue={bulan}
+                  className="rounded-lg border border-[#F0EBE1] bg-white px-3 py-2 text-sm text-[#15221C] focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20"
+                >
+                  {BULAN_LIST.map((b) => (
+                    <option key={b.value} value={b.value}>{b.label}</option>
+                  ))}
+                </select>
               </div>
-              <p className="mt-2 text-[28px] font-bold text-[#DC2626]">
-                {formatRupiah(pengeluaranBulanIni)}
-              </p>
+              <div className="flex flex-col gap-1">
+                <label htmlFor="tahun" className="text-xs font-semibold uppercase tracking-wider text-[#8D9F96]">
+                  Tahun
+                </label>
+                <select
+                  id="tahun"
+                  name="tahun"
+                  defaultValue={tahun}
+                  className="rounded-lg border border-[#F0EBE1] bg-white px-3 py-2 text-sm text-[#15221C] focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20"
+                >
+                  {daftarTahun.map((t) => (
+                    <option key={t} value={t}>{t}</option>
+                  ))}
+                </select>
+              </div>
+              <button
+                type="submit"
+                className="ripple rounded-full bg-[#0A2E1F] px-5 py-2 text-sm font-bold text-white transition-all hover:bg-[#15221C]"
+              >
+                Tampilkan
+              </button>
+            </form>
+          </div>
+
+          {/* 2-column: Chart + Summary cards + Ledger */}
+          <div className="flex flex-col gap-8 lg:flex-row lg:gap-10">
+
+            {/* KIRI: Donut Chart + Summary Cards */}
+            <div className="flex flex-col gap-6 lg:w-[40%]">
+              {/* Donut Chart */}
+              <div className="rounded-lg border border-[#F0EBE1] bg-white p-6 shadow-ambient">
+                <h3 className="mb-4 text-sm font-bold uppercase tracking-wider text-[#8D9F96]">
+                  Komposisi Kas Bulan Ini
+                </h3>
+                <KeuanganChart
+                  pemasukan={pemasukanBulanIni}
+                  pengeluaran={pengeluaranBulanIni}
+                />
+              </div>
+
+              {/* Summary Cards */}
+              <div className="grid grid-cols-2 gap-4">
+                <div className="rounded-lg border border-[#F0EBE1] bg-white p-4 shadow-ambient">
+                  <div className="flex items-center gap-2">
+                    <TrendingUp className="h-4 w-4 text-[#0A2E1F]" />
+                    <span className="text-xs font-semibold uppercase tracking-wider text-[#8D9F96]">
+                      Pemasukan
+                    </span>
+                  </div>
+                  <p className="mt-2 text-lg font-bold text-[#0A2E1F]">
+                    {formatRupiah(pemasukanBulanIni)}
+                  </p>
+                </div>
+                <div className="rounded-lg border border-[#F0EBE1] bg-white p-4 shadow-ambient">
+                  <div className="flex items-center gap-2">
+                    <TrendingDown className="h-4 w-4 text-[#8D9F96]" />
+                    <span className="text-xs font-semibold uppercase tracking-wider text-[#8D9F96]">
+                      Pengeluaran
+                    </span>
+                  </div>
+                  <p className="mt-2 text-lg font-bold text-[#15221C]">
+                    {formatRupiah(pengeluaranBulanIni)}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* KANAN: Ledger Transaksi Terbaru */}
+            <div className="lg:w-[60%]">
+              <div className="rounded-lg border border-[#F0EBE1] bg-white shadow-ambient">
+                <div className="border-b border-[#F0EBE1] px-6 py-4">
+                  <h3 className="font-bold text-[#0A2E1F]">
+                    Transaksi Terbaru
+                  </h3>
+                  <p className="mt-0.5 text-xs text-[#8D9F96]">
+                    {bulanLabel} {tahun}
+                  </p>
+                </div>
+
+                {transaksiTerbaru.length > 0 ? (
+                  <div className="divide-y divide-[#F0EBE1]">
+                    {transaksiTerbaru.map((t, idx) => (
+                      <div
+                        key={idx}
+                        className="flex h-16 items-center justify-between px-6"
+                      >
+                        <div className="flex items-center gap-3">
+                          <div
+                            className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${
+                              t.jenis === "pemasukan"
+                                ? "bg-[#0A2E1F]/5"
+                                : "bg-[#F0EBE1]"
+                            }`}
+                          >
+                            {t.jenis === "pemasukan" ? (
+                              <TrendingUp className="h-3.5 w-3.5 text-[#0A2E1F]" />
+                            ) : (
+                              <TrendingDown className="h-3.5 w-3.5 text-[#8D9F96]" />
+                            )}
+                          </div>
+                          <div>
+                            <p className="text-sm font-medium text-[#15221C] line-clamp-1">
+                              {t.keterangan || (t.jenis === "pemasukan" ? "Pemasukan" : "Pengeluaran")}
+                            </p>
+                            <p className="text-xs text-[#8D9F96]">{t.tanggal}</p>
+                          </div>
+                        </div>
+                        <span
+                          className={`text-sm font-bold ${
+                            t.jenis === "pemasukan"
+                              ? "text-[#0A2E1F]"
+                              : "text-[#8D9F96]"
+                          }`}
+                        >
+                          {t.jenis === "pemasukan" ? "+" : "-"}{formatRupiah(t.jumlah)}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="py-12 text-center">
+                    <p className="text-sm text-[#8D9F96]">
+                      Belum ada transaksi bulan ini
+                    </p>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ========== 5 PENGELUARAN RENOVASI TERBARU ========== */}
-      <section className="bg-[#EAF2EB] py-8">
+      {/* ========== PENGELUARAN RENOVASI TERBARU ========== */}
+      <section className="bg-[#F9F6F0] py-10">
         <div className="mx-auto max-w-[1200px] px-4 md:px-6 lg:px-8">
           <RenovasiTerbaru data={renovasiTerbaru} />
         </div>
       </section>
 
-      {/* ========== DAFTAR DONATUR KAS RENOVASI ========== */}
-      <section className="bg-white py-8">
+      {/* ========== DAFTAR DONATUR RENOVASI ========== */}
+      <section className="bg-white py-10">
         <div className="mx-auto max-w-[1200px] px-4 md:px-6 lg:px-8">
           <DaftarDonatur data={donaturRenovasi} />
         </div>

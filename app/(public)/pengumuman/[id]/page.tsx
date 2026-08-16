@@ -3,15 +3,8 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { Calendar, ArrowLeft, MessageCircle } from "lucide-react";
+import { Calendar, ArrowLeft, MessageCircle, Megaphone, BookOpen } from "lucide-react";
 import { formatTanggalHari } from "@/lib/utils";
-import { Separator } from "@/components/ui/separator";
-
-const KATEGORI_BADGE: Record<string, string> = {
-  pengumuman: "bg-[#EAF2EB] text-[#346739]",
-  kegiatan: "bg-[#EFF6FF] text-[#2563EB]",
-  kajian: "bg-[#FFF7ED] text-[#C2410C]",
-};
 
 const KATEGORI_LABEL: Record<string, string> = {
   pengumuman: "Pengumuman",
@@ -19,10 +12,12 @@ const KATEGORI_LABEL: Record<string, string> = {
   kajian: "Kajian",
 };
 
-/**
- * Extract YouTube video ID dari berbagai format URL
- * Mendukung: youtube.com/watch?v=, youtu.be/, youtube.com/embed/, youtube.com/v/
- */
+const KATEGORI_ICON: Record<string, React.FC<{ className?: string }>> = {
+  pengumuman: Megaphone,
+  kegiatan: Calendar,
+  kajian: BookOpen,
+};
+
 function extractYouTubeVideoId(url: string): string | null {
   const patterns = [
     /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/v\/)([^&\n?#]+)/,
@@ -80,98 +75,120 @@ export default async function DetailPengumumanPage({ params }: DetailPageProps) 
   const shareText = `${pengumuman.judul} - ${process.env.NEXT_PUBLIC_SITE_URL || ""}/pengumuman/${pengumuman.id}`;
   const shareUrl = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
 
+  const IconComponent = KATEGORI_ICON[pengumuman.kategori] || Megaphone;
+
   return (
     <div className="-mx-4 md:-mx-6 lg:-mx-8">
-      <div className="mx-auto max-w-[800px] px-4 py-8 md:px-6 md:py-10 lg:px-8">
-        {/* Tombol Kembali */}
-        <Link
-          href="/pengumuman"
-          className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-[#6B7280] transition-colors hover:text-[#346739]"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Kembali ke Pengumuman
-        </Link>
 
-        {/* Badge Kategori */}
-        <span
-          className={`inline-block rounded-full px-3 py-1 text-xs font-semibold ${
-            KATEGORI_BADGE[pengumuman.kategori] || "bg-[#EAF2EB] text-[#346739]"
-          }`}
-        >
-          {KATEGORI_LABEL[pengumuman.kategori] || pengumuman.kategori}
-        </span>
+      {/* ========== HERO HEADER ========== */}
+      <div className="bg-[#0A2E1F] px-4 pb-8 pt-6 md:px-6 lg:px-8">
+        <div className="mx-auto max-w-[800px]">
+          {/* Tombol Kembali */}
+          <Link
+            href="/pengumuman"
+            className="inline-flex items-center gap-2 text-sm font-medium text-[#8D9F96] transition-colors hover:text-[#D4AF37]"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Kembali ke Pengumuman
+          </Link>
 
-        {/* Judul */}
-        <h1 className="mt-3 text-[28px] font-bold leading-tight text-[#1A1A1A]">
-          {pengumuman.judul}
-        </h1>
-
-        {/* Tanggal */}
-        <div className="mt-2 flex items-center gap-1.5 text-sm text-[#6B7280]">
-          <Calendar className="h-4 w-4" />
-          <span>{formatTanggalHari(pengumuman.created_at)}</span>
-        </div>
-
-        <Separator className="my-6" />
-
-        {/* Foto */}
-        {pengumuman.foto_url && (
-          <div className="relative mb-6 max-h-[400px] w-full overflow-hidden rounded-xl">
-            <Image
-              src={pengumuman.foto_url}
-              alt={pengumuman.judul}
-              width={800}
-              height={400}
-              className="h-auto max-h-[400px] w-full object-cover"
-              sizes="(max-width: 768px) 100vw, 800px"
-              priority
-            />
+          {/* Kategori pill */}
+          <div className="mt-5 flex items-center gap-2">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10">
+              <IconComponent className="h-4 w-4 text-[#D4AF37]" />
+            </div>
+            <span className="text-sm font-bold uppercase tracking-wider text-[#D4AF37]">
+              {KATEGORI_LABEL[pengumuman.kategori] || pengumuman.kategori}
+            </span>
           </div>
-        )}
 
-        {/* Isi Pengumuman */}
-        <div
-          className="text-base text-[#1A1A1A] whitespace-pre-wrap"
-          style={{ lineHeight: "1.8" }}
-        >
-          {pengumuman.isi}
-        </div>
+          {/* Judul */}
+          <h1 className="mt-3 text-2xl font-bold leading-tight text-white md:text-3xl">
+            {pengumuman.judul}
+          </h1>
 
-        {/* Video Embed */}
-        {(youtubeId || hasFacebookVideo) && (
-          <div className="mt-6 aspect-video w-full overflow-hidden rounded-xl">
-            {youtubeId ? (
-              <iframe
-                src={`https://www.youtube.com/embed/${youtubeId}`}
-                title="Video Pengumuman"
-                className="h-full w-full"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-            ) : hasFacebookVideo ? (
-              <iframe
-                src={`https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(pengumuman.video_url!)}&show_text=false`}
-                title="Video Pengumuman"
-                className="h-full w-full"
-                allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-                allowFullScreen
-              />
-            ) : null}
+          {/* Tanggal */}
+          <div className="mt-3 flex items-center gap-1.5 text-sm text-[#8D9F96]">
+            <Calendar className="h-4 w-4" />
+            <span>{formatTanggalHari(pengumuman.created_at)}</span>
           </div>
-        )}
+        </div>
+      </div>
 
-        <Separator className="my-6" />
+      {/* ========== KONTEN ARTIKEL ========== */}
+      <div className="bg-[#F9F6F0] px-4 py-8 md:px-6 lg:px-8">
+        <div className="mx-auto max-w-[800px]">
 
-        {/* Tombol Share WhatsApp */}
-        <a
-          href={shareUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 rounded-lg bg-[#25D366] px-5 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90"
-        >
-          <MessageCircle className="h-5 w-5" />
-          Bagikan ke WhatsApp
-        </a>
+          {/* Card konten */}
+          <div className="rounded-lg border border-[#F0EBE1] bg-white p-6 shadow-ambient md:p-8">
+
+            {/* Foto header */}
+            {pengumuman.foto_url && (
+              <div className="relative mb-6 h-[280px] w-full overflow-hidden rounded-lg md:h-[380px]">
+                <Image
+                  src={pengumuman.foto_url}
+                  alt={pengumuman.judul}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 800px"
+                  priority
+                />
+              </div>
+            )}
+
+            {/* Divider gold */}
+            <div className="mb-6 h-0.5 w-12 rounded-full bg-[#D4AF37]" />
+
+            {/* Isi Pengumuman */}
+            <div className="text-base leading-[1.9] text-[#15221C] whitespace-pre-wrap">
+              {pengumuman.isi}
+            </div>
+
+            {/* Video Embed */}
+            {(youtubeId || hasFacebookVideo) && (
+              <div className="mt-8 aspect-video w-full overflow-hidden rounded-lg">
+                {youtubeId ? (
+                  <iframe
+                    src={`https://www.youtube.com/embed/${youtubeId}`}
+                    title="Video Pengumuman"
+                    className="h-full w-full"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                ) : hasFacebookVideo ? (
+                  <iframe
+                    src={`https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(pengumuman.video_url!)}&show_text=false`}
+                    title="Video Pengumuman"
+                    className="h-full w-full"
+                    allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                    allowFullScreen
+                  />
+                ) : null}
+              </div>
+            )}
+          </div>
+
+          {/* ========== FOOTER ACTIONS ========== */}
+          <div className="mt-6 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+            <Link
+              href="/pengumuman"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-[#8D9F96] transition-colors hover:text-[#0A2E1F]"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Kembali ke Daftar Pengumuman
+            </Link>
+
+            <a
+              href={shareUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ripple inline-flex items-center gap-2 rounded-full bg-[#25D366] px-5 py-2.5 text-sm font-bold text-white transition-opacity hover:opacity-90"
+            >
+              <MessageCircle className="h-4 w-4" />
+              Bagikan ke WhatsApp
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -287,37 +287,38 @@ export default function AdminKeuanganPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* ========== HEADER ========== */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
-          <h2 className="text-xl font-bold text-[#1A1A1A]">Kas & Keuangan Masjid</h2>
+          <h2 className="text-2xl font-bold tracking-tight text-[#0A2E1F]">Kas &amp; Keuangan Masjid</h2>
+          <p className="text-sm text-[#8D9F96]">Kelola transaksi, catat kas umum/renovasi, serta impor-ekspor data keuangan.</p>
         </div>
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-center w-full sm:w-auto">
+        <div className="flex flex-wrap items-center gap-3">
           <Button
             onClick={() => setShowImportDialog(true)}
             variant="outline"
-            className="w-full border-[#346739] text-[#346739] hover:bg-[#EAF2EB] sm:w-auto"
+            className="rounded-full border-[#F0EBE1] bg-white text-[#0A2E1F] hover:bg-[#F9F6F0] shadow-sm font-semibold"
           >
-            <Upload className="mr-2 h-4 w-4" />
+            <Upload className="mr-2 h-4 w-4 text-[#8D9F96]" />
             Import Excel
           </Button>
           <Button
             onClick={handleExportExcel}
             disabled={isExporting}
             variant="outline"
-            className="w-full border-[#346739] text-[#346739] hover:bg-[#EAF2EB] sm:w-auto"
+            className="rounded-full border-[#F0EBE1] bg-white text-[#0A2E1F] hover:bg-[#F9F6F0] shadow-sm font-semibold"
           >
             {isExporting ? (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              <Loader2 className="mr-2 h-4 w-4 animate-spin text-[#0A2E1F]" />
             ) : (
-              <FileDown className="mr-2 h-4 w-4" />
+              <FileDown className="mr-2 h-4 w-4 text-[#D4AF37]" />
             )}
             Export Excel
           </Button>
           <Button
             onClick={handleTambahClick}
-            className="w-full bg-[#346739] hover:bg-[#2A5230] text-white sm:w-auto"
+            className="rounded-full bg-[#0A2E1F] hover:bg-[#15221C] text-white shadow-ambient font-bold px-6"
           >
             <Plus className="mr-2 h-4 w-4" />
             Catat Transaksi
@@ -327,39 +328,39 @@ export default function AdminKeuanganPage() {
 
       {/* ========== SUMMARY BAR ========== */}
       <div className="grid gap-4 sm:grid-cols-3">
-        <div className="rounded-xl border border-[#D1D5DB] bg-[#F0FDF4] p-4">
-          <p className="text-xs font-medium text-[#6B7280]">Total Pemasukan</p>
-          <p className="mt-1 text-lg font-bold text-[#16A34A]">
+        <div className="rounded-xl border border-[#F0EBE1] bg-white p-5 shadow-ambient">
+          <p className="text-xs font-bold uppercase tracking-wider text-[#8D9F96]">Total Pemasukan</p>
+          <p className="mt-2 text-2xl font-bold text-emerald-700">
             {formatRupiah(totalPemasukan)}
           </p>
         </div>
-        <div className="rounded-xl border border-[#D1D5DB] bg-[#FEF2F2] p-4">
-          <p className="text-xs font-medium text-[#6B7280]">Total Pengeluaran</p>
-          <p className="mt-1 text-lg font-bold text-[#DC2626]">
+        <div className="rounded-xl border border-[#F0EBE1] bg-white p-5 shadow-ambient">
+          <p className="text-xs font-bold uppercase tracking-wider text-[#8D9F96]">Total Pengeluaran</p>
+          <p className="mt-2 text-2xl font-bold text-rose-600">
             {formatRupiah(totalPengeluaran)}
           </p>
         </div>
-        <div className="rounded-xl border border-[#D1D5DB] bg-[#EAF2EB] p-4">
-          <p className="text-xs font-medium text-[#6B7280]">Saldo</p>
-          <p className="mt-1 text-lg font-bold text-[#346739]">
+        <div className="rounded-xl bg-[#0A2E1F] p-5 text-white shadow-ambient">
+          <p className="text-xs font-bold uppercase tracking-wider text-[#D4AF37]">Selisih Saldo Kas</p>
+          <p className="mt-2 text-2xl font-bold text-white">
             {formatRupiah(totalPemasukan - totalPengeluaran)}
           </p>
         </div>
       </div>
 
       {/* ========== FILTER ROW ========== */}
-      <div className="rounded-xl border border-[#E5E7EB] bg-[#FFFAF0] p-4">
-        <div className="flex flex-wrap items-end gap-3">
+      <div className="rounded-2xl border border-[#F0EBE1] bg-white p-5 shadow-ambient">
+        <div className="flex flex-wrap items-end gap-4">
           {/* Bulan */}
-          <div className="flex flex-col gap-1">
-            <label htmlFor="bulan" className="text-xs font-medium text-[#6B7280]">
+          <div className="flex flex-col gap-1.5 min-w-[130px]">
+            <label htmlFor="bulan" className="text-xs font-bold uppercase tracking-wider text-[#8D9F96]">
               Bulan
             </label>
             <select
               id="bulan"
               value={bulan}
               onChange={(e) => setBulan(Number(e.target.value))}
-              className="rounded-lg border border-[#D1D5DB] bg-white px-3 py-2 text-sm text-[#1A1A1A] focus:border-[#346739] focus:outline-none focus:ring-1 focus:ring-[#346739]"
+              className="rounded-xl border border-[#F0EBE1] bg-[#F9F6F0] px-3.5 py-2 text-sm font-semibold text-[#15221C] focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20"
             >
               {BULAN_LIST.map((b) => (
                 <option key={b.value} value={b.value}>
@@ -370,15 +371,15 @@ export default function AdminKeuanganPage() {
           </div>
 
           {/* Tahun */}
-          <div className="flex flex-col gap-1">
-            <label htmlFor="tahun" className="text-xs font-medium text-[#6B7280]">
+          <div className="flex flex-col gap-1.5 min-w-[110px]">
+            <label htmlFor="tahun" className="text-xs font-bold uppercase tracking-wider text-[#8D9F96]">
               Tahun
             </label>
             <select
               id="tahun"
               value={tahun}
               onChange={(e) => setTahun(Number(e.target.value))}
-              className="rounded-lg border border-[#D1D5DB] bg-white px-3 py-2 text-sm text-[#1A1A1A] focus:border-[#346739] focus:outline-none focus:ring-1 focus:ring-[#346739]"
+              className="rounded-xl border border-[#F0EBE1] bg-[#F9F6F0] px-3.5 py-2 text-sm font-semibold text-[#15221C] focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20"
             >
               {daftarTahun.map((t) => (
                 <option key={t} value={t}>
@@ -389,34 +390,34 @@ export default function AdminKeuanganPage() {
           </div>
 
           {/* Kas Type */}
-          <div className="flex flex-col gap-1">
-            <label htmlFor="kasType" className="text-xs font-medium text-[#6B7280]">
+          <div className="flex flex-col gap-1.5 min-w-[130px]">
+            <label htmlFor="kasType" className="text-xs font-bold uppercase tracking-wider text-[#8D9F96]">
               Kas
             </label>
             <select
               id="kasType"
               value={kasType}
               onChange={(e) => setKasType(e.target.value)}
-              className="rounded-lg border border-[#D1D5DB] bg-white px-3 py-2 text-sm text-[#1A1A1A] focus:border-[#346739] focus:outline-none focus:ring-1 focus:ring-[#346739]"
+              className="rounded-xl border border-[#F0EBE1] bg-[#F9F6F0] px-3.5 py-2 text-sm font-semibold text-[#15221C] focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20"
             >
-              <option value="semua">Semua</option>
+              <option value="semua">Semua Kas</option>
               <option value="umum">Kas Umum</option>
               <option value="renovasi">Kas Renovasi</option>
             </select>
           </div>
 
           {/* Jenis */}
-          <div className="flex flex-col gap-1">
-            <label htmlFor="jenis" className="text-xs font-medium text-[#6B7280]">
+          <div className="flex flex-col gap-1.5 min-w-[130px]">
+            <label htmlFor="jenis" className="text-xs font-bold uppercase tracking-wider text-[#8D9F96]">
               Jenis
             </label>
             <select
               id="jenis"
               value={jenis}
               onChange={(e) => setJenis(e.target.value)}
-              className="rounded-lg border border-[#D1D5DB] bg-white px-3 py-2 text-sm text-[#1A1A1A] focus:border-[#346739] focus:outline-none focus:ring-1 focus:ring-[#346739]"
+              className="rounded-xl border border-[#F0EBE1] bg-[#F9F6F0] px-3.5 py-2 text-sm font-semibold text-[#15221C] focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20"
             >
-              <option value="semua">Semua</option>
+              <option value="semua">Semua Jenis</option>
               <option value="pemasukan">Pemasukan</option>
               <option value="pengeluaran">Pengeluaran</option>
             </select>
@@ -427,19 +428,19 @@ export default function AdminKeuanganPage() {
       {/* ========== LOADING STATE ========== */}
       {isLoading && (
         <div className="flex items-center justify-center py-20">
-          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          <Loader2 className="h-10 w-10 animate-spin text-[#0A2E1F]" />
         </div>
       )}
 
       {/* ========== EMPTY STATE ========== */}
       {!isLoading && transaksiList.length === 0 && (
-        <div className="flex flex-col items-center justify-center py-20 text-center">
-          <Wallet className="mb-3 h-12 w-12 text-[#9CA3AF]" />
-          <p className="text-sm font-medium text-[#6B7280]">
+        <div className="flex flex-col items-center justify-center py-20 text-center rounded-2xl border border-dashed border-[#F0EBE1] bg-white p-8 shadow-ambient">
+          <Wallet className="mb-3 h-12 w-12 text-[#8D9F96]/50" />
+          <p className="text-base font-bold text-[#0A2E1F]">
             Belum ada transaksi keuangan
           </p>
-          <p className="mt-1 text-xs text-[#9CA3AF]">
-            Klik &ldquo;Catat Transaksi&rdquo; untuk menambahkan
+          <p className="mt-1 text-xs text-[#8D9F96]">
+            Klik &ldquo;Catat Transaksi&rdquo; di atas untuk mulai mencatat arus kas.
           </p>
         </div>
       )}
@@ -448,103 +449,105 @@ export default function AdminKeuanganPage() {
       {!isLoading && transaksiList.length > 0 && (
         <>
           {/* Desktop Table */}
-          <div className="hidden overflow-x-auto rounded-xl border border-[#E5E7EB] bg-white md:block">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b border-[#E5E7EB] bg-[#F9FAF9]">
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-[#6B7280]">
-                    Tanggal
-                  </th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-[#6B7280]">
-                    Kas
-                  </th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-[#6B7280]">
-                    Kategori
-                  </th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-[#6B7280]">
-                    Keterangan
-                  </th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-[#6B7280]">
-                    Jenis
-                  </th>
-                  <th className="px-4 py-3 text-right text-xs font-semibold text-[#6B7280]">
-                    Jumlah
-                  </th>
-                  <th className="px-4 py-3 text-center text-xs font-semibold text-[#6B7280]">
-                    Aksi
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {transaksiList.map((item, index) => {
-                  const rowBg = index % 2 === 0 ? "bg-white" : "bg-[#F9FAF9]";
-                  return (
-                    <tr key={item.id} className={`border-b border-[#E5E7EB] ${rowBg}`}>
-                      <td className="px-4 py-3 text-sm text-[#1A1A1A]">
-                        {formatTanggal(item.tanggal)}
-                      </td>
-                      <td className="px-4 py-3">
-                        <span
-                          className={`inline-block rounded-full px-2 py-0.5 text-xs font-semibold ${
-                            item.kas_type === "umum"
-                              ? "bg-[#EFF6FF] text-[#2563EB]"
-                              : "bg-[#FFF7ED] text-[#C2410C]"
-                          }`}
-                        >
-                          {item.kas_type === "umum" ? "Umum" : "Renovasi"}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3 text-sm text-[#1A1A1A]">
-                        {item.kategori}
-                      </td>
-                      <td className="max-w-[200px] px-4 py-3 text-sm text-[#6B7280]">
-                        <span className="line-clamp-2">
-                          {item.keterangan || "-"}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3">
-                        <span
-                          className={`inline-block rounded-full px-2 py-0.5 text-xs font-semibold ${
+          <div className="hidden overflow-hidden rounded-xl border border-[#F0EBE1] bg-white shadow-ambient md:block">
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-[#F0EBE1] bg-[#F9F6F0]">
+                    <th className="px-5 py-4 text-left text-xs font-bold uppercase tracking-wider text-[#8D9F96]">
+                      Tanggal
+                    </th>
+                    <th className="px-5 py-4 text-left text-xs font-bold uppercase tracking-wider text-[#8D9F96]">
+                      Kas
+                    </th>
+                    <th className="px-5 py-4 text-left text-xs font-bold uppercase tracking-wider text-[#8D9F96]">
+                      Kategori
+                    </th>
+                    <th className="px-5 py-4 text-left text-xs font-bold uppercase tracking-wider text-[#8D9F96]">
+                      Keterangan
+                    </th>
+                    <th className="px-5 py-4 text-left text-xs font-bold uppercase tracking-wider text-[#8D9F96]">
+                      Jenis
+                    </th>
+                    <th className="px-5 py-4 text-right text-xs font-bold uppercase tracking-wider text-[#8D9F96]">
+                      Jumlah
+                    </th>
+                    <th className="px-5 py-4 text-center text-xs font-bold uppercase tracking-wider text-[#8D9F96]">
+                      Aksi
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[#F0EBE1]">
+                  {transaksiList.map((item, index) => {
+                    const rowBg = index % 2 === 0 ? "bg-white" : "bg-[#F9F6F0]/40";
+                    return (
+                      <tr key={item.id} className={`transition-colors duration-150 ${rowBg} hover:bg-[#F9F6F0]`}>
+                        <td className="px-5 py-4 font-medium text-[#15221C]">
+                          {formatTanggal(item.tanggal)}
+                        </td>
+                        <td className="px-5 py-4">
+                          <span
+                            className={`inline-block rounded-full px-3 py-1 text-xs font-bold ${
+                              item.kas_type === "umum"
+                                ? "bg-[#0A2E1F]/10 text-[#0A2E1F]"
+                                : "bg-[#D4AF37]/15 text-[#B8972E]"
+                            }`}
+                          >
+                            {item.kas_type === "umum" ? "Kas Umum" : "Kas Renovasi"}
+                          </span>
+                        </td>
+                        <td className="px-5 py-4 font-semibold text-[#15221C]">
+                          {item.kategori}
+                        </td>
+                        <td className="max-w-[200px] px-5 py-4 text-sm text-[#8D9F96]">
+                          <span className="line-clamp-2">
+                            {item.keterangan || "-"}
+                          </span>
+                        </td>
+                        <td className="px-5 py-4">
+                          <span
+                            className={`inline-block rounded-full px-3 py-1 text-xs font-bold ${
+                              item.jenis === "pemasukan"
+                                ? "bg-emerald-50 text-emerald-700"
+                                : "bg-rose-50 text-rose-700"
+                            }`}
+                          >
+                            {item.jenis === "pemasukan" ? "Pemasukan" : "Pengeluaran"}
+                          </span>
+                        </td>
+                        <td
+                          className={`px-5 py-4 text-right font-bold ${
                             item.jenis === "pemasukan"
-                              ? "bg-[#F0FDF4] text-[#16A34A]"
-                              : "bg-[#FEF2F2] text-[#DC2626]"
+                              ? "text-emerald-700"
+                              : "text-rose-600"
                           }`}
                         >
-                          {item.jenis === "pemasukan" ? "Pemasukan" : "Pengeluaran"}
-                        </span>
-                      </td>
-                      <td
-                        className={`px-4 py-3 text-right text-sm font-semibold ${
-                          item.jenis === "pemasukan"
-                            ? "text-[#16A34A]"
-                            : "text-[#DC2626]"
-                        }`}
-                      >
-                        {formatRupiah(item.jumlah)}
-                      </td>
-                      <td className="px-4 py-3">
-                        <div className="flex items-center justify-center gap-1">
-                          <button
-                            onClick={() => handleEdit(item)}
-                            className="rounded-lg p-1.5 text-[#6B7280] hover:bg-[#F3F4F6] hover:text-[#346739]"
-                            title="Edit"
-                          >
-                            <Pencil className="h-4 w-4" />
-                          </button>
-                          <button
-                            onClick={() => setDeleteTarget(item)}
-                            className="rounded-lg p-1.5 text-[#6B7280] hover:bg-[#FEF2F2] hover:text-[#DC2626]"
-                            title="Hapus"
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+                          {formatRupiah(item.jumlah)}
+                        </td>
+                        <td className="px-5 py-4">
+                          <div className="flex items-center justify-center gap-2">
+                            <button
+                              onClick={() => handleEdit(item)}
+                              className="rounded-full p-2 text-[#D4AF37] hover:bg-[#D4AF37]/10 transition-colors"
+                              title="Edit"
+                            >
+                              <Pencil className="h-4 w-4" />
+                            </button>
+                            <button
+                              onClick={() => setDeleteTarget(item)}
+                              className="rounded-full p-2 text-rose-600 hover:bg-rose-50 transition-colors"
+                              title="Hapus"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
           </div>
 
           {/* Mobile Card View */}
@@ -552,46 +555,46 @@ export default function AdminKeuanganPage() {
             {transaksiList.map((item) => (
               <div
                 key={item.id}
-                className="rounded-xl border border-[#E5E7EB] bg-white p-4"
+                className="rounded-2xl border border-[#F0EBE1] bg-white p-5 shadow-ambient"
               >
                 <div className="flex items-start justify-between">
                   <div className="space-y-2">
-                    <div className="flex items-center gap-2">
+                    <div className="flex flex-wrap items-center gap-2">
                       <span
-                        className={`inline-block rounded-full px-2 py-0.5 text-xs font-semibold ${
+                        className={`inline-block rounded-full px-2.5 py-0.5 text-xs font-bold ${
                           item.kas_type === "umum"
-                            ? "bg-[#EFF6FF] text-[#2563EB]"
-                            : "bg-[#FFF7ED] text-[#C2410C]"
+                            ? "bg-[#0A2E1F]/10 text-[#0A2E1F]"
+                            : "bg-[#D4AF37]/15 text-[#B8972E]"
                         }`}
                       >
-                        {item.kas_type === "umum" ? "Umum" : "Renovasi"}
+                        {item.kas_type === "umum" ? "Kas Umum" : "Kas Renovasi"}
                       </span>
                       <span
-                        className={`inline-block rounded-full px-2 py-0.5 text-xs font-semibold ${
+                        className={`inline-block rounded-full px-2.5 py-0.5 text-xs font-bold ${
                           item.jenis === "pemasukan"
-                            ? "bg-[#F0FDF4] text-[#16A34A]"
-                            : "bg-[#FEF2F2] text-[#DC2626]"
+                            ? "bg-emerald-50 text-emerald-700"
+                            : "bg-rose-50 text-rose-700"
                         }`}
                       >
                         {item.jenis === "pemasukan" ? "Pemasukan" : "Pengeluaran"}
                       </span>
                     </div>
-                    <p className="text-sm text-[#6B7280]">{item.kategori}</p>
+                    <p className="text-base font-bold text-[#15221C]">{item.kategori}</p>
                     {item.keterangan && (
-                      <p className="text-xs text-[#9CA3AF] line-clamp-2">
+                      <p className="text-xs text-[#8D9F96] line-clamp-2">
                         {item.keterangan}
                       </p>
                     )}
-                    <p className="text-xs text-[#9CA3AF]">
+                    <p className="text-xs text-[#8D9F96]">
                       {formatTanggal(item.tanggal)}
                     </p>
                   </div>
-                  <div className="flex flex-col items-end gap-2">
+                  <div className="flex flex-col items-end gap-3">
                     <p
-                      className={`text-sm font-bold ${
+                      className={`text-base font-bold ${
                         item.jenis === "pemasukan"
-                          ? "text-[#16A34A]"
-                          : "text-[#DC2626]"
+                          ? "text-emerald-700"
+                          : "text-rose-600"
                       }`}
                     >
                       {formatRupiah(item.jumlah)}
@@ -599,13 +602,13 @@ export default function AdminKeuanganPage() {
                     <div className="flex items-center gap-1">
                       <button
                         onClick={() => handleEdit(item)}
-                        className="rounded-lg p-1.5 text-[#6B7280] hover:bg-[#F3F4F6] hover:text-[#346739]"
+                        className="rounded-full p-2 text-[#D4AF37] hover:bg-[#D4AF37]/10"
                       >
                         <Pencil className="h-4 w-4" />
                       </button>
                       <button
                         onClick={() => setDeleteTarget(item)}
-                        className="rounded-lg p-1.5 text-[#6B7280] hover:bg-[#FEF2F2] hover:text-[#DC2626]"
+                        className="rounded-full p-2 text-rose-600 hover:bg-rose-50"
                       >
                         <Trash2 className="h-4 w-4" />
                       </button>
@@ -618,18 +621,18 @@ export default function AdminKeuanganPage() {
 
           {/* ========== PAGINATION ========== */}
           {totalHalaman > 1 && (
-            <div className="flex items-center justify-between rounded-xl border border-[#E5E7EB] bg-white px-4 py-3">
+            <div className="flex items-center justify-between rounded-full border border-[#F0EBE1] bg-white px-6 py-3 shadow-ambient">
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => setHalaman((p) => Math.max(1, p - 1))}
                 disabled={halaman === 1}
-                className="text-sm"
+                className="rounded-full border-[#F0EBE1] text-[#15221C] hover:bg-[#F9F6F0]"
               >
                 <ChevronLeft className="mr-1 h-4 w-4" />
                 Sebelumnya
               </Button>
-              <span className="text-sm text-[#6B7280]">
+              <span className="text-sm font-medium text-[#8D9F96]">
                 Halaman {halaman} dari {totalHalaman}
               </span>
               <Button
@@ -637,7 +640,7 @@ export default function AdminKeuanganPage() {
                 size="sm"
                 onClick={() => setHalaman((p) => Math.min(totalHalaman, p + 1))}
                 disabled={halaman === totalHalaman}
-                className="text-sm"
+                className="rounded-full border-[#F0EBE1] text-[#15221C] hover:bg-[#F9F6F0]"
               >
                 Berikutnya
                 <ChevronRight className="ml-1 h-4 w-4" />
@@ -649,7 +652,7 @@ export default function AdminKeuanganPage() {
 
       {/* ========== DIALOG FORM TAMBAH/EDIT ========== */}
       <Dialog open={showFormDialog} onOpenChange={setShowFormDialog}>
-        <DialogContent className="max-h-[90vh] max-w-[600px] overflow-y-auto rounded-xl">
+        <DialogContent className="max-h-[90vh] max-w-[600px] overflow-y-auto rounded-2xl border border-[#F0EBE1] bg-white p-6 shadow-ambient">
           <KeuanganForm
             mode={editData ? "edit" : "tambah"}
             dataAwal={editData}
@@ -669,23 +672,22 @@ export default function AdminKeuanganPage() {
           if (!open) setDeleteTarget(null);
         }}
       >
-        <DialogContent className="max-w-[400px] rounded-xl">
+        <DialogContent className="max-w-[400px] rounded-2xl border border-[#F0EBE1] bg-white p-6 shadow-ambient">
           <DialogHeader>
-            <DialogTitle>Hapus Transaksi</DialogTitle>
-            <DialogDescription>
+            <DialogTitle className="text-xl font-bold text-[#0A2E1F]">Hapus Transaksi Keuangan</DialogTitle>
+            <DialogDescription className="mt-2 text-sm text-[#8D9F96]">
               Apakah Anda yakin ingin menghapus transaksi{" "}
-              <strong>&ldquo;{deleteTarget?.kategori}&rdquo;</strong> sebesar{" "}
-              <strong>{deleteTarget ? formatRupiah(deleteTarget.jumlah) : ""}</strong>?
-              Data akan dihapus secara lunak (soft delete) dan tidak muncul di
-              daftar.
+              <strong className="text-[#0A2E1F]">&ldquo;{deleteTarget?.kategori}&rdquo;</strong> sebesar{" "}
+              <strong className="text-[#0A2E1F]">{deleteTarget ? formatRupiah(deleteTarget.jumlah) : ""}</strong>?
+              Data akan dihapus secara lunak (soft delete).
             </DialogDescription>
           </DialogHeader>
-          <DialogFooter className="flex flex-row gap-2">
+          <DialogFooter className="mt-6 flex flex-row gap-3">
             <Button
               variant="outline"
               onClick={() => setDeleteTarget(null)}
               disabled={isDeleting}
-              className="flex-1"
+              className="flex-1 rounded-full border-[#F0EBE1] text-[#15221C] hover:bg-[#F9F6F0]"
             >
               Batal
             </Button>
@@ -693,7 +695,7 @@ export default function AdminKeuanganPage() {
               variant="destructive"
               onClick={handleDelete}
               disabled={isDeleting}
-              className="flex-1"
+              className="flex-1 rounded-full bg-rose-600 hover:bg-rose-700 text-white shadow-sm"
             >
               {isDeleting ? (
                 <>

@@ -85,15 +85,20 @@ export default async function AdminPengumumanPage({
   const pengumumanList: Pengumuman[] = data ?? [];
 
   return (
-    <div>
+    <div className="space-y-8">
       {/* ========== HEADER ========== */}
-      <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <h1 className="text-xl font-bold text-[#1A1A1A] md:text-2xl">
-          Kelola Pengumuman
-        </h1>
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight text-[#0A2E1F]">
+            Kelola Pengumuman &amp; Kegiatan
+          </h1>
+          <p className="mt-1 text-sm text-[#8D9F96]">
+            Publikasikan kabar terbaru, agenda kajian, dan informasi penting jamaah.
+          </p>
+        </div>
         <Link
           href="/admin/pengumuman/tambah"
-          className="inline-flex items-center gap-2 rounded-lg bg-[#346739] px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#2A5230]"
+          className="inline-flex items-center gap-2 rounded-full bg-[#0A2E1F] px-6 py-2.5 text-sm font-bold text-white shadow-ambient transition-all hover:bg-[#15221C] hover:shadow-hover"
         >
           <Plus className="h-4 w-4" />
           Tulis Pengumuman
@@ -101,15 +106,15 @@ export default async function AdminPengumumanPage({
       </div>
 
       {/* ========== FILTER KATEGORI ========== */}
-      <div className="mb-4 flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-2.5">
         {KATEGORI_LIST.map((k) => (
           <Link
             key={k}
             href={buildUrl(k, 1)}
-            className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+            className={`rounded-full px-5 py-2 text-sm font-bold transition-all duration-200 shadow-sm ${
               kategori === k
-                ? "bg-[#346739] text-white"
-                : "border border-[#D1D5DB] bg-white text-[#1A1A1A] hover:bg-[#EAF2EB]"
+                ? "bg-[#0A2E1F] text-white shadow-ambient"
+                : "border border-[#F0EBE1] bg-white text-[#8D9F96] hover:text-[#0A2E1F] hover:shadow-ambient"
             }`}
           >
             {KategoriLabel(k)}
@@ -118,72 +123,76 @@ export default async function AdminPengumumanPage({
       </div>
 
       {/* ========== TABEL ========== */}
-      <div className="overflow-hidden rounded-xl border border-[#D1D5DB]">
+      <div className="overflow-hidden rounded-xl border border-[#F0EBE1] bg-white shadow-ambient">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-[#EAF2EB]">
-                <th className="px-4 py-3 text-left text-[13px] font-semibold text-[#346739] w-[60px]">
+              <tr className="border-b border-[#F0EBE1] bg-[#F9F6F0]">
+                <th className="px-5 py-4 text-left text-xs font-bold uppercase tracking-wider text-[#8D9F96] w-[60px]">
                   No
                 </th>
-                <th className="px-4 py-3 text-left text-[13px] font-semibold text-[#346739]">
-                  Judul
+                <th className="px-5 py-4 text-left text-xs font-bold uppercase tracking-wider text-[#8D9F96]">
+                  Judul Informasi
                 </th>
-                <th className="px-4 py-3 text-left text-[13px] font-semibold text-[#346739]">
+                <th className="px-5 py-4 text-left text-xs font-bold uppercase tracking-wider text-[#8D9F96]">
                   Kategori
                 </th>
-                <th className="px-4 py-3 text-left text-[13px] font-semibold text-[#346739]">
-                  Tanggal
+                <th className="px-5 py-4 text-left text-xs font-bold uppercase tracking-wider text-[#8D9F96]">
+                  Tanggal Dibuat
                 </th>
-                <th className="px-4 py-3 text-left text-[13px] font-semibold text-[#346739]">
+                <th className="px-5 py-4 text-left text-xs font-bold uppercase tracking-wider text-[#8D9F96]">
                   Status
                 </th>
-                <th className="px-4 py-3 text-center text-[13px] font-semibold text-[#346739] w-[100px]">
+                <th className="px-5 py-4 text-center text-xs font-bold uppercase tracking-wider text-[#8D9F96] w-[120px]">
                   Aksi
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#D1D5DB]">
+            <tbody className="divide-y divide-[#F0EBE1]">
               {pengumumanList.length > 0 ? (
                 pengumumanList.map((item, idx) => (
                   <tr
                     key={item.id}
-                    className={idx % 2 === 0 ? "bg-white" : "bg-[#F9FAF9]"}
+                    className={`transition-colors duration-150 ${idx % 2 === 0 ? "bg-white" : "bg-[#F9F6F0]/40"} hover:bg-[#F9F6F0]`}
                   >
-                    <td className="px-4 py-3 text-[#6B7280]">
+                    <td className="px-5 py-4 font-medium text-[#8D9F96]">
                       {(halaman - 1) * ITEMS_PER_PAGE + idx + 1}
                     </td>
-                    <td className="px-4 py-3 font-medium text-[#1A1A1A]">
+                    <td className="px-5 py-4 font-bold text-[#15221C]">
                       {item.judul}
                     </td>
-                    <td className="px-4 py-3">
+                    <td className="px-5 py-4">
                       <span
-                        className={`inline-block rounded-full px-2.5 py-0.5 text-xs font-semibold ${
-                          KATEGORI_BADGE[item.kategori] || "bg-gray-100 text-gray-600"
+                        className={`inline-block rounded-full px-3 py-1 text-xs font-bold capitalize ${
+                          item.kategori === "pengumuman"
+                            ? "bg-[#0A2E1F]/10 text-[#0A2E1F]"
+                            : item.kategori === "kegiatan"
+                            ? "bg-blue-50 text-blue-700"
+                            : "bg-amber-50 text-amber-700"
                         }`}
                       >
                         {KATEGORI_LABEL[item.kategori] || item.kategori}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-[#6B7280]">
+                    <td className="px-5 py-4 text-[#8D9F96]">
                       {formatTanggalPendek(item.created_at)}
                     </td>
-                    <td className="px-4 py-3">
+                    <td className="px-5 py-4">
                       <span
-                        className={`inline-block rounded-full px-2.5 py-0.5 text-xs font-semibold ${
+                        className={`inline-block rounded-full px-3 py-1 text-xs font-bold ${
                           item.is_aktif
-                            ? "bg-[#F0FDF4] text-[#16A34A]"
-                            : "bg-[#F3F4F6] text-[#6B7280]"
+                            ? "bg-emerald-50 text-emerald-700"
+                            : "bg-gray-100 text-gray-500"
                         }`}
                       >
-                        {item.is_aktif ? "Aktif" : "Tidak Aktif"}
+                        {item.is_aktif ? "Aktif (Tampil)" : "Draft (Sembunyi)"}
                       </span>
                     </td>
-                    <td className="px-4 py-3">
-                      <div className="flex items-center justify-center gap-1">
+                    <td className="px-5 py-4">
+                      <div className="flex items-center justify-center gap-2">
                         <Link
                           href={`/admin/pengumuman/${item.id}`}
-                          className="inline-flex items-center gap-1 rounded-lg px-2 py-1 text-sm text-[#346739] transition-colors hover:bg-[#EAF2EB]"
+                          className="rounded-full p-2 text-[#D4AF37] hover:bg-[#D4AF37]/10 transition-colors"
                           title="Edit pengumuman"
                         >
                           <Pencil className="h-4 w-4" />
@@ -195,8 +204,8 @@ export default async function AdminPengumumanPage({
                 ))
               ) : (
                 <tr>
-                  <td colSpan={6} className="px-4 py-16 text-center text-sm text-[#6B7280]">
-                    Belum ada pengumuman. Klik &ldquo;Tulis Pengumuman&rdquo; untuk menambahkan.
+                  <td colSpan={6} className="px-5 py-16 text-center text-sm font-medium text-[#8D9F96]">
+                    Belum ada pengumuman untuk kategori ini. Klik &ldquo;Tulis Pengumuman&rdquo; untuk membuat baru.
                   </td>
                 </tr>
               )}
@@ -211,29 +220,29 @@ export default async function AdminPengumumanPage({
           {halaman > 1 ? (
             <Link
               href={buildUrl(kategori, halaman - 1)}
-              className="rounded-lg border border-[#D1D5DB] bg-white px-4 py-2 text-sm font-medium text-[#1A1A1A] transition-colors hover:bg-[#EAF2EB]"
+              className="rounded-full border border-[#F0EBE1] bg-white px-5 py-2 text-sm font-semibold text-[#15221C] shadow-ambient transition-all hover:border-[#0A2E1F] hover:text-[#0A2E1F]"
             >
               ← Sebelumnya
             </Link>
           ) : (
-            <span className="cursor-not-allowed rounded-lg border border-[#D1D5DB] bg-white px-4 py-2 text-sm font-medium text-[#9CA3AF]">
+            <span className="cursor-not-allowed rounded-full border border-[#F0EBE1] bg-white px-5 py-2 text-sm font-semibold text-[#8D9F96]">
               ← Sebelumnya
             </span>
           )}
 
-          <span className="text-sm text-[#6B7280]">
+          <span className="text-sm font-medium text-[#8D9F96]">
             Halaman {halaman} dari {totalHalaman}
           </span>
 
           {halaman < totalHalaman ? (
             <Link
               href={buildUrl(kategori, halaman + 1)}
-              className="rounded-lg border border-[#D1D5DB] bg-white px-4 py-2 text-sm font-medium text-[#1A1A1A] transition-colors hover:bg-[#EAF2EB]"
+              className="rounded-full border border-[#F0EBE1] bg-white px-5 py-2 text-sm font-semibold text-[#15221C] shadow-ambient transition-all hover:border-[#0A2E1F] hover:text-[#0A2E1F]"
             >
               Berikutnya →
             </Link>
           ) : (
-            <span className="cursor-not-allowed rounded-lg border border-[#D1D5DB] bg-white px-4 py-2 text-sm font-medium text-[#9CA3AF]">
+            <span className="cursor-not-allowed rounded-full border border-[#F0EBE1] bg-white px-5 py-2 text-sm font-semibold text-[#8D9F96]">
               Berikutnya →
             </span>
           )}
@@ -241,4 +250,4 @@ export default async function AdminPengumumanPage({
       )}
     </div>
   );
-}
+}

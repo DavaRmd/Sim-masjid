@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ======================================================
+   Google Fonts — Plus Jakarta Sans + Amiri
+   ====================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
@@ -10,72 +15,70 @@
 
 @layer base {
   :root {
-    --background: #FFFAF0;
-    --foreground: #1A1A1A;
+    /* ---- Divine Minimalist Color Palette ---- */
+    --background: #F9F6F0;
+    --foreground: #15221C;
     --card: #FFFFFF;
-    --card-foreground: #1A1A1A;
+    --card-foreground: #15221C;
     --popover: #FFFFFF;
-    --popover-foreground: #1A1A1A;
-    --primary: #346739;
+    --popover-foreground: #15221C;
+    --primary: #0A2E1F;
     --primary-foreground: #FFFFFF;
-    --secondary: #EAF2EB;
-    --secondary-foreground: #346739;
-    --muted: #F3F4F6;
-    --muted-foreground: #6B7280;
-    --accent: #EAF2EB;
-    --accent-foreground: #346739;
+    --secondary: #F0EBE1;
+    --secondary-foreground: #0A2E1F;
+    --muted: #F0EBE1;
+    --muted-foreground: #8D9F96;
+    --accent: #D4AF37;
+    --accent-foreground: #0A2E1F;
     --destructive: #DC2626;
-    --border: #D1D5DB;
-    --input: #D1D5DB;
-    --ring: #346739;
-    --chart-1: #346739;
-    --chart-2: #2563EB;
-    --chart-3: #D97706;
-    --chart-4: #16A34A;
+    --border: #F0EBE1;
+    --input: #F0EBE1;
+    --ring: #D4AF37;
+    --chart-1: #0A2E1F;
+    --chart-2: #D4AF37;
+    --chart-3: #8D9F96;
+    --chart-4: #15221C;
     --chart-5: #DC2626;
-    --radius: 0.625rem;
-    --sidebar: #FFFFFF;
-    --sidebar-foreground: #1A1A1A;
-    --sidebar-primary: #346739;
-    --sidebar-primary-foreground: #FFFFFF;
-    --sidebar-accent: #EAF2EB;
-    --sidebar-accent-foreground: #346739;
-    --sidebar-border: #D1D5DB;
-    --sidebar-ring: #346739;
+    --radius: 1rem;
+
+    /* ---- Admin Sidebar ---- */
+    --sidebar: #0A2E1F;
+    --sidebar-foreground: #F9F6F0;
+    --sidebar-primary: #D4AF37;
+    --sidebar-primary-foreground: #0A2E1F;
+    --sidebar-accent: #15221C;
+    --sidebar-accent-foreground: #F9F6F0;
+    --sidebar-border: rgba(255, 255, 255, 0.08);
+    --sidebar-ring: #D4AF37;
   }
 
   .dark {
-    --background: #1A1A1A;
-    --foreground: #FFFAF0;
-    --card: #1A1A1A;
-    --card-foreground: #FFFAF0;
-    --popover: #1A1A1A;
-    --popover-foreground: #FFFAF0;
-    --primary: #4ADE80;
-    --primary-foreground: #1A1A1A;
-    --secondary: #2A2A2A;
-    --secondary-foreground: #FFFAF0;
-    --muted: #2A2A2A;
-    --muted-foreground: #9CA3AF;
-    --accent: #2A2A2A;
-    --accent-foreground: #FFFAF0;
+    --background: #0A2E1F;
+    --foreground: #F9F6F0;
+    --card: #15221C;
+    --card-foreground: #F9F6F0;
+    --popover: #15221C;
+    --popover-foreground: #F9F6F0;
+    --primary: #D4AF37;
+    --primary-foreground: #0A2E1F;
+    --secondary: #1E3D2A;
+    --secondary-foreground: #F9F6F0;
+    --muted: #1E3D2A;
+    --muted-foreground: #8D9F96;
+    --accent: #D4AF37;
+    --accent-foreground: #0A2E1F;
     --destructive: #EF4444;
-    --border: #374151;
-    --input: #374151;
-    --ring: #4ADE80;
-    --chart-1: #4ADE80;
-    --chart-2: #60A5FA;
-    --chart-3: #FBBF24;
-    --chart-4: #34D399;
-    --chart-5: #F87171;
-    --sidebar: #1A1A1A;
-    --sidebar-foreground: #FFFAF0;
-    --sidebar-primary: #4ADE80;
-    --sidebar-primary-foreground: #1A1A1A;
-    --sidebar-accent: #2A2A2A;
-    --sidebar-accent-foreground: #FFFAF0;
-    --sidebar-border: #374151;
-    --sidebar-ring: #4ADE80;
+    --border: rgba(255, 255, 255, 0.08);
+    --input: rgba(255, 255, 255, 0.08);
+    --ring: #D4AF37;
+    --sidebar: #06180E;
+    --sidebar-foreground: #F9F6F0;
+    --sidebar-primary: #D4AF37;
+    --sidebar-primary-foreground: #0A2E1F;
+    --sidebar-accent: #0A2E1F;
+    --sidebar-accent-foreground: #F9F6F0;
+    --sidebar-border: rgba(255, 255, 255, 0.06);
+    --sidebar-ring: #D4AF37;
   }
 
   * {
@@ -85,19 +88,91 @@
   body {
     background-color: var(--background);
     color: var(--foreground);
-    font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
 
   html {
-    font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   }
 }
 
-/* ========================================
+/* ======================================================
+   Divine Minimalist Utility Classes
+   ====================================================== */
+@layer utilities {
+  /* Ambient shadows tinted with forest green */
+  .shadow-ambient {
+    box-shadow: 0 20px 40px -15px rgba(10, 46, 31, 0.08);
+  }
+  .shadow-hover {
+    box-shadow: 0 30px 60px -20px rgba(10, 46, 31, 0.14);
+  }
+
+  /* Smooth transition for interactive elements */
+  .transition-smooth {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Prayer time row hover effect */
+  .time-row {
+    transition: background-color 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .time-row:hover {
+    background-color: #F9F6F0;
+    transform: translateX(4px);
+  }
+
+  /* Card hover lift animation */
+  .card-hover {
+    transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .card-hover:hover {
+    box-shadow: 0 30px 60px -20px rgba(10, 46, 31, 0.14);
+    transform: translateY(-2px);
+  }
+
+  /* Ripple effect on buttons */
+  .ripple {
+    position: relative;
+    overflow: hidden;
+  }
+  .ripple::after {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    background-image: radial-gradient(circle, rgba(212, 175, 55, 0.3) 10%, transparent 10.01%);
+    background-repeat: no-repeat;
+    background-position: 50%;
+    transform: scale(10, 10);
+    opacity: 0;
+    transition: transform 0.5s, opacity 1s;
+  }
+  .ripple:active::after {
+    transform: scale(0, 0);
+    opacity: 0.2;
+    transition: 0s;
+  }
+
+  /* Amiri serif font for Arabic/calligraphic accents */
+  .font-amiri {
+    font-family: 'Amiri', serif;
+  }
+}
+
+/* ======================================================
    Print Styles — window.print() + Tailwind
-   ======================================== */
+   ====================================================== */
 @media print {
   @page {
     margin: 2cm;
@@ -110,15 +185,15 @@
     print-color-adjust: exact;
   }
 
-  .print\\:hidden {
+  .print\:hidden {
     display: none !important;
   }
 
-  .print\\:block {
+  .print\:block {
     display: block !important;
   }
 
-  .print\\:break-inside-avoid {
+  .print\:break-inside-avoid {
     break-inside: avoid;
   }
 }

@@ -110,20 +110,20 @@ export default function AdminKepengurusanPage() {
   };
 
   return (
-    <div>
+    <div className="space-y-8">
       {/* ========== HEADER ========== */}
-      <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-xl font-bold text-[#1A1A1A] md:text-2xl">
+          <h1 className="text-2xl font-bold tracking-tight text-[#0A2E1F]">
             Kelola Kepengurusan DKM
           </h1>
-          <p className="text-xs text-[#6B7280]">
-            Kelola susunan anggota pengurus Dewan Kemakmuran Masjid (DKM).
+          <p className="mt-1 text-sm text-[#8D9F96]">
+            Kelola data struktur dan susunan pengurus Dewan Kemakmuran Masjid.
           </p>
         </div>
         <button
           onClick={handleAdd}
-          className="inline-flex items-center gap-2 rounded-lg bg-[#346739] px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#2A5230]"
+          className="inline-flex items-center gap-2 rounded-full bg-[#0A2E1F] px-6 py-2.5 text-sm font-bold text-white shadow-ambient transition-all hover:bg-[#15221C] hover:shadow-hover"
         >
           <Plus className="h-4 w-4" />
           Tambah Anggota
@@ -131,63 +131,63 @@ export default function AdminKepengurusanPage() {
       </div>
 
       {/* ========== TABEL KEPENGURUSAN ========== */}
-      <div className="overflow-hidden rounded-xl border border-[#D1D5DB] bg-white shadow-sm">
+      <div className="overflow-hidden rounded-2xl border border-[#F0EBE1] bg-white shadow-ambient">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-[#EAF2EB] text-left">
-                <th className="px-6 py-4 text-[13px] font-semibold text-[#346739] w-[60px]">
+              <tr className="border-b border-[#F0EBE1] bg-[#F9F6F0] text-left">
+                <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-[#8D9F96] w-[60px]">
                   No
                 </th>
-                <th className="px-6 py-4 text-[13px] font-semibold text-[#346739] w-[80px]">
+                <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-[#8D9F96] w-[80px]">
                   Foto
                 </th>
-                <th className="px-6 py-4 text-[13px] font-semibold text-[#346739]">
+                <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-[#8D9F96]">
                   Nama Lengkap
                 </th>
-                <th className="px-6 py-4 text-[13px] font-semibold text-[#346739]">
+                <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-[#8D9F96]">
                   Jabatan
                 </th>
-                <th className="px-6 py-4 text-[13px] font-semibold text-[#346739]">
+                <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-[#8D9F96]">
                   Periode
                 </th>
-                <th className="px-6 py-4 text-[13px] font-semibold text-[#346739] w-[100px] text-center">
+                <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-[#8D9F96] w-[100px] text-center">
                   Urutan
                 </th>
-                <th className="px-6 py-4 text-[13px] font-semibold text-[#346739] w-[100px] text-center">
+                <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-[#8D9F96] w-[100px] text-center">
                   Status
                 </th>
-                <th className="px-6 py-4 text-[13px] font-semibold text-[#346739] w-[120px] text-center">
+                <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-[#8D9F96] w-[120px] text-center">
                   Aksi
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#E5E7EB]">
+            <tbody className="divide-y divide-[#F0EBE1]">
               {isLoading ? (
                 // Skeleton Loader
                 Array.from({ length: 4 }).map((_, idx) => (
                   <tr key={idx} className="animate-pulse">
-                    <td className="px-6 py-4"><div className="h-4 w-6 rounded bg-[#E5E7EB]" /></td>
-                    <td className="px-6 py-4"><div className="h-10 w-10 rounded-full bg-[#E5E7EB]" /></td>
-                    <td className="px-6 py-4"><div className="h-4 w-32 rounded bg-[#E5E7EB]" /></td>
-                    <td className="px-6 py-4"><div className="h-4 w-24 rounded bg-[#E5E7EB]" /></td>
-                    <td className="px-6 py-4"><div className="h-4 w-16 rounded bg-[#E5E7EB]" /></td>
-                    <td className="px-6 py-4"><div className="mx-auto h-4 w-8 rounded bg-[#E5E7EB]" /></td>
-                    <td className="px-6 py-4"><div className="mx-auto h-5 w-16 rounded bg-[#E5E7EB]" /></td>
-                    <td className="px-6 py-4"><div className="mx-auto h-8 w-20 rounded bg-[#E5E7EB]" /></td>
+                    <td className="px-6 py-4"><div className="h-4 w-6 rounded bg-[#F0EBE1]" /></td>
+                    <td className="px-6 py-4"><div className="h-10 w-10 rounded-full bg-[#F0EBE1]" /></td>
+                    <td className="px-6 py-4"><div className="h-4 w-32 rounded bg-[#F0EBE1]" /></td>
+                    <td className="px-6 py-4"><div className="h-4 w-24 rounded bg-[#F0EBE1]" /></td>
+                    <td className="px-6 py-4"><div className="h-4 w-16 rounded bg-[#F0EBE1]" /></td>
+                    <td className="px-6 py-4"><div className="mx-auto h-4 w-8 rounded bg-[#F0EBE1]" /></td>
+                    <td className="px-6 py-4"><div className="mx-auto h-5 w-16 rounded bg-[#F0EBE1]" /></td>
+                    <td className="px-6 py-4"><div className="mx-auto h-8 w-20 rounded bg-[#F0EBE1]" /></td>
                   </tr>
                 ))
               ) : pengurusList.length > 0 ? (
                 pengurusList.map((item, idx) => (
                   <tr
                     key={item.id}
-                    className={idx % 2 === 0 ? "bg-white" : "bg-[#F9FAF9]"}
+                    className={`transition-colors duration-150 ${idx % 2 === 0 ? "bg-white" : "bg-[#F9F6F0]/40"} hover:bg-[#F9F6F0]`}
                   >
-                    <td className="px-6 py-4 text-[#6B7280] font-medium">
+                    <td className="px-6 py-4 text-[#8D9F96] font-medium">
                       {idx + 1}
                     </td>
                     <td className="px-6 py-4">
-                      <div className="relative h-10 w-10 overflow-hidden rounded-full border border-[#D1D5DB] bg-muted">
+                      <div className="relative h-10 w-10 overflow-hidden rounded-full border border-[#F0EBE1] bg-[#F9F6F0]">
                         {item.foto_url ? (
                           <Image
                             src={item.foto_url}
@@ -197,60 +197,58 @@ export default function AdminKepengurusanPage() {
                             sizes="40px"
                           />
                         ) : (
-                          <div className="flex h-full w-full items-center justify-center bg-[#F3F4F6] text-[#9CA3AF]">
+                          <div className="flex h-full w-full items-center justify-center text-[#8D9F96]">
                             <User className="h-4 w-4" />
                           </div>
                         )}
                       </div>
                     </td>
-                    <td className="px-6 py-4 font-semibold text-[#1A1A1A]">
+                    <td className="px-6 py-4 font-bold text-[#15221C]">
                       {item.nama}
                     </td>
                     <td className="px-6 py-4">
-                      <span className="inline-flex items-center rounded-full bg-[#EAF2EB] px-2.5 py-0.5 text-xs font-semibold text-[#346739]">
+                      <span className="inline-flex items-center rounded-full bg-[#0A2E1F]/10 px-3 py-1 text-xs font-bold text-[#0A2E1F]">
                         {item.jabatan}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-[#6B7280]">
+                    <td className="px-6 py-4 text-[#8D9F96]">
                       {item.periode || "-"}
                     </td>
-                    <td className="px-6 py-4 text-center text-[#6B7280] font-medium">
+                    <td className="px-6 py-4 text-center text-[#15221C] font-semibold">
                       {item.urutan}
                     </td>
                     <td className="px-6 py-4 text-center">
                       <span
-                        className={`inline-block rounded-full px-2.5 py-0.5 text-xs font-semibold ${
+                        className={`inline-block rounded-full px-3 py-1 text-xs font-bold ${
                           item.is_aktif
-                            ? "bg-[#F0FDF4] text-[#16A34A]"
-                            : "bg-[#F3F4F6] text-[#6B7280]"
+                            ? "bg-emerald-50 text-emerald-700"
+                            : "bg-gray-100 text-gray-500"
                         }`}
                       >
                         {item.is_aktif ? "Aktif" : "Nonaktif"}
                       </span>
                     </td>
                     <td className="px-6 py-4 text-center">
-                      <div className="flex items-center justify-center gap-1.5">
+                      <div className="flex items-center justify-center gap-1">
                         <button
                           onClick={() => handleEdit(item)}
                           disabled={deletingId === item.id}
-                          className="inline-flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs font-semibold text-[#346739] transition-colors hover:bg-[#EAF2EB] disabled:opacity-50"
+                          className="rounded-full p-2 text-[#D4AF37] hover:bg-[#D4AF37]/10 transition-colors disabled:opacity-50"
                           title="Edit anggota"
                         >
-                          <Pencil className="h-3.5 w-3.5" />
-                          Edit
+                          <Pencil className="h-4 w-4" />
                         </button>
                         <button
                           onClick={() => handleHapusKonfirmasi(item)}
                           disabled={deletingId === item.id}
-                          className="inline-flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs font-semibold text-[#DC2626] transition-colors hover:bg-[#FEF2F2] disabled:opacity-50"
+                          className="rounded-full p-2 text-rose-600 hover:bg-rose-50 transition-colors disabled:opacity-50"
                           title="Hapus anggota"
                         >
                           {deletingId === item.id ? (
-                            <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                            <Loader2 className="h-4 w-4 animate-spin" />
                           ) : (
-                            <Trash2 className="h-3.5 w-3.5" />
+                            <Trash2 className="h-4 w-4" />
                           )}
-                          Hapus
                         </button>
                       </div>
                     </td>
@@ -258,13 +256,13 @@ export default function AdminKepengurusanPage() {
                 ))
               ) : (
                 <tr>
-                  <td colSpan={8} className="px-6 py-16 text-center text-sm text-[#6B7280]">
+                  <td colSpan={8} className="px-6 py-16 text-center text-sm font-medium text-[#8D9F96]">
                     <div className="flex flex-col items-center justify-center gap-3">
-                      <Users className="h-10 w-10 text-[#9CA3AF]" />
+                      <Users className="h-10 w-10 text-[#8D9F96]/40" />
                       <div>
-                        <p className="font-semibold text-[#1A1A1A]">Belum ada data pengurus</p>
-                        <p className="text-xs text-[#9CA3AF]">
-                          Klik &ldquo;Tambah Anggota&rdquo; untuk memasukkan data baru.
+                        <p className="font-bold text-[#0A2E1F]">Belum ada data pengurus</p>
+                        <p className="mt-1 text-xs text-[#8D9F96]">
+                          Klik &ldquo;Tambah Anggota&rdquo; di atas untuk memasukkan pengurus baru.
                         </p>
                       </div>
                     </div>
@@ -286,24 +284,24 @@ export default function AdminKepengurusanPage() {
 
       {/* ========== DIALOG KONFIRMASI HAPUS ========== */}
       {confirmDeleteData && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl">
-            <h4 className="mb-2 text-base font-semibold text-[#1A1A1A]">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div className="w-full max-w-sm rounded-2xl border border-[#F0EBE1] bg-white p-6 shadow-ambient">
+            <h4 className="text-lg font-bold text-[#0A2E1F]">
               Hapus Anggota Pengurus?
             </h4>
-            <p className="mb-6 text-sm text-[#6B7280]">
-              Apakah Anda yakin ingin menghapus <strong>{confirmDeleteData.nama}</strong>? Foto profil juga akan terhapus secara permanen.
+            <p className="mt-2 text-sm text-[#8D9F96]">
+              Apakah Anda yakin ingin menghapus <strong className="text-[#0A2E1F]">{confirmDeleteData.nama}</strong>? Foto profil pengurus juga akan terhapus secara permanen.
             </p>
-            <div className="flex gap-3">
+            <div className="mt-6 flex gap-3">
               <button
                 onClick={handleHapusBatal}
-                className="flex-1 rounded-xl border border-[#D1D5DB] px-4 py-2.5 text-sm font-medium text-[#1A1A1A] transition-colors hover:bg-[#F3F4F6]"
+                className="flex-1 rounded-full border border-[#F0EBE1] px-4 py-2.5 text-sm font-semibold text-[#15221C] hover:bg-[#F9F6F0] transition-colors"
               >
                 Batal
               </button>
               <button
                 onClick={() => handleHapus(confirmDeleteData)}
-                className="flex-1 rounded-xl bg-[#DC2626] px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#B91C1C]"
+                className="flex-1 rounded-full bg-rose-600 px-4 py-2.5 text-sm font-bold text-white shadow-sm hover:bg-rose-700 transition-colors"
               >
                 Ya, Hapus
               </button>
@@ -314,3 +312,4 @@ export default function AdminKepengurusanPage() {
     </div>
   );
 }
+

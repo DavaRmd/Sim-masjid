@@ -205,43 +205,46 @@ export default function KeuanganForm({
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Dialog Header */}
-      <div className="border-b border-[#E5E7EB] pb-4">
-        <h3 className="text-lg font-bold text-[#1A1A1A]">
+      <div className="border-b border-[#F0EBE1] pb-4">
+        <h3 className="text-xl font-bold text-[#0A2E1F]">
           {mode === "tambah" ? "Catat Transaksi Baru" : "Edit Transaksi"}
         </h3>
+        <p className="mt-1 text-xs text-[#8D9F96]">
+          Isi detail data transaksi keuangan masjid dengan benar.
+        </p>
       </div>
 
       {/* ========== PILIHAN KAS ========== */}
       <div className="space-y-2">
-        <label className="text-sm font-semibold text-[#1A1A1A]">
+        <label className="text-sm font-bold text-[#0A2E1F]">
           Jenis Kas
         </label>
         <div className="grid grid-cols-2 gap-3">
           <button
             type="button"
             onClick={() => setKasType("umum")}
-            className={`flex flex-col items-center gap-2 rounded-xl border-2 p-4 transition-all ${
+            className={`flex flex-col items-center gap-2 rounded-xl border-2 p-4 transition-all duration-200 ${
               kasType === "umum"
-                ? "border-[#346739] bg-[#EAF2EB]"
-                : "border-[#D1D5DB] bg-white hover:border-[#346739]/50"
+                ? "border-[#0A2E1F] bg-[#0A2E1F]/5 font-bold"
+                : "border-[#F0EBE1] bg-white hover:border-[#0A2E1F]/30"
             }`}
           >
             <span className="text-2xl">💼</span>
-            <span className="text-sm font-semibold text-[#1A1A1A]">
+            <span className="text-sm text-[#15221C]">
               Kas Umum
             </span>
           </button>
           <button
             type="button"
             onClick={() => setKasType("renovasi")}
-            className={`flex flex-col items-center gap-2 rounded-xl border-2 p-4 transition-all ${
+            className={`flex flex-col items-center gap-2 rounded-xl border-2 p-4 transition-all duration-200 ${
               kasType === "renovasi"
-                ? "border-[#346739] bg-[#EAF2EB]"
-                : "border-[#D1D5DB] bg-white hover:border-[#346739]/50"
+                ? "border-[#D4AF37] bg-[#D4AF37]/10 font-bold"
+                : "border-[#F0EBE1] bg-white hover:border-[#D4AF37]/30"
             }`}
           >
             <span className="text-2xl">🏗️</span>
-            <span className="text-sm font-semibold text-[#1A1A1A]">
+            <span className="text-sm text-[#15221C]">
               Kas Renovasi
             </span>
           </button>
@@ -250,35 +253,35 @@ export default function KeuanganForm({
 
       {/* ========== PILIHAN JENIS ========== */}
       <div className="space-y-2">
-        <label className="text-sm font-semibold text-[#1A1A1A]">
+        <label className="text-sm font-bold text-[#0A2E1F]">
           Jenis Transaksi
         </label>
         <div className="grid grid-cols-2 gap-3">
           <button
             type="button"
             onClick={() => setJenis("pemasukan")}
-            className={`flex flex-col items-center gap-2 rounded-xl border-2 p-4 transition-all ${
+            className={`flex flex-col items-center gap-2 rounded-xl border-2 p-4 transition-all duration-200 ${
               jenis === "pemasukan"
-                ? "border-[#16A34A] bg-[#F0FDF4]"
-                : "border-[#D1D5DB] bg-white hover:border-[#16A34A]/50"
+                ? "border-emerald-600 bg-emerald-50 text-emerald-800 font-bold"
+                : "border-[#F0EBE1] bg-white hover:border-emerald-600/30"
             }`}
           >
             <span className="text-2xl">↑</span>
-            <span className="text-sm font-semibold text-[#1A1A1A]">
+            <span className="text-sm">
               Pemasukan
             </span>
           </button>
           <button
             type="button"
             onClick={() => setJenis("pengeluaran")}
-            className={`flex flex-col items-center gap-2 rounded-xl border-2 p-4 transition-all ${
+            className={`flex flex-col items-center gap-2 rounded-xl border-2 p-4 transition-all duration-200 ${
               jenis === "pengeluaran"
-                ? "border-[#DC2626] bg-[#FEF2F2]"
-                : "border-[#D1D5DB] bg-white hover:border-[#DC2626]/50"
+                ? "border-rose-600 bg-rose-50 text-rose-800 font-bold"
+                : "border-[#F0EBE1] bg-white hover:border-rose-600/30"
             }`}
           >
             <span className="text-2xl">↓</span>
-            <span className="text-sm font-semibold text-[#1A1A1A]">
+            <span className="text-sm">
               Pengeluaran
             </span>
           </button>
@@ -289,9 +292,9 @@ export default function KeuanganForm({
       <div className="space-y-1.5">
         <label
           htmlFor="kategori"
-          className="text-sm font-semibold text-[#1A1A1A]"
+          className="text-sm font-semibold text-[#15221C]"
         >
-          Kategori <span className="text-[#DC2626]">*</span>
+          Kategori <span className="text-rose-600">*</span>
         </label>
         <select
           id="kategori"
@@ -306,8 +309,8 @@ export default function KeuanganForm({
               });
             }
           }}
-          className={`w-full rounded-lg border bg-white px-3 py-2.5 text-sm text-[#1A1A1A] focus:border-[#346739] focus:outline-none focus:ring-2 focus:ring-[#346739]/20 ${
-            errors.kategori ? "border-[#DC2626] ring-2 ring-[#DC2626]/20" : "border-[#D1D5DB]"
+          className={`w-full rounded-xl border bg-white px-3.5 py-2.5 text-sm text-[#15221C] focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20 ${
+            errors.kategori ? "border-rose-600 ring-2 ring-rose-600/20" : "border-[#F0EBE1]"
           }`}
         >
           <option value="">Pilih kategori</option>
@@ -318,7 +321,7 @@ export default function KeuanganForm({
           ))}
         </select>
         {errors.kategori && (
-          <p className="text-xs text-[#DC2626]">{errors.kategori}</p>
+          <p className="text-xs font-medium text-rose-600">{errors.kategori}</p>
         )}
       </div>
 
@@ -326,12 +329,12 @@ export default function KeuanganForm({
       <div className="space-y-1.5">
         <label
           htmlFor="jumlah"
-          className="text-sm font-semibold text-[#1A1A1A]"
+          className="text-sm font-semibold text-[#15221C]"
         >
-          Jumlah <span className="text-[#DC2626]">*</span>
+          Jumlah <span className="text-rose-600">*</span>
         </label>
         <div className="relative">
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-[#6B7280]">
+          <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-sm font-bold text-[#8D9F96]">
             Rp
           </span>
           <input
@@ -341,13 +344,13 @@ export default function KeuanganForm({
             value={jumlahDisplay}
             onChange={handleJumlahChange}
             placeholder="0"
-            className={`w-full rounded-lg border bg-white py-2.5 pl-10 pr-3 text-sm text-[#1A1A1A] focus:border-[#346739] focus:outline-none focus:ring-2 focus:ring-[#346739]/20 ${
-              errors.jumlah ? "border-[#DC2626] ring-2 ring-[#DC2626]/20" : "border-[#D1D5DB]"
+            className={`w-full rounded-xl border bg-white py-2.5 pl-10 pr-3.5 text-sm font-bold text-[#0A2E1F] focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20 ${
+              errors.jumlah ? "border-rose-600 ring-2 ring-rose-600/20" : "border-[#F0EBE1]"
             }`}
           />
         </div>
         {errors.jumlah && (
-          <p className="text-xs text-[#DC2626]">{errors.jumlah}</p>
+          <p className="text-xs font-medium text-rose-600">{errors.jumlah}</p>
         )}
       </div>
 
@@ -356,9 +359,9 @@ export default function KeuanganForm({
         <div className="space-y-1.5">
           <label
             htmlFor="nama_donatur"
-            className="text-sm font-semibold text-[#1A1A1A]"
+            className="text-sm font-semibold text-[#15221C]"
           >
-            Nama Donatur <span className="text-xs text-[#9CA3AF]">(Opsional - kosongkan untuk Hamba Allah)</span>
+            Nama Donatur <span className="text-xs font-normal text-[#8D9F96]">(Opsional - kosongkan untuk Hamba Allah)</span>
           </label>
           <input
             id="nama_donatur"
@@ -366,7 +369,7 @@ export default function KeuanganForm({
             value={namaDonatur}
             onChange={(e) => setNamaDonatur(e.target.value)}
             placeholder="Contoh: H. Budi / Muhsinin"
-            className="w-full rounded-lg border border-[#D1D5DB] bg-white px-3 py-2.5 text-sm text-[#1A1A1A] focus:border-[#346739] focus:outline-none focus:ring-2 focus:ring-[#346739]/20"
+            className="w-full rounded-xl border border-[#F0EBE1] bg-white px-3.5 py-2.5 text-sm text-[#15221C] focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20"
           />
         </div>
       )}
@@ -375,9 +378,9 @@ export default function KeuanganForm({
       <div className="space-y-1.5">
         <label
           htmlFor="tanggal"
-          className="text-sm font-semibold text-[#1A1A1A]"
+          className="text-sm font-semibold text-[#15221C]"
         >
-          Tanggal <span className="text-[#DC2626]">*</span>
+          Tanggal <span className="text-rose-600">*</span>
         </label>
         <input
           id="tanggal"
@@ -394,12 +397,12 @@ export default function KeuanganForm({
             }
           }}
           max={todayStr}
-          className={`w-full rounded-lg border bg-white px-3 py-2.5 text-sm text-[#1A1A1A] focus:border-[#346739] focus:outline-none focus:ring-2 focus:ring-[#346739]/20 ${
-            errors.tanggal ? "border-[#DC2626] ring-2 ring-[#DC2626]/20" : "border-[#D1D5DB]"
+          className={`w-full rounded-xl border bg-white px-3.5 py-2.5 text-sm text-[#15221C] focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20 ${
+            errors.tanggal ? "border-rose-600 ring-2 ring-rose-600/20" : "border-[#F0EBE1]"
           }`}
         />
         {errors.tanggal && (
-          <p className="text-xs text-[#DC2626]">{errors.tanggal}</p>
+          <p className="text-xs font-medium text-rose-600">{errors.tanggal}</p>
         )}
       </div>
 
@@ -408,11 +411,11 @@ export default function KeuanganForm({
         <div className="flex items-center justify-between">
           <label
             htmlFor="keterangan"
-            className="text-sm font-semibold text-[#1A1A1A]"
+            className="text-sm font-semibold text-[#15221C]"
           >
             Keterangan
           </label>
-          <span className="text-xs text-[#9CA3AF]">
+          <span className="text-xs text-[#8D9F96]">
             {keterangan.length}/500
           </span>
         </div>
@@ -426,18 +429,18 @@ export default function KeuanganForm({
           }}
           placeholder="Opsional: deskripsi transaksi"
           rows={3}
-          className="w-full rounded-lg border border-[#D1D5DB] bg-white px-3 py-2.5 text-sm text-[#1A1A1A] placeholder:text-[#9CA3AF] focus:border-[#346739] focus:outline-none focus:ring-2 focus:ring-[#346739]/20 resize-y min-h-[80px]"
+          className="w-full rounded-xl border border-[#F0EBE1] bg-white px-3.5 py-2.5 text-sm text-[#15221C] placeholder:text-[#8D9F96] focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20 resize-y min-h-[80px]"
         />
       </div>
 
       {/* ========== TOMBOL ========== */}
-      <div className="flex gap-3 border-t border-[#E5E7EB] pt-4">
+      <div className="flex gap-3 border-t border-[#F0EBE1] pt-4">
         <Button
           type="button"
           variant="outline"
           onClick={onCancel}
           disabled={isSubmitting}
-          className="flex-1"
+          className="flex-1 rounded-full border-[#F0EBE1] text-[#15221C] hover:bg-[#F9F6F0]"
         >
           <X className="mr-2 h-4 w-4" />
           Batal
@@ -445,7 +448,7 @@ export default function KeuanganForm({
         <Button
           type="submit"
           disabled={isSubmitting}
-          className="flex-1 bg-[#346739] hover:bg-[#2A5230] text-white"
+          className="flex-1 rounded-full bg-[#0A2E1F] hover:bg-[#15221C] text-white shadow-ambient"
         >
           {isSubmitting ? (
             <>
@@ -455,11 +458,11 @@ export default function KeuanganForm({
           ) : (
             <>
               <Save className="mr-2 h-4 w-4" />
-              {mode === "tambah" ? "Simpan" : "Perbarui"}
+              {mode === "tambah" ? "Simpan Transaksi" : "Perbarui Transaksi"}
             </>
           )}
         </Button>
       </div>
     </form>
   );
-}
+}

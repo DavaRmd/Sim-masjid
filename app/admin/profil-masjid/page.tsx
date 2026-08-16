@@ -342,27 +342,27 @@ export default function AdminProfilMasjidPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* ========== HEADER ========== */}
       <div>
-        <h2 className="text-xl font-bold text-[#1A1A1A]">Informasi Masjid</h2>
-        <p className="mt-0.5 text-sm text-[#6B7280]">
-          Kelola informasi profil masjid yang akan ditampilkan di halaman publik
+        <h2 className="text-2xl font-bold tracking-tight text-[#0A2E1F]">Informasi Profil &amp; Rekening Masjid</h2>
+        <p className="mt-1 text-sm text-[#8D9F96]">
+          Kelola data nama, alamat, nomor rekening donasi, serta gambar QRIS masjid yang tampil di halaman publik.
         </p>
       </div>
 
       {/* ========== FORM ========== */}
-      <div className="rounded-xl border border-[#D1D5DB] bg-white p-6 shadow-sm md:p-8">
-        <div className="grid gap-6 lg:grid-cols-2">
+      <div className="rounded-2xl border border-[#F0EBE1] bg-white p-6 shadow-ambient md:p-8">
+        <div className="grid gap-8 lg:grid-cols-2">
           {/* Column 1 — Text fields */}
           <div className="space-y-5">
             {/* Nama Masjid */}
             <div className="space-y-1.5">
               <label
                 htmlFor="nama-masjid"
-                className="text-sm font-medium text-[#1A1A1A]"
+                className="text-xs font-bold uppercase tracking-wider text-[#8D9F96]"
               >
-                Nama Masjid <span className="text-[#DC2626]">*</span>
+                Nama Masjid <span className="text-rose-600">*</span>
               </label>
               <input
                 id="nama-masjid"
@@ -373,12 +373,12 @@ export default function AdminProfilMasjidPage() {
                   if (errors.namaMasjid) setErrors((p) => ({ ...p, namaMasjid: "" }));
                 }}
                 placeholder="Contoh: Masjid Al-Ikhlas"
-                className={`w-full rounded-lg border px-3 py-2.5 text-sm text-[#1A1A1A] placeholder-[#9CA3AF] focus:border-[#346739] focus:outline-none focus:ring-1 focus:ring-[#346739] ${
-                  errors.namaMasjid ? "border-[#DC2626]" : "border-[#D1D5DB]"
+                className={`w-full rounded-xl border px-3.5 py-2.5 text-sm font-semibold text-[#15221C] placeholder:text-[#8D9F96]/60 focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20 ${
+                  errors.namaMasjid ? "border-rose-600 bg-rose-50/20" : "border-[#F0EBE1] bg-[#F9F6F0]/50"
                 }`}
               />
               {errors.namaMasjid && (
-                <p className="text-xs text-[#DC2626]">{errors.namaMasjid}</p>
+                <p className="text-xs font-medium text-rose-600">{errors.namaMasjid}</p>
               )}
             </div>
 
@@ -386,17 +386,17 @@ export default function AdminProfilMasjidPage() {
             <div className="space-y-1.5">
               <label
                 htmlFor="deskripsi"
-                className="text-sm font-medium text-[#1A1A1A]"
+                className="text-xs font-bold uppercase tracking-wider text-[#8D9F96]"
               >
-                Deskripsi
+                Deskripsi Profil
               </label>
               <textarea
                 id="deskripsi"
                 value={deskripsi}
                 onChange={(e) => setDeskripsi(e.target.value)}
-                placeholder="Deskripsi singkat tentang masjid..."
+                placeholder="Deskripsi singkat seputar profil dan sejarah masjid..."
                 rows={3}
-                className="w-full rounded-lg border border-[#D1D5DB] px-3 py-2.5 text-sm text-[#1A1A1A] placeholder-[#9CA3AF] focus:border-[#346739] focus:outline-none focus:ring-1 focus:ring-[#346739] resize-vertical"
+                className="w-full rounded-xl border border-[#F0EBE1] bg-[#F9F6F0]/50 px-3.5 py-2.5 text-sm font-semibold text-[#15221C] placeholder:text-[#8D9F96]/60 focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20 resize-vertical"
               />
             </div>
 
@@ -404,9 +404,9 @@ export default function AdminProfilMasjidPage() {
             <div className="space-y-1.5">
               <label
                 htmlFor="alamat"
-                className="text-sm font-medium text-[#1A1A1A]"
+                className="text-xs font-bold uppercase tracking-wider text-[#8D9F96]"
               >
-                Alamat Lengkap <span className="text-[#DC2626]">*</span>
+                Alamat Lengkap <span className="text-rose-600">*</span>
               </label>
               <textarea
                 id="alamat"
@@ -417,12 +417,12 @@ export default function AdminProfilMasjidPage() {
                 }}
                 placeholder="Alamat lengkap masjid..."
                 rows={2}
-                className={`w-full rounded-lg border px-3 py-2.5 text-sm text-[#1A1A1A] placeholder-[#9CA3AF] focus:border-[#346739] focus:outline-none focus:ring-1 focus:ring-[#346739] resize-vertical ${
-                  errors.alamat ? "border-[#DC2626]" : "border-[#D1D5DB]"
+                className={`w-full rounded-xl border px-3.5 py-2.5 text-sm font-semibold text-[#15221C] placeholder:text-[#8D9F96]/60 focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20 resize-vertical ${
+                  errors.alamat ? "border-rose-600 bg-rose-50/20" : "border-[#F0EBE1] bg-[#F9F6F0]/50"
                 }`}
               />
               {errors.alamat && (
-                <p className="text-xs text-[#DC2626]">{errors.alamat}</p>
+                <p className="text-xs font-medium text-rose-600">{errors.alamat}</p>
               )}
             </div>
 
@@ -430,12 +430,12 @@ export default function AdminProfilMasjidPage() {
             <div className="space-y-1.5">
               <label
                 htmlFor="link-maps"
-                className="text-sm font-medium text-[#1A1A1A]"
+                className="text-xs font-bold uppercase tracking-wider text-[#8D9F96]"
               >
                 Link Google Maps
               </label>
               <div className="relative">
-                <MapPin className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#9CA3AF]" />
+                <MapPin className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[#8D9F96]" />
                 <input
                   id="link-maps"
                   type="url"
@@ -445,39 +445,36 @@ export default function AdminProfilMasjidPage() {
                     if (errors.linkMaps) setErrors((p) => ({ ...p, linkMaps: "" }));
                   }}
                   placeholder="https://maps.google.com/..."
-                  className={`w-full rounded-lg border py-2.5 pl-10 pr-3 text-sm text-[#1A1A1A] placeholder-[#9CA3AF] focus:border-[#346739] focus:outline-none focus:ring-1 focus:ring-[#346739] ${
-                    errors.linkMaps ? "border-[#DC2626]" : "border-[#D1D5DB]"
+                  className={`w-full rounded-xl border py-2.5 pl-10 pr-3.5 text-sm font-semibold text-[#15221C] placeholder:text-[#8D9F96]/60 focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20 ${
+                    errors.linkMaps ? "border-rose-600 bg-rose-50/20" : "border-[#F0EBE1] bg-[#F9F6F0]/50"
                   }`}
                 />
               </div>
               {errors.linkMaps && (
-                <p className="text-xs text-[#DC2626]">{errors.linkMaps}</p>
+                <p className="text-xs font-medium text-rose-600">{errors.linkMaps}</p>
               )}
-              <p className="text-xs text-[#9CA3AF]">
-                Contoh: https://maps.google.com/...
-              </p>
             </div>
           </div>
 
-          {/* Column 2 — Bank, WhatsApp, Foto, QRIS */}
+          {/* Column 2 — Bank, Rekening, Atas Nama */}
           <div className="space-y-5">
             {/* Nomor Rekening */}
             <div className="space-y-1.5">
               <label
                 htmlFor="no-rekening"
-                className="text-sm font-medium text-[#1A1A1A]"
+                className="text-xs font-bold uppercase tracking-wider text-[#8D9F96]"
               >
-                Nomor Rekening
+                Nomor Rekening Bank
               </label>
               <div className="relative">
-                <CreditCard className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#9CA3AF]" />
+                <CreditCard className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[#8D9F96]" />
                 <input
                   id="no-rekening"
                   type="text"
                   value={noRekening}
                   onChange={(e) => setNoRekening(e.target.value)}
-                  placeholder="Nomor rekening"
-                  className="w-full rounded-lg border border-[#D1D5DB] py-2.5 pl-10 pr-3 text-sm text-[#1A1A1A] placeholder-[#9CA3AF] focus:border-[#346739] focus:outline-none focus:ring-1 focus:ring-[#346739]"
+                  placeholder="Contoh: 1234567890"
+                  className="w-full rounded-xl border border-[#F0EBE1] bg-[#F9F6F0]/50 py-2.5 pl-10 pr-3.5 text-sm font-semibold text-[#15221C] placeholder:text-[#8D9F96]/60 focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20"
                 />
               </div>
             </div>
@@ -486,7 +483,7 @@ export default function AdminProfilMasjidPage() {
             <div className="space-y-1.5">
               <label
                 htmlFor="nama-bank"
-                className="text-sm font-medium text-[#1A1A1A]"
+                className="text-xs font-bold uppercase tracking-wider text-[#8D9F96]"
               >
                 Nama Bank
               </label>
@@ -495,29 +492,26 @@ export default function AdminProfilMasjidPage() {
                 type="text"
                 value={namaBank}
                 onChange={(e) => setNamaBank(e.target.value)}
-                placeholder="Contoh: BSI, BRI, BCA"
-                className="w-full rounded-lg border border-[#D1D5DB] px-3 py-2.5 text-sm text-[#1A1A1A] placeholder-[#9CA3AF] focus:border-[#346739] focus:outline-none focus:ring-1 focus:ring-[#346739]"
+                placeholder="Contoh: Bank Syariah Indonesia (BSI)"
+                className="w-full rounded-xl border border-[#F0EBE1] bg-[#F9F6F0]/50 px-3.5 py-2.5 text-sm font-semibold text-[#15221C] placeholder:text-[#8D9F96]/60 focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20"
               />
-              <p className="text-xs text-[#9CA3AF]">
-                Contoh: BSI, BRI, BCA
-              </p>
             </div>
 
             {/* Atas Nama */}
             <div className="space-y-1.5">
               <label
                 htmlFor="atas-nama"
-                className="text-sm font-medium text-[#1A1A1A]"
+                className="text-xs font-bold uppercase tracking-wider text-[#8D9F96]"
               >
-                Atas Nama
+                Atas Nama Rekening
               </label>
               <input
                 id="atas-nama"
                 type="text"
                 value={atasNama}
                 onChange={(e) => setAtasNama(e.target.value)}
-                placeholder="Nama pemilik rekening"
-                className="w-full rounded-lg border border-[#D1D5DB] px-3 py-2.5 text-sm text-[#1A1A1A] placeholder-[#9CA3AF] focus:border-[#346739] focus:outline-none focus:ring-1 focus:ring-[#346739]"
+                placeholder="Contoh: DKM Masjid Al-Ikhlas"
+                className="w-full rounded-xl border border-[#F0EBE1] bg-[#F9F6F0]/50 px-3.5 py-2.5 text-sm font-semibold text-[#15221C] placeholder:text-[#8D9F96]/60 focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20"
               />
             </div>
 
@@ -525,16 +519,16 @@ export default function AdminProfilMasjidPage() {
         </div>
 
         {/* ========== FOTO MASJID SECTION ========== */}
-        <div className="mt-8 border-t border-[#E5E7EB] pt-6">
-          <h3 className="mb-4 text-base font-semibold text-[#1A1A1A]">
-            Foto Masjid
+        <div className="mt-8 border-t border-[#F0EBE1] pt-6">
+          <h3 className="mb-4 text-base font-bold text-[#0A2E1F]">
+            Foto Banner Utama Masjid
           </h3>
 
-          <div className="flex flex-col gap-4 md:flex-row md:items-start">
+          <div className="flex flex-col gap-5 md:flex-row md:items-start">
             {/* Preview */}
             <div className="flex-shrink-0">
               {(fotoPreview || existingFotoUrl) ? (
-                <div className="relative overflow-hidden rounded-xl border border-[#D1D5DB]">
+                <div className="relative overflow-hidden rounded-2xl border border-[#F0EBE1] bg-[#F9F6F0]">
                   <Image
                     src={fotoPreview || existingFotoUrl || ""}
                     alt="Foto Masjid"
@@ -545,11 +539,11 @@ export default function AdminProfilMasjidPage() {
                   />
                 </div>
               ) : (
-                <div className="flex h-[200px] w-[320px] items-center justify-center rounded-xl border border-dashed border-[#D1D5DB] bg-[#F9FAF9]">
+                <div className="flex h-[200px] w-[320px] items-center justify-center rounded-2xl border-2 border-dashed border-[#8D9F96]/40 bg-[#F9F6F0]">
                   <div className="text-center">
-                    <ImageIcon className="mx-auto h-8 w-8 text-[#9CA3AF]" />
-                    <p className="mt-1 text-xs text-[#9CA3AF]">
-                      Belum ada foto
+                    <ImageIcon className="mx-auto h-8 w-8 text-[#8D9F96]" />
+                    <p className="mt-1 text-xs font-medium text-[#8D9F96]">
+                      Belum ada foto utama
                     </p>
                   </div>
                 </div>
@@ -558,18 +552,18 @@ export default function AdminProfilMasjidPage() {
 
             {/* Controls */}
             <div className="flex flex-col gap-3">
-              <p className="text-sm text-[#6B7280]">
-                Upload foto masjid untuk ditampilkan di halaman beranda. Format JPG, PNG, atau WebP. Maksimal 5MB.
+              <p className="text-sm text-[#8D9F96]">
+                Foto utama masjid ini akan tampil sebagai banner di halaman depan. Format JPG/PNG/WebP, Maks. 5MB.
               </p>
 
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2.5">
                 <Button
                   type="button"
                   variant="outline"
                   onClick={() => fotoInputRef.current?.click()}
-                  className="text-sm"
+                  className="rounded-full border-[#F0EBE1] bg-white text-[#0A2E1F] hover:bg-[#F9F6F0] font-semibold"
                 >
-                  <Upload className="mr-2 h-4 w-4" />
+                  <Upload className="mr-2 h-4 w-4 text-[#8D9F96]" />
                   {existingFotoUrl || fotoPreview ? "Ganti Foto" : "Upload Foto"}
                 </Button>
 
@@ -578,7 +572,7 @@ export default function AdminProfilMasjidPage() {
                     type="button"
                     variant="outline"
                     onClick={handleRemoveFoto}
-                    className="text-sm text-[#DC2626] hover:bg-[#FEF2F2] hover:text-[#DC2626]"
+                    className="rounded-full border-rose-200 text-rose-600 hover:bg-rose-50 font-semibold"
                   >
                     <Trash2 className="mr-2 h-4 w-4" />
                     Batal Ganti
@@ -590,7 +584,7 @@ export default function AdminProfilMasjidPage() {
                     type="button"
                     variant="outline"
                     onClick={handleDeleteExistingFoto}
-                    className="text-sm text-[#DC2626] hover:bg-[#FEF2F2] hover:text-[#DC2626]"
+                    className="rounded-full border-rose-200 text-rose-600 hover:bg-rose-50 font-semibold"
                   >
                     <Trash2 className="mr-2 h-4 w-4" />
                     Hapus Foto
@@ -610,16 +604,16 @@ export default function AdminProfilMasjidPage() {
         </div>
 
         {/* ========== QRIS SECTION ========== */}
-        <div className="mt-6 border-t border-[#E5E7EB] pt-6">
-          <h3 className="mb-4 text-base font-semibold text-[#1A1A1A]">
-            Gambar QRIS
+        <div className="mt-8 border-t border-[#F0EBE1] pt-6">
+          <h3 className="mb-4 text-base font-bold text-[#0A2E1F]">
+            Gambar QRIS Infaq &amp; Shodaqoh
           </h3>
 
-          <div className="flex flex-col gap-4 md:flex-row md:items-start">
+          <div className="flex flex-col gap-5 md:flex-row md:items-start">
             {/* Preview */}
             <div className="flex-shrink-0">
               {(qrisPreview || existingQrisUrl) ? (
-                <div className="relative overflow-hidden rounded-xl border border-[#D1D5DB]">
+                <div className="relative overflow-hidden rounded-2xl border border-[#F0EBE1] bg-[#F9F6F0] p-2">
                   <Image
                     src={qrisPreview || existingQrisUrl || ""}
                     alt="QRIS"
@@ -630,10 +624,10 @@ export default function AdminProfilMasjidPage() {
                   />
                 </div>
               ) : (
-                <div className="flex h-[200px] w-[200px] items-center justify-center rounded-xl border border-dashed border-[#D1D5DB] bg-[#F9FAF9]">
+                <div className="flex h-[200px] w-[200px] items-center justify-center rounded-2xl border-2 border-dashed border-[#8D9F96]/40 bg-[#F9F6F0]">
                   <div className="text-center">
-                    <QrCode className="mx-auto h-8 w-8 text-[#9CA3AF]" />
-                    <p className="mt-1 text-xs text-[#9CA3AF]">
+                    <QrCode className="mx-auto h-8 w-8 text-[#8D9F96]" />
+                    <p className="mt-1 text-xs font-medium text-[#8D9F96]">
                       Belum ada QRIS
                     </p>
                   </div>
@@ -643,18 +637,18 @@ export default function AdminProfilMasjidPage() {
 
             {/* Controls */}
             <div className="flex flex-col gap-3">
-              <p className="text-sm text-[#6B7280]">
-                Upload gambar QRIS terbaru dari aplikasi bank/e-wallet Anda. Format JPG, PNG, atau WebP. Maksimal 5MB.
+              <p className="text-sm text-[#8D9F96]">
+                Upload gambar QRIS resmi dari bank/e-wallet untuk memudahkan jamaah ber-infaq secara digital.
               </p>
 
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2.5">
                 <Button
                   type="button"
                   variant="outline"
                   onClick={() => qrisInputRef.current?.click()}
-                  className="text-sm"
+                  className="rounded-full border-[#F0EBE1] bg-white text-[#0A2E1F] hover:bg-[#F9F6F0] font-semibold"
                 >
-                  <Upload className="mr-2 h-4 w-4" />
+                  <Upload className="mr-2 h-4 w-4 text-[#8D9F96]" />
                   {existingQrisUrl || qrisPreview ? "Ganti QRIS" : "Upload QRIS"}
                 </Button>
 
@@ -663,7 +657,7 @@ export default function AdminProfilMasjidPage() {
                     type="button"
                     variant="outline"
                     onClick={handleRemoveQris}
-                    className="text-sm text-[#DC2626] hover:bg-[#FEF2F2] hover:text-[#DC2626]"
+                    className="rounded-full border-rose-200 text-rose-600 hover:bg-rose-50 font-semibold"
                   >
                     <Trash2 className="mr-2 h-4 w-4" />
                     Batal Ganti
@@ -675,7 +669,7 @@ export default function AdminProfilMasjidPage() {
                     type="button"
                     variant="outline"
                     onClick={handleDeleteExistingQris}
-                    className="text-sm text-[#DC2626] hover:bg-[#FEF2F2] hover:text-[#DC2626]"
+                    className="rounded-full border-rose-200 text-rose-600 hover:bg-rose-50 font-semibold"
                   >
                     <Trash2 className="mr-2 h-4 w-4" />
                     Hapus QRIS
@@ -695,12 +689,12 @@ export default function AdminProfilMasjidPage() {
         </div>
 
         {/* ========== SUBMIT BUTTON ========== */}
-        <div className="mt-8 border-t border-[#E5E7EB] pt-6">
+        <div className="mt-8 border-t border-[#F0EBE1] pt-6">
           <div className="flex items-center justify-end gap-3">
             <Button
               onClick={handleSimpan}
               disabled={isSaving}
-              className="bg-[#346739] hover:bg-[#2A5230] text-white"
+              className="rounded-full bg-[#0A2E1F] hover:bg-[#15221C] text-white font-bold px-8 shadow-ambient transition-all"
             >
               {isSaving ? (
                 <>
@@ -708,7 +702,7 @@ export default function AdminProfilMasjidPage() {
                   Menyimpan...
                 </>
               ) : (
-                "Simpan Perubahan"
+                "Simpan Informasi Profil"
               )}
             </Button>
           </div>
@@ -719,4 +713,4 @@ export default function AdminProfilMasjidPage() {
       <GaleriManager />
     </div>
   );
-}
+}

@@ -70,8 +70,8 @@ export default function AdminLayout({
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-background">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+      <div className="flex min-h-screen items-center justify-center bg-[#F9F6F0]">
+        <div className="h-10 w-10 animate-spin rounded-full border-4 border-[#0A2E1F] border-t-[#D4AF37]" />
       </div>
     );
   }
@@ -82,7 +82,7 @@ export default function AdminLayout({
   }
 
   return (
-    <div className="flex min-h-screen bg-background">
+    <div className="flex min-h-screen bg-[#F9F6F0]">
       <AdminSidebar
         activeMenu={activeMenu}
         isOpen={sidebarOpen}
@@ -99,4 +99,4 @@ export default function AdminLayout({
       </div>
     </div>
   );
-}
+}

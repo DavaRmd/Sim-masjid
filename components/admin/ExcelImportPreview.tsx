@@ -172,16 +172,16 @@ export default function ExcelImportPreview({
   const invalidCount = totalRows - validCount;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <div className="relative w-full max-w-4xl overflow-hidden rounded-2xl bg-white shadow-2xl flex flex-col max-h-[90vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+      <div className="relative w-full max-w-4xl overflow-hidden rounded-2xl bg-white shadow-ambient flex flex-col max-h-[90vh] border border-[#F0EBE1]">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-[#E5E7EB] px-6 py-4 bg-[#EAF2EB]">
+        <div className="flex items-center justify-between border-b border-[#F0EBE1] px-6 py-4 bg-[#0A2E1F] text-white">
           <div>
-            <h3 className="text-lg font-bold text-[#1A1A1A]">
-              Import Transaksi via Excel
+            <h3 className="text-lg font-bold tracking-tight text-white">
+              Import Transaksi Keuangan via Excel
             </h3>
-            <p className="text-xs text-[#6B7280]">
-              Unggah berkas spreadsheet keuangan (.xlsx / .xls) untuk import massal.
+            <p className="text-xs text-[#8D9F96] mt-0.5">
+              Unggah berkas spreadsheet (.xlsx / .xls) untuk pencatatan transaksi massal.
             </p>
           </div>
           <button
@@ -192,7 +192,7 @@ export default function ExcelImportPreview({
               }
             }}
             disabled={isImporting}
-            className="rounded-lg p-1 text-[#6B7280] hover:bg-black/5 disabled:opacity-50"
+            className="rounded-lg p-1.5 text-[#8D9F96] hover:bg-white/10 hover:text-white disabled:opacity-50 transition-colors"
             aria-label="Tutup modal"
           >
             <X className="h-5 w-5" />
@@ -200,24 +200,24 @@ export default function ExcelImportPreview({
         </div>
 
         {/* Step Indicator */}
-        <div className="flex items-center justify-center border-b border-[#F3F4F6] py-3 bg-[#FFFAF0]/50 text-xs font-semibold text-[#6B7280]">
+        <div className="flex items-center justify-center border-b border-[#F0EBE1] py-3 bg-[#F9F6F0] text-xs font-semibold text-[#8D9F96]">
           <div className="flex items-center gap-2">
-            <span className={`flex h-5 w-5 items-center justify-center rounded-full text-[10px] ${
-              step === "upload" ? "bg-[#346739] text-white" : "bg-[#EAF2EB] text-[#346739]"
+            <span className={`flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-bold ${
+              step === "upload" ? "bg-[#0A2E1F] text-white" : "bg-[#D4AF37]/20 text-[#0A2E1F]"
             }`}>1</span>
-            <span className={step === "upload" ? "text-[#346739]" : ""}>Upload Berkas</span>
-            <span className="h-px w-8 bg-[#D1D5DB]" />
+            <span className={step === "upload" ? "text-[#0A2E1F] font-bold" : ""}>Upload Berkas</span>
+            <span className="h-px w-8 bg-[#F0EBE1]" />
             
-            <span className={`flex h-5 w-5 items-center justify-center rounded-full text-[10px] ${
-              step === "preview" ? "bg-[#346739] text-white" : step === "confirm" ? "bg-[#EAF2EB] text-[#346739]" : "bg-gray-200 text-gray-400"
+            <span className={`flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-bold ${
+              step === "preview" ? "bg-[#0A2E1F] text-white" : step === "confirm" ? "bg-[#D4AF37]/20 text-[#0A2E1F]" : "bg-gray-200 text-gray-400"
             }`}>2</span>
-            <span className={step === "preview" ? "text-[#346739]" : ""}>Preview & Validasi</span>
-            <span className="h-px w-8 bg-[#D1D5DB]" />
+            <span className={step === "preview" ? "text-[#0A2E1F] font-bold" : ""}>Preview &amp; Validasi</span>
+            <span className="h-px w-8 bg-[#F0EBE1]" />
             
-            <span className={`flex h-5 w-5 items-center justify-center rounded-full text-[10px] ${
-              step === "confirm" ? "bg-[#346739] text-white" : "bg-gray-200 text-gray-400"
+            <span className={`flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-bold ${
+              step === "confirm" ? "bg-[#0A2E1F] text-white" : "bg-gray-200 text-gray-400"
             }`}>3</span>
-            <span className={step === "confirm" ? "text-[#346739]" : ""}>Konfirmasi</span>
+            <span className={step === "confirm" ? "text-[#0A2E1F] font-bold" : ""}>Konfirmasi</span>
           </div>
         </div>
 
@@ -228,9 +228,9 @@ export default function ExcelImportPreview({
             <div className="flex flex-col items-center justify-center h-full py-8 text-center">
               {isParsing ? (
                 <div className="flex flex-col items-center gap-3">
-                  <Loader2 className="h-12 w-12 animate-spin text-[#346739]" />
-                  <p className="text-sm font-semibold text-[#1A1A1A]">Membaca file Excel...</p>
-                  <p className="text-xs text-[#6B7280]">Memproses baris data dan melakukan validasi struktur...</p>
+                  <Loader2 className="h-12 w-12 animate-spin text-[#0A2E1F]" />
+                  <p className="text-sm font-bold text-[#0A2E1F]">Membaca File Excel...</p>
+                  <p className="text-xs text-[#8D9F96]">Memproses baris data dan melakukan validasi struktur...</p>
                 </div>
               ) : (
                 <>
@@ -239,29 +239,29 @@ export default function ExcelImportPreview({
                     onDragOver={handleDragOver}
                     onDrop={handleDrop}
                     onClick={() => fileInputRef.current?.click()}
-                    className="w-full max-w-lg rounded-2xl border-2 border-dashed border-[#D1D5DB] bg-[#F9FAF9] p-10 cursor-pointer transition-colors hover:border-[#346739] hover:bg-[#EAF2EB]/30 flex flex-col items-center gap-3"
+                    className="w-full max-w-lg rounded-2xl border-2 border-dashed border-[#8D9F96]/40 bg-[#F9F6F0] p-10 cursor-pointer transition-all hover:border-[#0A2E1F] hover:bg-[#F9F6F0]/80 flex flex-col items-center gap-3"
                   >
-                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#EAF2EB] text-[#346739]">
-                      <Upload className="h-6 w-6" />
+                    <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#0A2E1F]/10 text-[#0A2E1F]">
+                      <Upload className="h-7 w-7" />
                     </div>
                     <div>
-                      <p className="text-sm font-semibold text-[#1A1A1A]">Drag & drop file Excel di sini</p>
-                      <p className="text-xs text-[#6B7280] mt-1">atau klik untuk menelusuri berkas dari komputer Anda</p>
+                      <p className="text-base font-bold text-[#0A2E1F]">Drag &amp; drop file Excel di sini</p>
+                      <p className="text-xs text-[#8D9F96] mt-1">atau klik untuk telusuri berkas dari komputer Anda</p>
                     </div>
-                    <span className="inline-block rounded bg-[#E5E7EB] px-2.5 py-1 text-[10px] font-semibold uppercase text-gray-500">
+                    <span className="inline-block rounded-full bg-white border border-[#F0EBE1] px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[#8D9F96]">
                       Format: .XLSX / .XLS
                     </span>
                   </div>
 
                   {/* Unduh Template */}
                   <div className="mt-8 text-center">
-                    <p className="text-xs text-[#6B7280]">Belum mempunyai file template Excel?</p>
+                    <p className="text-xs text-[#8D9F96]">Belum mempunyai file template Excel?</p>
                     <button
                       type="button"
                       onClick={handleTemplateDownload}
-                      className="mt-2 inline-flex items-center gap-2 rounded-lg border border-[#346739] px-4 py-2 text-xs font-semibold text-[#346739] transition-colors hover:bg-[#EAF2EB]"
+                      className="mt-2 inline-flex items-center gap-2 rounded-full border border-[#0A2E1F] px-5 py-2 text-xs font-bold text-[#0A2E1F] transition-all hover:bg-[#0A2E1F] hover:text-white"
                     >
-                      <Download className="h-3.5 w-3.5" />
+                      <Download className="h-4 w-4" />
                       Unduh Template Excel
                     </button>
                   </div>
@@ -281,25 +281,25 @@ export default function ExcelImportPreview({
           {step === "preview" && (
             <div className="space-y-4">
               {/* Summary Bar */}
-              <div className="grid grid-cols-3 gap-4 rounded-xl border border-[#E5E7EB] bg-[#FFFAF0] p-4 text-center">
+              <div className="grid grid-cols-3 gap-4 rounded-xl border border-[#F0EBE1] bg-[#F9F6F0] p-4 text-center">
                 <div>
-                  <p className="text-xs text-[#6B7280]">Total Data</p>
-                  <p className="text-lg font-bold text-[#1A1A1A]">{totalRows} Baris</p>
+                  <p className="text-xs text-[#8D9F96]">Total Data</p>
+                  <p className="text-lg font-bold text-[#0A2E1F]">{totalRows} Baris</p>
                 </div>
                 <div>
-                  <p className="text-xs text-[#6B7280]">Data Valid ✅</p>
-                  <p className="text-lg font-bold text-[#16A34A]">{validCount} Baris</p>
+                  <p className="text-xs text-[#8D9F96]">Data Valid ✅</p>
+                  <p className="text-lg font-bold text-emerald-700">{validCount} Baris</p>
                 </div>
                 <div>
-                  <p className="text-xs text-[#6B7280]">Data Error ❌</p>
-                  <p className="text-lg font-bold text-[#DC2626]">{invalidCount} Baris</p>
+                  <p className="text-xs text-[#8D9F96]">Data Error ❌</p>
+                  <p className="text-lg font-bold text-rose-600">{invalidCount} Baris</p>
                 </div>
               </div>
 
               {/* Error Alert Box */}
               {invalidCount > 0 && (
-                <div className="flex gap-2.5 rounded-xl border border-[#DC2626]/20 bg-[#FEF2F2] p-4 text-xs text-[#DC2626]">
-                  <AlertCircle className="h-4 w-4 flex-shrink-0" />
+                <div className="flex gap-3 rounded-xl border border-rose-200 bg-rose-50 p-4 text-xs text-rose-800">
+                  <AlertCircle className="h-5 w-5 flex-shrink-0 text-rose-600" />
                   <div>
                     <span className="font-bold">Perhatian:</span> Terdapat {invalidCount} baris data yang mengandung kesalahan. Baris yang salah akan otomatis <span className="font-bold">dilewati (tidak diimport)</span>. Jika Anda ingin mengimport semuanya, perbaiki berkas Excel Anda terlebih dahulu lalu upload ulang.
                   </div>
@@ -307,10 +307,10 @@ export default function ExcelImportPreview({
               )}
 
               {/* Table Preview */}
-              <div className="overflow-hidden rounded-xl border border-[#D1D5DB] bg-white">
+              <div className="overflow-hidden rounded-xl border border-[#F0EBE1] bg-white">
                 <div className="overflow-x-auto max-h-[300px]">
                   <table className="w-full text-left text-xs">
-                    <thead className="sticky top-0 bg-[#EAF2EB] font-semibold text-[#346739]">
+                    <thead className="sticky top-0 bg-[#F9F6F0] font-bold text-[#8D9F96] uppercase border-b border-[#F0EBE1]">
                       <tr>
                         <th className="px-4 py-3 w-16">Baris</th>
                         <th className="px-4 py-3 w-20 text-center">Status</th>
@@ -323,30 +323,30 @@ export default function ExcelImportPreview({
                         <th className="px-4 py-3 w-28">Nama Donatur</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-[#E5E7EB]">
+                    <tbody className="divide-y divide-[#F0EBE1]">
                       {rows.map((item, idx) => (
                         <tr
                           key={idx}
-                          className={`hover:bg-gray-50 ${item.valid ? "" : "bg-[#FEF2F2]/40"}`}
+                          className={`hover:bg-[#F9F6F0]/60 ${item.valid ? "" : "bg-rose-50/50"}`}
                         >
-                          <td className="px-4 py-2.5 text-[#6B7280] font-medium text-center">
+                          <td className="px-4 py-2.5 text-[#8D9F96] font-medium text-center">
                             {item.nomorBaris}
                           </td>
                           <td className="px-4 py-2.5 text-center">
                             {item.valid ? (
-                              <span className="inline-flex items-center gap-1 rounded bg-[#F0FDF4] px-1.5 py-0.5 font-bold text-[#16A34A]">
+                              <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 font-bold text-emerald-700">
                                 <CheckCircle2 className="h-3 w-3" /> OK
                               </span>
                             ) : (
                               <span
-                                className="inline-flex items-center gap-1 rounded bg-[#FEF2F2] px-1.5 py-0.5 font-bold text-[#DC2626] cursor-help"
+                                className="inline-flex items-center gap-1 rounded-full bg-rose-100 px-2 py-0.5 font-bold text-rose-700 cursor-help"
                                 title={item.errorPesan}
                               >
                                 <AlertCircle className="h-3 w-3" /> Error
                               </span>
                             )}
                           </td>
-                          <td className="px-4 py-2.5 font-medium text-[#1A1A1A] whitespace-nowrap">
+                          <td className="px-4 py-2.5 font-medium text-[#15221C] whitespace-nowrap">
                             {item.row.Tanggal || "-"}
                           </td>
                           <td className="px-4 py-2.5 whitespace-nowrap uppercase">
@@ -358,13 +358,13 @@ export default function ExcelImportPreview({
                           <td className="px-4 py-2.5 whitespace-nowrap">
                             {item.row.Kategori || "-"}
                           </td>
-                          <td className="px-4 py-2.5 text-right font-semibold whitespace-nowrap">
+                          <td className="px-4 py-2.5 text-right font-bold text-[#0A2E1F] whitespace-nowrap">
                             {item.row.Jumlah ? new Intl.NumberFormat("id-ID").format(item.row.Jumlah) : "0"}
                           </td>
-                          <td className="px-4 py-2.5 max-w-[150px] truncate text-[#6B7280]" title={item.row.Keterangan}>
+                          <td className="px-4 py-2.5 max-w-[150px] truncate text-[#8D9F96]" title={item.row.Keterangan}>
                             {item.row.Keterangan || "-"}
                           </td>
-                          <td className="px-4 py-2.5 max-w-[120px] truncate text-[#6B7280]" title={item.row["Nama Donatur"]}>
+                          <td className="px-4 py-2.5 max-w-[120px] truncate text-[#8D9F96]" title={item.row["Nama Donatur"]}>
                             {item.row["Nama Donatur"] || "-"}
                           </td>
                         </tr>
@@ -379,15 +379,15 @@ export default function ExcelImportPreview({
           {/* STEP 3: CONFIRM */}
           {step === "confirm" && (
             <div className="flex flex-col items-center justify-center py-12 text-center max-w-md mx-auto">
-              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#EAF2EB] text-[#346739] mb-4">
-                <CheckCircle2 className="h-10 w-10" />
+              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#0A2E1F]/10 text-[#0A2E1F] mb-4">
+                <CheckCircle2 className="h-10 w-10 text-[#0A2E1F]" />
               </div>
-              <h4 className="text-lg font-bold text-[#1A1A1A]">Konfirmasi Import Data</h4>
-              <p className="text-sm text-[#6B7280] mt-2">
-                Anda akan mengimport sebanyak <strong className="text-[#346739]">{validCount} baris data valid</strong> ke dalam basis data keuangan masjid.
+              <h4 className="text-xl font-bold text-[#0A2E1F]">Konfirmasi Import Data</h4>
+              <p className="text-sm text-[#8D9F96] mt-2">
+                Anda akan mengimport sebanyak <strong className="text-[#0A2E1F]">{validCount} baris data valid</strong> ke dalam basis data keuangan masjid.
               </p>
               {invalidCount > 0 && (
-                <p className="text-xs text-[#DC2626] mt-2 font-semibold">
+                <p className="text-xs text-rose-600 mt-2 font-bold">
                   Catatan: {invalidCount} baris data yang error tidak akan diimport.
                 </p>
               )}
@@ -396,12 +396,12 @@ export default function ExcelImportPreview({
         </div>
 
         {/* Footer Actions */}
-        <div className="flex gap-3 border-t border-[#E5E7EB] p-6 bg-[#F9FAF9]">
+        <div className="flex gap-3 border-t border-[#F0EBE1] p-6 bg-[#F9F6F0]">
           {step === "upload" && (
             <button
               onClick={onClose}
               disabled={isParsing}
-              className="flex-1 rounded-xl border border-[#D1D5DB] bg-white px-4 py-2.5 text-sm font-medium text-[#1A1A1A] transition-colors hover:bg-gray-50 disabled:opacity-50"
+              className="flex-1 rounded-full border border-[#F0EBE1] bg-white px-4 py-2.5 text-sm font-semibold text-[#15221C] transition-colors hover:bg-gray-50 disabled:opacity-50"
             >
               Batal
             </button>
@@ -411,14 +411,14 @@ export default function ExcelImportPreview({
             <>
               <button
                 onClick={handleReset}
-                className="flex-1 rounded-xl border border-[#D1D5DB] bg-white px-4 py-2.5 text-sm font-medium text-[#1A1A1A] transition-colors hover:bg-gray-50"
+                className="flex-1 rounded-full border border-[#F0EBE1] bg-white px-4 py-2.5 text-sm font-semibold text-[#15221C] transition-colors hover:bg-gray-50"
               >
                 Upload Ulang
               </button>
               <button
                 onClick={() => setStep("confirm")}
                 disabled={validCount === 0}
-                className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-xl bg-[#346739] px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#2A5230] disabled:opacity-50"
+                className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-full bg-[#0A2E1F] px-4 py-2.5 text-sm font-bold text-white transition-colors hover:bg-[#15221C] disabled:opacity-50 shadow-ambient"
               >
                 Lanjutkan
                 <Play className="h-3.5 w-3.5 fill-white" />
@@ -431,14 +431,14 @@ export default function ExcelImportPreview({
               <button
                 onClick={() => setStep("preview")}
                 disabled={isImporting}
-                className="flex-1 rounded-xl border border-[#D1D5DB] bg-white px-4 py-2.5 text-sm font-medium text-[#1A1A1A] transition-colors hover:bg-gray-50 disabled:opacity-50"
+                className="flex-1 rounded-full border border-[#F0EBE1] bg-white px-4 py-2.5 text-sm font-semibold text-[#15221C] transition-colors hover:bg-gray-50 disabled:opacity-50"
               >
                 Kembali
               </button>
               <button
                 onClick={handleImport}
                 disabled={isImporting || validCount === 0}
-                className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-[#346739] px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#2A5230] disabled:opacity-50"
+                className="flex-1 inline-flex items-center justify-center gap-2 rounded-full bg-[#0A2E1F] px-4 py-2.5 text-sm font-bold text-white transition-colors hover:bg-[#15221C] disabled:opacity-50 shadow-ambient"
               >
                 {isImporting ? (
                   <>
@@ -456,3 +456,4 @@ export default function ExcelImportPreview({
     </div>
   );
 }
+

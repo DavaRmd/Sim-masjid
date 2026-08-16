@@ -228,18 +228,25 @@ export default function GaleriManager() {
   const isFullCapacity = jumlahFoto >= MAX_FOTO;
 
   return (
-    <div className="rounded-xl border border-[#D1D5DB] bg-white p-6 shadow-sm md:p-8">
+    <div className="rounded-2xl border border-[#F0EBE1] bg-white p-6 shadow-ambient md:p-8">
       {/* ── Header ──────────────────────────────── */}
-      <div className="mb-5 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Images className="h-5 w-5 text-[#346739]" />
-          <h3 className="text-base font-semibold text-[#1A1A1A]">
-            Galeri Foto Masjid
-          </h3>
+      <div className="mb-6 flex items-center justify-between">
+        <div className="flex items-center gap-2.5">
+          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#0A2E1F]/10 text-[#0A2E1F]">
+            <Images className="h-5 w-5" />
+          </div>
+          <div>
+            <h3 className="text-lg font-bold tracking-tight text-[#0A2E1F]">
+              Galeri Foto Masjid
+            </h3>
+            <p className="text-xs text-[#8D9F96]">
+              Foto kegiatan, arsitektur, dan suasana masjid yang tampil di beranda.
+            </p>
+          </div>
         </div>
         <span
-          className={`text-sm font-medium ${
-            isFullCapacity ? "text-[#9CA3AF]" : "text-[#346739]"
+          className={`rounded-full px-3 py-1 text-xs font-bold ${
+            isFullCapacity ? "bg-gray-100 text-gray-400" : "bg-[#0A2E1F]/10 text-[#0A2E1F]"
           }`}
         >
           {jumlahFoto}/{MAX_FOTO} foto
@@ -248,44 +255,44 @@ export default function GaleriManager() {
 
       {/* ── Loading skeleton ─────────────────────── */}
       {isLoading ? (
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
           {Array.from({ length: 4 }).map((_, i) => (
             <div
               key={i}
-              className="aspect-square animate-pulse rounded-xl bg-[#F3F4F6]"
+              className="aspect-square animate-pulse rounded-2xl bg-[#F0EBE1]"
             />
           ))}
         </div>
       ) : (
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
           {/* ── Foto yang sudah ada ─────────────── */}
           {fotoList.map((foto) => (
             <div
               key={foto.id}
-              className="group relative aspect-square overflow-hidden rounded-xl border border-[#D1D5DB]"
+              className="group relative aspect-square overflow-hidden rounded-2xl border border-[#F0EBE1] shadow-sm bg-[#F9F6F0]"
             >
               <Image
                 src={foto.url}
                 alt="Foto galeri masjid"
                 fill
-                className="object-cover"
+                className="object-cover transition-transform duration-300 group-hover:scale-105"
                 sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
               />
 
               {/* Overlay gelap saat hover */}
-              <div className="absolute inset-0 bg-black/0 transition-colors group-hover:bg-black/20" />
+              <div className="absolute inset-0 bg-black/0 transition-colors duration-200 group-hover:bg-black/25" />
 
               {/* Tombol hapus */}
               <button
                 onClick={() => handleHapusKonfirmasi(foto.id)}
                 disabled={deletingId === foto.id}
                 aria-label="Hapus foto"
-                className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-lg bg-[#DC2626]/80 text-white opacity-0 transition-all hover:bg-[#DC2626] group-hover:opacity-100 disabled:opacity-50"
+                className="absolute right-2.5 top-2.5 flex h-8 w-8 items-center justify-center rounded-full bg-rose-600/90 text-white opacity-0 shadow-md transition-all duration-200 hover:bg-rose-600 group-hover:opacity-100 disabled:opacity-50"
               >
                 {deletingId === foto.id ? (
-                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                  <Loader2 className="h-4 w-4 animate-spin" />
                 ) : (
-                  <Trash2 className="h-3.5 w-3.5" />
+                  <Trash2 className="h-4 w-4" />
                 )}
               </button>
             </div>
@@ -293,29 +300,29 @@ export default function GaleriManager() {
 
           {/* ── Cell upload (jika foto < MAX_FOTO) ─ */}
           {uploadingIndex !== null && (
-            <div className="flex aspect-square items-center justify-center rounded-xl border-2 border-dashed border-[#346739] bg-[#EAF2EB]">
-              <div className="flex flex-col items-center gap-2">
-                <Loader2 className="h-8 w-8 animate-spin text-[#346739]" />
-                <span className="text-xs text-[#346739]">Mengupload...</span>
-              </div>
+            <div className="flex aspect-square flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-[#0A2E1F] bg-[#0A2E1F]/5">
+              <Loader2 className="h-8 w-8 animate-spin text-[#0A2E1F]" />
+              <span className="text-xs font-bold text-[#0A2E1F]">Mengunggah...</span>
             </div>
           )}
 
           {!isFullCapacity && uploadingIndex === null && (
             <button
               onClick={() => fileInputRef.current?.click()}
-              className="flex aspect-square flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-[#D1D5DB] bg-[#F9FAF9] transition-colors hover:border-[#346739] hover:bg-[#EAF2EB]"
+              className="flex aspect-square flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-[#8D9F96]/40 bg-[#F9F6F0] transition-all hover:border-[#0A2E1F] hover:bg-[#0A2E1F]/5"
             >
-              <Plus className="h-8 w-8 text-[#346739]" />
-              <span className="text-xs text-[#6B7280]">Tambah Foto</span>
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#0A2E1F]/10 text-[#0A2E1F]">
+                <Plus className="h-5 w-5" />
+              </div>
+              <span className="text-xs font-bold text-[#0A2E1F]">Tambah Foto</span>
             </button>
           )}
 
           {/* ── Pesan kapasitas penuh ──────────── */}
           {isFullCapacity && uploadingIndex === null && (
-            <div className="flex aspect-square flex-col items-center justify-center gap-2 rounded-xl border border-[#D1D5DB] bg-[#F9FAF9]">
-              <span className="px-2 text-center text-xs text-[#9CA3AF]">
-                Maksimal {MAX_FOTO} foto tercapai
+            <div className="flex aspect-square flex-col items-center justify-center gap-2 rounded-2xl border border-[#F0EBE1] bg-[#F9F6F0]">
+              <span className="px-3 text-center text-xs font-medium text-[#8D9F96]">
+                Kapasitas maksimal ({MAX_FOTO} foto) tercapai
               </span>
             </div>
           )}
@@ -333,18 +340,18 @@ export default function GaleriManager() {
 
       {/* ── Dialog konfirmasi hapus ──────────────── */}
       {confirmHapusId && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl">
-            <h4 className="mb-2 text-base font-semibold text-[#1A1A1A]">
-              Hapus Foto?
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div className="w-full max-w-sm rounded-2xl border border-[#F0EBE1] bg-white p-6 shadow-ambient">
+            <h4 className="text-lg font-bold text-[#0A2E1F]">
+              Hapus Foto Galeri?
             </h4>
-            <p className="mb-6 text-sm text-[#6B7280]">
-              Foto akan dihapus permanen dari galeri dan tidak dapat dikembalikan.
+            <p className="mt-2 text-sm text-[#8D9F96]">
+              Foto ini akan dihapus secara permanen dari galeri masjid.
             </p>
-            <div className="flex gap-3">
+            <div className="mt-6 flex gap-3">
               <button
                 onClick={handleHapusBatal}
-                className="flex-1 rounded-xl border border-[#D1D5DB] px-4 py-2.5 text-sm font-medium text-[#1A1A1A] transition-colors hover:bg-[#F3F4F6]"
+                className="flex-1 rounded-full border border-[#F0EBE1] px-4 py-2.5 text-sm font-semibold text-[#15221C] hover:bg-[#F9F6F0] transition-colors"
               >
                 Batal
               </button>
@@ -353,7 +360,7 @@ export default function GaleriManager() {
                   const foto = fotoList.find((f) => f.id === confirmHapusId);
                   if (foto) handleHapus(foto);
                 }}
-                className="flex-1 rounded-xl bg-[#DC2626] px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#B91C1C]"
+                className="flex-1 rounded-full bg-rose-600 px-4 py-2.5 text-sm font-bold text-white shadow-sm hover:bg-rose-700 transition-colors"
               >
                 Ya, Hapus
               </button>
@@ -363,9 +370,10 @@ export default function GaleriManager() {
       )}
 
       {/* ── Catatan ──────────────────────────────── */}
-      <p className="mt-4 text-xs text-[#9CA3AF]">
-        Maksimal {MAX_FOTO} foto · Format: JPG, PNG, WebP · Maks. 5MB per foto (otomatis dikompres ke max 500KB)
+      <p className="mt-5 text-xs text-[#8D9F96]">
+        Maksimal {MAX_FOTO} foto · Format: JPG, PNG, WebP · Maks. 5MB per foto (otomatis dikompresi &lt; 500KB)
       </p>
     </div>
   );
 }
+

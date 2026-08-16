@@ -1,10 +1,8 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import { AlertCircle } from "lucide-react";
-import { getJadwalSholat } from "@/lib/jadwal-sholat";
-import { KOTA_NAMA } from "@/lib/jadwal-sholat";
-import { formatTanggalHari } from "@/lib/utils";
+import { AlertCircle, CalendarDays } from "lucide-react";
+import { getJadwalSholat, KOTA_NAMA } from "@/lib/jadwal-sholat";
 import type { JadwalSholat } from "@/types";
 
 const SHOLAT_NAMES: { key: keyof JadwalSholat; label: string }[] = [
@@ -34,13 +32,11 @@ export default function JadwalSholatSection() {
       .finally(() => setIsLoading(false));
   }, []);
 
-  // Update current time every minute for "Berikutnya" recalculation
   useEffect(() => {
     const timer = setInterval(() => setNow(new Date()), 60000);
     return () => clearInterval(timer);
   }, []);
 
-  // Determine which prayer is next
   const nextPrayer = useMemo(() => {
     if (!jadwal) return null;
     const currentMinutes = now.getHours() * 60 + now.getMinutes();
@@ -50,105 +46,78 @@ export default function JadwalSholatSection() {
       return { key: s.key, minutes: h * 60 + m };
     });
 
-    // Sort by time
     prayers.sort((a, b) => a.minutes - b.minutes);
 
-    // Find first prayer after now
     const next = prayers.find((p) => p.minutes > currentMinutes);
     if (next) return next.key;
 
-    // If all prayers passed, Subuh is tomorrow's first
     return prayers[0].key;
   }, [jadwal, now]);
 
-  const todayStr = formatTanggalHari(now.toISOString().split("T")[0]);
-
-  // Loading state
-  if (isLoading) {
-    return (
-      <section className="bg-[#EAF2EB] py-10">
-        <div className="mx-auto max-w-[1200px] px-4 md:px-6 lg:px-8">
-          <div className="mb-6 text-center">
-            <div className="mx-auto mb-3 h-7 w-48 animate-pulse rounded bg-[#D1D5DB]" />
-            <div className="mx-auto h-4 w-32 animate-pulse rounded bg-[#D1D5DB]" />
-          </div>
-          <div className="flex gap-3 overflow-x-auto md:grid md:grid-cols-5">
-            {[...Array(5)].map((_, i) => (
-              <div
-                key={i}
-                className="h-24 min-w-[100px] animate-pulse rounded-xl bg-[#D1D5DB]"
-              />
-            ))}
-          </div>
+  const loadingUI = (
+    <div className="bg-white rounded-lg shadow-ambient border border-[#F0EBE1] p-6">
+      <div className="mb-6 h-6 w-36 animate-pulse rounded bg-[#F0EBE1]" />
+      <div className="h-4 w-48 animate-pulse rounded bg-[#F0EBE1] mb-8" />
+      {[...Array(5)].map((_, i) => (
+        <div key={i} className="flex justify-between py-3 border-b border-[#F0EBE1]">
+          <div className="h-4 w-20 animate-pulse rounded bg-[#F0EBE1]" />
+          <div className="h-4 w-12 animate-pulse rounded bg-[#F0EBE1]" />
         </div>
-      </section>
-    );
-  }
+      ))}
+    </div>
+  );
 
-  // Error state
-  if (error || !jadwal) {
-    return (
-      <section className="bg-[#EAF2EB] py-10">
-        <div className="mx-auto max-w-[1200px] px-4 md:px-6 lg:px-8">
-          <div className="flex flex-col items-center gap-2 text-center">
-            <AlertCircle className="h-8 w-8 text-[#6B7280]" />
-            <p className="text-sm text-[#6B7280]">
-              Jadwal sholat tidak tersedia saat ini
-            </p>
-          </div>
-        </div>
-      </section>
-    );
-  }
+  const errorUI = (
+    <div className="bg-white rounded-lg shadow-ambient border border-[#F0EBE1] p-8 text-center">
+      <AlertCircle className="mx-auto mb-2 h-8 w-8 text-[#8D9F96]" />
+      <p className="text-sm text-[#8D9F96]">Jadwal sholat tidak tersedia saat ini</p>
+    </div>
+  );
+
+  if (isLoading) return loadingUI;
+  if (error || !jadwal) return errorUI;
 
   return (
-    <section className="bg-[#EAF2EB] py-10">
-      <div className="mx-auto max-w-[1200px] px-4 md:px-6 lg:px-8">
-        {/* Header */}
-        <div className="mb-6 text-center">
-          <h2 className="text-xl font-semibold text-[#1A1A1A]">
-            Jadwal Sholat Hari Ini
+    <div className="bg-white rounded-lg shadow-ambient border border-[#F0EBE1] p-6 md:p-8">
+      <div className="mb-6 flex items-start justify-between">
+        <div>
+          <h2 className="text-xl font-bold tracking-tight text-[#0A2E1F]">
+            Jadwal Shalat
           </h2>
-          <p className="mt-1 text-sm text-[#6B7280]">{todayStr}</p>
-          <p className="text-xs text-[#6B7280]">{KOTA_NAMA}</p>
+          <p className="mt-0.5 text-sm text-[#8D9F96]">{KOTA_NAMA}</p>
         </div>
-
-        {/* Cards */}
-        <div className="flex gap-3 overflow-x-auto pb-2 snap-x md:grid md:grid-cols-5 md:overflow-visible">
-          {SHOLAT_NAMES.map(({ key, label }) => {
-            const isNext = nextPrayer === key;
-            return (
-              <div
-                key={key}
-                className={`
-                  min-w-[100px] flex-shrink-0 snap-start rounded-xl p-4 text-center shadow-sm
-                  ${isNext ? "bg-[#346739] shadow-md" : "bg-white"}
-                `}
-              >
-                {isNext && (
-                  <span className="mb-1 inline-block rounded-full bg-white/20 px-2 py-0.5 text-[10px] font-medium text-white">
-                    Berikutnya
-                  </span>
-                )}
-                <p
-                  className={`text-xs font-semibold uppercase ${
-                    isNext ? "text-white" : "text-[#6B7280]"
-                  }`}
-                >
-                  {label}
-                </p>
-                <p
-                  className={`mt-1 text-xl font-semibold ${
-                    isNext ? "text-white" : "text-[#1A1A1A]"
-                  }`}
-                >
-                  {jadwal[key]}
-                </p>
-              </div>
-            );
-          })}
+        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#F9F6F0] text-[#0A2E1F]">
+          <CalendarDays className="h-4 w-4" />
         </div>
       </div>
-    </section>
+
+      <div className="flex flex-col">
+        {SHOLAT_NAMES.map(({ key, label }) => {
+          const isNext = nextPrayer === key;
+          return isNext ? (
+            <div
+              key={key}
+              className="my-1 flex h-16 items-center justify-between rounded-r-md border-l-4 border-[#D4AF37] bg-[#D4AF37]/5 px-4 shadow-sm"
+            >
+              <div className="flex items-center gap-3">
+                <span className="text-lg font-bold text-[#0A2E1F]">{label}</span>
+                <span className="rounded-sm bg-[#D4AF37] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
+                  Sekarang
+                </span>
+              </div>
+              <span className="text-lg font-bold text-[#0A2E1F]">{jadwal[key]}</span>
+            </div>
+          ) : (
+            <div
+              key={key}
+              className="time-row flex h-14 items-center justify-between rounded-md border-b border-[#F0EBE1] px-4 last:border-b-0"
+            >
+              <span className="text-base font-medium text-[#15221C]">{label}</span>
+              <span className="text-base font-semibold text-[#15221C]">{jadwal[key]}</span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
   );
 }

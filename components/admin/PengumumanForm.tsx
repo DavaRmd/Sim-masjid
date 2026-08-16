@@ -267,203 +267,214 @@ export default function PengumumanForm({ mode, dataAwal }: PengumumanFormProps) 
   };
 
   return (
-    <div>
-      <h1 className="mb-6 text-xl font-bold text-[#1A1A1A] md:text-2xl">
-        {mode === "tambah" ? "Tulis Pengumuman Baru" : "Edit Pengumuman"}
-      </h1>
-
-      <form onSubmit={handleSubmit} className="space-y-6">
-        {/* ===== Judul ===== */}
-        <div className="space-y-2">
-          <Label htmlFor="judul" className="text-sm font-medium">
-            Judul <span className="text-[#DC2626]">*</span>
-          </Label>
-          <div className="relative">
-            <Input
-              id="judul"
-              type="text"
-              maxLength={255}
-              placeholder="Masukkan judul pengumuman"
-              value={judul}
-              onChange={(e) => setJudul(e.target.value)}
-              disabled={isLoading}
-              className="h-11 pr-16"
-            />
-            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[#6B7280]">
-              {judul.length}/255
-            </span>
-          </div>
-          {errors.judul && (
-            <p className="text-sm text-[#DC2626]">{errors.judul}</p>
-          )}
+    <div className="mx-auto max-w-4xl space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight text-[#0A2E1F]">
+            {mode === "tambah" ? "Tulis Pengumuman Baru" : "Edit Pengumuman"}
+          </h1>
+          <p className="text-sm text-[#8D9F96] mt-1">
+            Buat kabar atau publikasi agenda masjid terbaru untuk jamaah.
+          </p>
         </div>
+      </div>
 
-        {/* ===== Kategori ===== */}
-        <div className="space-y-2">
-          <Label htmlFor="kategori" className="text-sm font-medium">
-            Kategori <span className="text-[#DC2626]">*</span>
-          </Label>
-          <select
-            id="kategori"
-            value={kategori}
-            onChange={(e) => setKategori(e.target.value as KategoriPengumuman)}
-            disabled={isLoading}
-            className="h-11 w-full rounded-lg border border-[#D1D5DB] bg-white px-3 text-sm text-[#1A1A1A] focus:border-[#346739] focus:outline-none focus:ring-1 focus:ring-[#346739]"
-          >
-            {KATEGORI_LIST.map((k) => (
-              <option key={k.value} value={k.value}>
-                {k.label}
-              </option>
-            ))}
-          </select>
-          {errors.kategori && (
-            <p className="text-sm text-[#DC2626]">{errors.kategori}</p>
-          )}
-        </div>
-
-        {/* ===== Isi ===== */}
-        <div className="space-y-2">
-          <Label htmlFor="isi" className="text-sm font-medium">
-            Isi Pengumuman <span className="text-[#DC2626]">*</span>
-          </Label>
-          <Textarea
-            id="isi"
-            placeholder="Tulis isi pengumuman di sini..."
-            value={isi}
-            onChange={(e) => setIsi(e.target.value)}
-            disabled={isLoading}
-            className="min-h-[200px] resize-y"
-          />
-          {errors.isi && (
-            <p className="text-sm text-[#DC2626]">{errors.isi}</p>
-          )}
-        </div>
-
-        {/* ===== Foto ===== */}
-        <div className="space-y-2">
-          <Label className="text-sm font-medium">Foto (opsional)</Label>
-
-          {existingFotoUrl && !isRemovingFoto ? (
-            <div className="relative w-full max-w-[400px] overflow-hidden rounded-xl border border-[#D1D5DB]">
-              <Image
-                src={existingFotoUrl}
-                alt="Foto pengumuman"
-                width={400}
-                height={225}
-                className="h-auto w-full object-cover"
+      <div className="rounded-2xl border border-[#F0EBE1] bg-white p-6 md:p-8 shadow-ambient">
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* ===== Judul ===== */}
+          <div className="space-y-2">
+            <Label htmlFor="judul" className="text-sm font-bold text-[#0A2E1F]">
+              Judul Informasi <span className="text-rose-600">*</span>
+            </Label>
+            <div className="relative">
+              <Input
+                id="judul"
+                type="text"
+                maxLength={255}
+                placeholder="Contoh: Kajian Rutin Ahad Pagi Masjid Al-Ittihad"
+                value={judul}
+                onChange={(e) => setJudul(e.target.value)}
+                disabled={isLoading}
+                className="h-11 rounded-xl border-[#F0EBE1] bg-[#F9F6F0]/50 pr-16 text-sm text-[#15221C] focus:border-[#D4AF37] focus:ring-2 focus:ring-[#D4AF37]/20"
               />
-              <button
-                type="button"
-                onClick={handleRemoveFoto}
-                className="absolute right-2 top-2 rounded-full bg-black/50 p-1.5 text-white hover:bg-black/70 transition-colors"
-                title="Hapus foto"
-              >
-                <X className="h-4 w-4" />
-              </button>
-              <p className="px-3 py-2 text-xs text-[#6B7280]">
-                Foto saat ini. Pilih file baru untuk mengganti.
-              </p>
+              <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs font-semibold text-[#8D9F96]">
+                {judul.length}/255
+              </span>
             </div>
-          ) : previewUrl ? (
-            <div className="relative w-full max-w-[400px] overflow-hidden rounded-xl border border-[#D1D5DB]">
-              <Image
-                src={previewUrl}
-                alt="Preview foto"
-                width={400}
-                height={225}
-                className="h-auto w-full object-cover"
-              />
-              <button
-                type="button"
-                onClick={handleRemoveFoto}
-                className="absolute right-2 top-2 rounded-full bg-black/50 p-1.5 text-white hover:bg-black/70 transition-colors"
-                title="Hapus foto"
-              >
-                <X className="h-4 w-4" />
-              </button>
-              {selectedFile && (
-                <p className="px-3 py-2 text-xs text-[#6B7280]">
-                  {selectedFile.name} ({formatFileSize(selectedFile.size)})
-                  {selectedFile.size > 2 * 1024 * 1024 && (
-                    <span className="ml-2 inline-flex items-center gap-1 text-amber-600">
-                      <AlertTriangle className="h-3 w-3" />
-                      Akan dikompresi saat upload
-                    </span>
-                  )}
-                </p>
-              )}
-            </div>
-          ) : (
-            <button
-              type="button"
-              onClick={() => fileInputRef.current?.click()}
-              className="flex w-full max-w-[400px] flex-col items-center gap-2 rounded-xl border-2 border-dashed border-[#D1D5DB] px-6 py-8 text-[#6B7280] transition-colors hover:border-[#346739] hover:text-[#346739]"
-            >
-              <Upload className="h-8 w-8" />
-              <span className="text-sm font-medium">Klik untuk upload foto</span>
-              <span className="text-xs">JPEG atau PNG, maks 2MB</span>
-            </button>
-          )}
-
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="image/*"
-            onChange={handleFileChange}
-            className="hidden"
-          />
-        </div>
-
-        {/* ===== Video URL ===== */}
-        <div className="space-y-2">
-          <Label htmlFor="videoUrl" className="text-sm font-medium">
-            Link Video (opsional)
-          </Label>
-          <Input
-            id="videoUrl"
-            type="url"
-            placeholder="https://youtube.com/watch?v=..."
-            value={videoUrl}
-            onChange={(e) => handleVideoUrlChange(e.target.value)}
-            disabled={isLoading}
-            className="h-11"
-          />
-          {videoError ? (
-            <p className="text-sm text-[#DC2626]">{videoError}</p>
-          ) : (
-            <p className="text-xs text-[#6B7280]">
-              Tempel link YouTube atau Facebook
-            </p>
-          )}
-        </div>
-
-        {/* ===== Tombol ===== */}
-        <div className="flex gap-3 pt-4">
-          <Button
-            type="submit"
-            disabled={isLoading}
-            className="h-11 bg-[#346739] text-white hover:bg-[#2A5230]"
-          >
-            {isLoading ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Menyimpan...
-              </>
-            ) : (
-              "Simpan Pengumuman"
+            {errors.judul && (
+              <p className="text-xs font-medium text-rose-600">{errors.judul}</p>
             )}
-          </Button>
-          <Button
-            type="button"
-            variant="outline"
-            disabled={isLoading}
-            onClick={() => router.push("/admin/pengumuman")}
-            className="h-11"
-          >
-            Batal
-          </Button>
-        </div>
-      </form>
+          </div>
+
+          {/* ===== Kategori ===== */}
+          <div className="space-y-2">
+            <Label htmlFor="kategori" className="text-sm font-bold text-[#0A2E1F]">
+              Kategori <span className="text-rose-600">*</span>
+            </Label>
+            <select
+              id="kategori"
+              value={kategori}
+              onChange={(e) => setKategori(e.target.value as KategoriPengumuman)}
+              disabled={isLoading}
+              className="h-11 w-full rounded-xl border border-[#F0EBE1] bg-[#F9F6F0]/50 px-3.5 text-sm font-medium text-[#15221C] focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20"
+            >
+              {KATEGORI_LIST.map((k) => (
+                <option key={k.value} value={k.value}>
+                  {k.label}
+                </option>
+              ))}
+            </select>
+            {errors.kategori && (
+              <p className="text-xs font-medium text-rose-600">{errors.kategori}</p>
+            )}
+          </div>
+
+          {/* ===== Isi ===== */}
+          <div className="space-y-2">
+            <Label htmlFor="isi" className="text-sm font-bold text-[#0A2E1F]">
+              Isi Informasi <span className="text-rose-600">*</span>
+            </Label>
+            <Textarea
+              id="isi"
+              placeholder="Tulis deskripsi atau isi pengumuman secara lengkap..."
+              value={isi}
+              onChange={(e) => setIsi(e.target.value)}
+              disabled={isLoading}
+              className="min-h-[220px] rounded-xl border-[#F0EBE1] bg-[#F9F6F0]/50 text-sm text-[#15221C] placeholder:text-[#8D9F96] focus:border-[#D4AF37] focus:ring-2 focus:ring-[#D4AF37]/20 resize-y"
+            />
+            {errors.isi && (
+              <p className="text-xs font-medium text-rose-600">{errors.isi}</p>
+            )}
+          </div>
+
+          {/* ===== Foto ===== */}
+          <div className="space-y-2">
+            <Label className="text-sm font-bold text-[#0A2E1F]">Foto / Banner (opsional)</Label>
+
+            {existingFotoUrl && !isRemovingFoto ? (
+              <div className="relative w-full max-w-[400px] overflow-hidden rounded-xl border border-[#F0EBE1] bg-[#F9F6F0]">
+                <Image
+                  src={existingFotoUrl}
+                  alt="Foto pengumuman"
+                  width={400}
+                  height={225}
+                  className="h-auto w-full object-cover"
+                />
+                <button
+                  type="button"
+                  onClick={handleRemoveFoto}
+                  className="absolute right-2 top-2 rounded-full bg-black/60 p-1.5 text-white hover:bg-black/80 transition-colors"
+                  title="Hapus foto"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+                <p className="px-3 py-2 text-xs text-[#8D9F96]">
+                  Foto saat ini. Pilih berkas baru jika ingin mengganti.
+                </p>
+              </div>
+            ) : previewUrl ? (
+              <div className="relative w-full max-w-[400px] overflow-hidden rounded-xl border border-[#F0EBE1] bg-[#F9F6F0]">
+                <Image
+                  src={previewUrl}
+                  alt="Preview foto"
+                  width={400}
+                  height={225}
+                  className="h-auto w-full object-cover"
+                />
+                <button
+                  type="button"
+                  onClick={handleRemoveFoto}
+                  className="absolute right-2 top-2 rounded-full bg-black/60 p-1.5 text-white hover:bg-black/80 transition-colors"
+                  title="Hapus foto"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+                {selectedFile && (
+                  <p className="px-3 py-2 text-xs text-[#8D9F96]">
+                    {selectedFile.name} ({formatFileSize(selectedFile.size)})
+                    {selectedFile.size > 2 * 1024 * 1024 && (
+                      <span className="ml-2 inline-flex items-center gap-1 font-bold text-amber-600">
+                        <AlertTriangle className="h-3.5 w-3.5" />
+                        Akan dikompresi otomatis
+                      </span>
+                    )}
+                  </p>
+                )}
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                className="flex w-full max-w-[400px] flex-col items-center gap-2 rounded-2xl border-2 border-dashed border-[#8D9F96]/40 bg-[#F9F6F0] px-6 py-8 text-[#8D9F96] transition-all hover:border-[#0A2E1F] hover:text-[#0A2E1F]"
+              >
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#0A2E1F]/10 text-[#0A2E1F]">
+                  <Upload className="h-6 w-6" />
+                </div>
+                <span className="text-sm font-bold text-[#0A2E1F]">Klik untuk unggah foto</span>
+                <span className="text-xs text-[#8D9F96]">JPG, PNG, atau WebP (Maks 2MB)</span>
+              </button>
+            )}
+
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              className="hidden"
+            />
+          </div>
+
+          {/* ===== Video URL ===== */}
+          <div className="space-y-2">
+            <Label htmlFor="videoUrl" className="text-sm font-bold text-[#0A2E1F]">
+              Link Video YouTube / Facebook (opsional)
+            </Label>
+            <Input
+              id="videoUrl"
+              type="url"
+              placeholder="https://youtube.com/watch?v=..."
+              value={videoUrl}
+              onChange={(e) => handleVideoUrlChange(e.target.value)}
+              disabled={isLoading}
+              className="h-11 rounded-xl border-[#F0EBE1] bg-[#F9F6F0]/50 text-sm text-[#15221C] focus:border-[#D4AF37] focus:ring-2 focus:ring-[#D4AF37]/20"
+            />
+            {videoError ? (
+              <p className="text-xs font-medium text-rose-600">{videoError}</p>
+            ) : (
+              <p className="text-xs text-[#8D9F96]">
+                Tempelkan tautan video YouTube atau Facebook jika tersedia.
+              </p>
+            )}
+          </div>
+
+          {/* ===== Tombol ===== */}
+          <div className="flex gap-3 pt-6 border-t border-[#F0EBE1]">
+            <Button
+              type="button"
+              variant="outline"
+              disabled={isLoading}
+              onClick={() => router.push("/admin/pengumuman")}
+              className="h-11 rounded-full border-[#F0EBE1] text-[#15221C] hover:bg-[#F9F6F0] px-6"
+            >
+              Batal
+            </Button>
+            <Button
+              type="submit"
+              disabled={isLoading}
+              className="h-11 rounded-full bg-[#0A2E1F] text-white hover:bg-[#15221C] shadow-ambient font-bold px-8"
+            >
+              {isLoading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Menyimpan...
+                </>
+              ) : (
+                "Simpan Pengumuman"
+              )}
+            </Button>
+          </div>
+        </form>
+      </div>
     </div>
   );
-}
+}

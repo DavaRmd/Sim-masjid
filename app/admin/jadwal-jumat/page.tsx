@@ -241,23 +241,30 @@ export default function AdminJadwalJumatPage() {
     return (
       <div
         key={toDateString(form.tanggal)}
-        className="overflow-hidden rounded-xl border border-[#E5E7EB] bg-white"
+        className="overflow-hidden rounded-2xl border border-[#F0EBE1] bg-white shadow-ambient"
       >
         {/* Header Card */}
-        <div className="flex items-center gap-2 border-b border-[#E5E7EB] bg-[#F9FAF9] px-4 py-3">
-          <Calendar className="h-4 w-4 text-[#346739]" />
-          <span className="text-sm font-semibold text-[#1A1A1A]">
-            {formatTanggalJumat(form.tanggal)}
-          </span>
+        <div className="flex items-center justify-between border-b border-[#F0EBE1] bg-[#0A2E1F] px-5 py-3.5 text-white">
+          <div className="flex items-center gap-2.5">
+            <Calendar className="h-4 w-4 text-[#D4AF37]" />
+            <span className="text-base font-bold tracking-wide text-white">
+              {formatTanggalJumat(form.tanggal)}
+            </span>
+          </div>
+          {form.hadExistingData && (
+            <span className="rounded-full bg-[#D4AF37]/20 px-3 py-0.5 text-xs font-bold text-[#D4AF37]">
+              Tersimpan
+            </span>
+          )}
         </div>
 
         {/* Form Fields */}
-        <div className="grid gap-4 p-4 md:grid-cols-3">
+        <div className="grid gap-4 p-5 md:grid-cols-3">
           {/* Khatib */}
           <div className="flex flex-col gap-1.5">
             <label
               htmlFor={`khatib-${index}`}
-              className="text-xs font-medium text-[#6B7280]"
+              className="text-xs font-bold uppercase tracking-wider text-[#8D9F96]"
             >
               Khatib
             </label>
@@ -268,8 +275,8 @@ export default function AdminJadwalJumatPage() {
               onChange={(e) =>
                 handleFieldChange(index, "khatib", e.target.value)
               }
-              placeholder="Belum ditentukan"
-              className="rounded-lg border border-[#D1D5DB] bg-white px-3 py-2 text-sm text-[#1A1A1A] placeholder:text-[#9CA3AF] focus:border-[#346739] focus:outline-none focus:ring-1 focus:ring-[#346739]"
+              placeholder="Contoh: Ust. Prof. Ahmad Sukardi"
+              className="rounded-xl border border-[#F0EBE1] bg-[#F9F6F0]/50 px-3.5 py-2.5 text-sm font-semibold text-[#15221C] placeholder:text-[#8D9F96]/60 focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20"
             />
           </div>
 
@@ -277,7 +284,7 @@ export default function AdminJadwalJumatPage() {
           <div className="flex flex-col gap-1.5">
             <label
               htmlFor={`imam-${index}`}
-              className="text-xs font-medium text-[#6B7280]"
+              className="text-xs font-bold uppercase tracking-wider text-[#8D9F96]"
             >
               Imam
             </label>
@@ -288,8 +295,8 @@ export default function AdminJadwalJumatPage() {
               onChange={(e) =>
                 handleFieldChange(index, "imam", e.target.value)
               }
-              placeholder="Belum ditentukan"
-              className="rounded-lg border border-[#D1D5DB] bg-white px-3 py-2 text-sm text-[#1A1A1A] placeholder:text-[#9CA3AF] focus:border-[#346739] focus:outline-none focus:ring-1 focus:ring-[#346739]"
+              placeholder="Contoh: Ust. M. Rasyid, S.Ag"
+              className="rounded-xl border border-[#F0EBE1] bg-[#F9F6F0]/50 px-3.5 py-2.5 text-sm font-semibold text-[#15221C] placeholder:text-[#8D9F96]/60 focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20"
             />
           </div>
 
@@ -297,7 +304,7 @@ export default function AdminJadwalJumatPage() {
           <div className="flex flex-col gap-1.5">
             <label
               htmlFor={`muadzin-${index}`}
-              className="text-xs font-medium text-[#6B7280]"
+              className="text-xs font-bold uppercase tracking-wider text-[#8D9F96]"
             >
               Muadzin
             </label>
@@ -308,8 +315,8 @@ export default function AdminJadwalJumatPage() {
               onChange={(e) =>
                 handleFieldChange(index, "muadzin", e.target.value)
               }
-              placeholder="Belum ditentukan"
-              className="rounded-lg border border-[#D1D5DB] bg-white px-3 py-2 text-sm text-[#1A1A1A] placeholder:text-[#9CA3AF] focus:border-[#346739] focus:outline-none focus:ring-1 focus:ring-[#346739]"
+              placeholder="Contoh: Bilal Farhan"
+              className="rounded-xl border border-[#F0EBE1] bg-[#F9F6F0]/50 px-3.5 py-2.5 text-sm font-semibold text-[#15221C] placeholder:text-[#8D9F96]/60 focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20"
             />
           </div>
         </div>
@@ -318,15 +325,25 @@ export default function AdminJadwalJumatPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
+      {/* ========== PAGE HEADER ========== */}
+      <div>
+        <h1 className="text-2xl font-bold tracking-tight text-[#0A2E1F]">
+          Kelola Jadwal Sholat Jumat
+        </h1>
+        <p className="mt-1 text-sm text-[#8D9F96]">
+          Atur penugasan Khatib, Imam, dan Muadzin untuk setiap pekan Sholat Jumat.
+        </p>
+      </div>
+
       {/* ========== FILTER BULAN & TAHUN ========== */}
-      <div className="rounded-xl border border-[#E5E7EB] bg-[#FFFAF0] p-4 md:p-6">
-        <div className="flex flex-wrap items-end gap-3">
+      <div className="rounded-2xl border border-[#F0EBE1] bg-white p-5 shadow-ambient">
+        <div className="flex flex-wrap items-end gap-4">
           {/* Bulan */}
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-1.5 min-w-[140px]">
             <label
               htmlFor="bulan"
-              className="text-xs font-medium text-[#6B7280]"
+              className="text-xs font-bold uppercase tracking-wider text-[#8D9F96]"
             >
               Bulan
             </label>
@@ -334,7 +351,7 @@ export default function AdminJadwalJumatPage() {
               id="bulan"
               value={bulan}
               onChange={(e) => setBulan(Number(e.target.value))}
-              className="rounded-lg border border-[#D1D5DB] bg-white px-3 py-2 text-sm text-[#1A1A1A] focus:border-[#346739] focus:outline-none focus:ring-1 focus:ring-[#346739]"
+              className="rounded-xl border border-[#F0EBE1] bg-[#F9F6F0] px-3.5 py-2 text-sm font-semibold text-[#15221C] focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20"
             >
               {BULAN_LIST.map((b) => (
                 <option key={b.value} value={b.value}>
@@ -345,10 +362,10 @@ export default function AdminJadwalJumatPage() {
           </div>
 
           {/* Tahun */}
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-1.5 min-w-[120px]">
             <label
               htmlFor="tahun"
-              className="text-xs font-medium text-[#6B7280]"
+              className="text-xs font-bold uppercase tracking-wider text-[#8D9F96]"
             >
               Tahun
             </label>
@@ -356,7 +373,7 @@ export default function AdminJadwalJumatPage() {
               id="tahun"
               value={tahun}
               onChange={(e) => setTahun(Number(e.target.value))}
-              className="rounded-lg border border-[#D1D5DB] bg-white px-3 py-2 text-sm text-[#1A1A1A] focus:border-[#346739] focus:outline-none focus:ring-1 focus:ring-[#346739]"
+              className="rounded-xl border border-[#F0EBE1] bg-[#F9F6F0] px-3.5 py-2 text-sm font-semibold text-[#15221C] focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20"
             >
               {daftarTahun.map((t) => (
                 <option key={t} value={t}>
@@ -365,27 +382,25 @@ export default function AdminJadwalJumatPage() {
               ))}
             </select>
           </div>
+
+          <div className="ml-auto text-xs text-[#8D9F96] italic self-center pt-2 sm:pt-0">
+            * Field yang dikosongkan akan tampil sebagai &ldquo;Segera diumumkan&rdquo; di publik.
+          </div>
         </div>
       </div>
-
-      {/* ========== CATATAN ========== */}
-      <p className="text-sm text-[#6B7280]">
-        Kosongkan field yang belum ditentukan. Data kosong akan tampil sebagai
-        &ldquo;Segera diumumkan&rdquo; di halaman publik.
-      </p>
 
       {/* ========== LOADING STATE ========== */}
       {isLoading && (
         <div className="flex items-center justify-center py-20">
-          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          <Loader2 className="h-10 w-10 animate-spin text-[#0A2E1F]" />
         </div>
       )}
 
       {/* ========== EMPTY STATE ========== */}
       {!isLoading && jadwalForms.length === 0 && (
-        <div className="flex flex-col items-center justify-center py-20 text-center">
-          <Calendar className="mb-3 h-12 w-12 text-[#9CA3AF]" />
-          <p className="text-sm text-[#6B7280]">
+        <div className="flex flex-col items-center justify-center py-20 text-center rounded-2xl border border-dashed border-[#F0EBE1] bg-white p-8 shadow-ambient">
+          <Calendar className="mb-3 h-12 w-12 text-[#8D9F96]/50" />
+          <p className="text-base font-bold text-[#0A2E1F]">
             Tidak ada hari Jumat di bulan ini.
           </p>
         </div>
@@ -393,29 +408,31 @@ export default function AdminJadwalJumatPage() {
 
       {/* ========== FORM DINAMIS PER JUMAT ========== */}
       {!isLoading && jadwalForms.length > 0 && (
-        <div className="space-y-4">
+        <div className="space-y-5">
           {jadwalForms.map((form, index) => renderJumatCard(form, index))}
 
           {/* ========== TOMBOL SIMPAN ========== */}
-          <Button
-            onClick={handleSimpan}
-            disabled={isSaving}
-            className="w-full bg-[#346739] hover:bg-[#2A5230] font-semibold py-6 text-base text-white"
-          >
-            {isSaving ? (
-              <>
-                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                Menyimpan...
-              </>
-            ) : (
-              <>
-                <Save className="mr-2 h-5 w-5" />
-                Simpan Jadwal
-              </>
-            )}
-          </Button>
+          <div className="pt-2">
+            <Button
+              onClick={handleSimpan}
+              disabled={isSaving}
+              className="w-full rounded-full bg-[#0A2E1F] hover:bg-[#15221C] font-bold py-6 text-base text-white shadow-ambient transition-all hover:shadow-hover"
+            >
+              {isSaving ? (
+                <>
+                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                  Menyimpan Semua Jadwal...
+                </>
+              ) : (
+                <>
+                  <Save className="mr-2 h-5 w-5 text-[#D4AF37]" />
+                  Simpan Semua Jadwal Jumat
+                </>
+              )}
+            </Button>
+          </div>
         </div>
       )}
     </div>
   );
-}
+}

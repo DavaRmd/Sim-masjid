@@ -2,7 +2,10 @@ import { createClient } from "@/lib/supabase/server";
 import { getTanggalJumatDalamBulan } from "@/lib/jadwal-jumat-helper";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
+import Link from "next/link";
+import { ChevronLeft, ChevronRight, Calendar } from "lucide-react";
 import type { JadwalJumat } from "@/types";
+import UnduhPDFButton from "@/components/public/UnduhPDFButton";
 
 const BULAN_LIST = [
   { value: 1, label: "Januari" },
@@ -19,25 +22,28 @@ const BULAN_LIST = [
   { value: 12, label: "Desember" },
 ];
 
-/**
- * Format tanggal Date ke "Jumat, 5 Juni 2026"
- */
-function formatTanggalJumat(date: Date): string {
-  return format(date, "EEEE, d MMMM yyyy", { locale: id });
+function formatTanggalPanjang(date: Date): string {
+  return format(date, "d MMMM yyyy", { locale: id });
 }
 
-/**
- * Format tanggal Date ke kolom pendek "Jum, 5 Jun" untuk tabel
- */
-function formatTanggalPendekJumat(date: Date): string {
-  return format(date, "EEE, d MMM", { locale: id });
+function formatHijri(date: Date): string {
+  try {
+    return new Intl.DateTimeFormat("id-ID-u-ca-islamic", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    }).format(date);
+  } catch {
+    return "";
+  }
 }
 
-/**
- * Format tanggal Date ke YYYY-MM-DD untuk query Supabase
- */
 function toDateString(date: Date): string {
   return format(date, "yyyy-MM-dd");
+}
+
+function buildNavUrl(bulan: number, tahun: number): string {
+  return `/jadwal-jumat?bulan=${bulan}&tahun=${tahun}`;
 }
 
 interface JadwalJumatPageProps {
@@ -52,13 +58,15 @@ export default async function JadwalJumatPage({ searchParams }: JadwalJumatPageP
   const bulan = Math.min(12, Math.max(1, parseInt(searchParams?.bulan ?? String(bulanSekarang), 10) || bulanSekarang));
   const tahun = parseInt(searchParams?.tahun ?? String(tahunSekarang), 10) || tahunSekarang;
 
-  const daftarTahun = Array.from({ length: 5 }, (_, i) => tahunSekarang - 2 + i);
+  // Prev/next month navigation
+  const prevBulan = bulan === 1 ? 12 : bulan - 1;
+  const prevTahun = bulan === 1 ? tahun - 1 : tahun;
+  const nextBulan = bulan === 12 ? 1 : bulan + 1;
+  const nextTahun = bulan === 12 ? tahun + 1 : tahun;
 
-  // Generate semua tanggal Jumat dalam bulan
   const tanggalJumat = getTanggalJumatDalamBulan(tahun, bulan);
-
-  // Fetch data jadwal dari database
   const supabase = await createClient();
+
   const startDate = toDateString(tanggalJumat[0] || new Date(tahun, bulan - 1, 1));
   const endDate = toDateString(tanggalJumat[tanggalJumat.length - 1] || new Date(tahun, bulan - 1, 1));
 
@@ -69,7 +77,6 @@ export default async function JadwalJumatPage({ searchParams }: JadwalJumatPageP
     .lte("tanggal", endDate)
     .order("tanggal", { ascending: true });
 
-  // Build lookup map: date string → JadwalJumat
   const jadwalMap = new Map<string, JadwalJumat>();
   if (jadwalData) {
     for (const j of jadwalData) {
@@ -77,188 +84,159 @@ export default async function JadwalJumatPage({ searchParams }: JadwalJumatPageP
     }
   }
 
-  // Merge: untuk setiap Jumat, cari dari DB atau fallback
+  // Find the next/current Friday
+  const nextFridayDate = (() => {
+    const d = new Date(now);
+    const day = d.getDay();
+    const diff = (5 - day + 7) % 7;
+    d.setDate(d.getDate() + diff);
+    return toDateString(d);
+  })();
+
   const jadwalRows = tanggalJumat.map((tgl) => {
     const key = toDateString(tgl);
     const data = jadwalMap.get(key);
     return {
       tanggal: tgl,
+      dateKey: key,
       khatib: data?.khatib ?? null,
       imam: data?.imam ?? null,
       muadzin: data?.muadzin ?? null,
+      isThisWeek: key === nextFridayDate,
     };
   });
 
   const bulanLabel = BULAN_LIST.find((b) => b.value === bulan)?.label ?? "";
 
+  // Hijri for current displayed month
+  const hijriLabel = formatHijri(new Date(tahun, bulan - 1, 15));
+
   return (
     <div className="-mx-4 md:-mx-6 lg:-mx-8">
-      {/* ========== HEADER HALAMAN ========== */}
-      <section className="bg-[#EAF2EB] py-8 md:py-10">
-        <div className="mx-auto max-w-[1200px] px-4 md:px-6 lg:px-8">
-          <h1 className="text-2xl font-bold text-[#1A1A1A] md:text-3xl">
-            Jadwal Sholat Jumat
-          </h1>
-        </div>
-      </section>
+      <div className="mx-auto max-w-[960px] px-4 py-8 md:px-6 lg:px-8">
 
-      {/* ========== FILTER BULAN & TAHUN ========== */}
-      <section className="bg-[#FFFAF0] py-4">
-        <div className="mx-auto max-w-[1200px] px-4 md:px-6 lg:px-8">
-          <form className="flex flex-wrap items-end gap-3">
-            {/* Bulan */}
-            <div className="flex flex-col gap-1">
-              <label htmlFor="bulan" className="text-xs font-medium text-[#6B7280]">
-                Bulan
-              </label>
-              <select
-                id="bulan"
-                name="bulan"
-                defaultValue={bulan}
-                className="rounded-lg border border-[#D1D5DB] bg-white px-3 py-2 text-sm text-[#1A1A1A] focus:border-[#346739] focus:outline-none focus:ring-1 focus:ring-[#346739]"
-              >
-                {BULAN_LIST.map((b) => (
-                  <option key={b.value} value={b.value}>
-                    {b.label}
-                  </option>
-                ))}
-              </select>
-            </div>
+        {/* ========== PAGE HEADER ========== */}
+        <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+          <div>
+            <h1 className="text-4xl font-bold tracking-tight text-[#0A2E1F] md:text-[40px]">
+              Jadwal Jumat
+            </h1>
+            <p className="mt-2 flex items-center gap-2 text-base font-medium text-[#8D9F96]">
+              <Calendar className="h-5 w-5 text-[#8D9F96]" />
+              {hijriLabel} / {bulanLabel} {tahun}
+            </p>
+          </div>
 
-            {/* Tahun */}
-            <div className="flex flex-col gap-1">
-              <label htmlFor="tahun" className="text-xs font-medium text-[#6B7280]">
-                Tahun
-              </label>
-              <select
-                id="tahun"
-                name="tahun"
-                defaultValue={tahun}
-                className="rounded-lg border border-[#D1D5DB] bg-white px-3 py-2 text-sm text-[#1A1A1A] focus:border-[#346739] focus:outline-none focus:ring-1 focus:ring-[#346739]"
-              >
-                {daftarTahun.map((t) => (
-                  <option key={t} value={t}>
-                    {t}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Tombol Tampilkan */}
-            <button
-              type="submit"
-              className="rounded-lg bg-[#346739] px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#2A5230]"
+          {/* Month navigation pills */}
+          <div className="flex gap-3">
+            <Link
+              href={buildNavUrl(prevBulan, prevTahun)}
+              className="flex items-center gap-2 bg-white text-[#15221C] px-4 py-2 rounded-full text-sm font-semibold shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300"
             >
-              Tampilkan
-            </button>
-          </form>
+              <ChevronLeft className="h-[18px] w-[18px]" />
+              Bulan Sebelumnya
+            </Link>
+            <Link
+              href={buildNavUrl(nextBulan, nextTahun)}
+              className="flex items-center gap-2 bg-white text-[#15221C] px-4 py-2 rounded-full text-sm font-semibold shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300"
+            >
+              Bulan Depan
+              <ChevronRight className="h-[18px] w-[18px]" />
+            </Link>
+          </div>
         </div>
-      </section>
 
-      {/* ========== KONTEN JADWAL ========== */}
-      <section className="py-8">
-        <div className="mx-auto max-w-[1200px] px-4 md:px-6 lg:px-8">
-          <h2 className="mb-4 text-lg font-semibold text-[#1A1A1A]">
-            {bulanLabel} {tahun}
-          </h2>
-
-          {jadwalRows.length > 0 ? (
-            <>
-              {/* ===== DESKTOP: TABEL ===== */}
-              <div className="hidden overflow-hidden rounded-xl border border-[#D1D5DB] md:block">
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="bg-[#EAF2EB]">
-                      <th className="px-4 py-3 text-left font-semibold text-[#1A1A1A]">
-                        Tanggal
-                      </th>
-                      <th className="px-4 py-3 text-left font-semibold text-[#1A1A1A]">
-                        Khatib
-                      </th>
-                      <th className="px-4 py-3 text-left font-semibold text-[#1A1A1A]">
-                        Imam
-                      </th>
-                      <th className="px-4 py-3 text-left font-semibold text-[#1A1A1A]">
-                        Muadzin
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-[#D1D5DB]">
-                    {jadwalRows.map((row, idx) => (
-                      <tr key={idx} className="bg-white hover:bg-[#FFFAF0] transition-colors">
-                        <td className="px-4 py-3 font-medium text-[#1A1A1A]">
-                          {formatTanggalPendekJumat(row.tanggal)}
-                        </td>
-                        <td className="px-4 py-3">
-                          {row.khatib ?? (
-                            <span className="italic text-[#6B7280]">Segera diumumkan</span>
-                          )}
-                        </td>
-                        <td className="px-4 py-3">
-                          {row.imam ?? (
-                            <span className="italic text-[#6B7280]">Segera diumumkan</span>
-                          )}
-                        </td>
-                        <td className="px-4 py-3">
-                          {row.muadzin ?? (
-                            <span className="italic text-[#6B7280]">Segera diumumkan</span>
-                          )}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+        {/* ========== SCHEDULE CARD ========== */}
+        {jadwalRows.length > 0 ? (
+          <div className="overflow-hidden rounded-lg bg-white shadow-ambient">
+            {/* Table header — hidden on mobile */}
+            <div className="hidden sm:grid sm:grid-cols-12 gap-4 border-b border-[#F0EBE1] bg-gray-50 px-6 py-4">
+              <div className="col-span-4 text-xs font-bold uppercase tracking-wider text-[#8D9F96]">
+                Tanggal
               </div>
+              <div className="col-span-4 text-xs font-bold uppercase tracking-wider text-[#8D9F96]">
+                Khatib
+              </div>
+              <div className="col-span-4 text-xs font-bold uppercase tracking-wider text-[#8D9F96]">
+                Imam
+              </div>
+            </div>
 
-              {/* ===== MOBILE: CARD PER JUMAT ===== */}
-              <div className="flex flex-col gap-3 md:hidden">
-                {jadwalRows.map((row, idx) => (
-                  <div
-                    key={idx}
-                    className="rounded-xl border border-[#D1D5DB] bg-white p-4 shadow-sm"
-                  >
-                    <p className="text-sm font-semibold text-[#346739]">
-                      📅 {formatTanggalJumat(row.tanggal)}
-                    </p>
-                    <div className="mt-2 space-y-1 text-sm">
-                      <div className="flex justify-between">
-                        <span className="text-[#6B7280]">Khatib</span>
-                        <span className="font-medium text-[#1A1A1A]">
-                          {row.khatib ?? (
-                            <span className="italic text-[#6B7280]">Segera diumumkan</span>
-                          )}
-                        </span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-[#6B7280]">Imam</span>
-                        <span className="font-medium text-[#1A1A1A]">
-                          {row.imam ?? (
-                            <span className="italic text-[#6B7280]">Segera diumumkan</span>
-                          )}
-                        </span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-[#6B7280]">Muadzin</span>
-                        <span className="font-medium text-[#1A1A1A]">
-                          {row.muadzin ?? (
-                            <span className="italic text-[#6B7280]">Segera diumumkan</span>
-                          )}
-                        </span>
-                      </div>
+            {/* Rows */}
+            <div className="flex flex-col divide-y divide-[#F0EBE1]">
+              {jadwalRows.map((row, idx) => (
+                <div
+                  key={idx}
+                  className={`group relative overflow-hidden flex flex-col gap-2 px-6 py-5 border-l-4 transition-all duration-300 ease-smooth sm:grid sm:grid-cols-12 sm:gap-4 ${
+                    row.isThisWeek
+                      ? "border-l-[#D4AF37] bg-[#D4AF37]/5 hover:bg-[#D4AF37]/10 border-b border-gray-50"
+                      : "border-l-transparent hover:bg-[#F9F6F0]"
+                  }`}
+                >
+                  {/* Decorative mosque icon on highlighted row */}
+                  {row.isThisWeek && (
+                    <div className="pointer-events-none absolute right-4 top-4 text-[#D4AF37]/20">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-12 w-12">
+                        <path d="M12 2C10.34 2 9 3.34 9 5v1H4l-1 3h18l-1-3h-5V5c0-1.66-1.34-3-3-3zm-8 6v14h16V8H4zm7 2h2v10h-2V10z"/>
+                      </svg>
+                    </div>
+                  )}
+
+                  {/* Tanggal */}
+                  <div className="col-span-4 flex flex-col justify-center relative z-10">
+                    <span className={`sm:hidden text-[10px] font-bold uppercase mb-1 ${row.isThisWeek ? 'text-[#D4AF37]' : 'text-[#8D9F96]'}`}>
+                      {row.isThisWeek ? "Hari Ini" : "Tanggal"}
+                    </span>
+                    <div className={`text-base ${row.isThisWeek ? "font-bold text-[#0A2E1F]" : "font-semibold text-[#15221C]"}`}>
+                      {formatTanggalPanjang(row.tanggal)}
+                    </div>
+                    <div className={`text-sm mt-0.5 ${row.isThisWeek ? "text-[#D4AF37] font-medium" : "text-[#8D9F96]"}`}>
+                      {formatHijri(row.tanggal)}
+                    </div>
+                    {row.isThisWeek && (
+                      <span className="hidden sm:inline-block mt-2 w-max rounded-full bg-[#D4AF37] px-2 py-0.5 text-[10px] font-bold uppercase text-white">
+                        HARI INI
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Khatib */}
+                  <div className="col-span-4 flex flex-col justify-center relative z-10 mt-2 sm:mt-0">
+                    <span className="sm:hidden text-[#8D9F96] text-[10px] font-bold uppercase">Khatib</span>
+                    <div className={`text-lg flex items-center gap-2 ${row.isThisWeek ? "font-bold text-[#15221C]" : "font-semibold text-base text-[#15221C]"}`}>
+                      {row.khatib ?? (
+                        <span className="text-sm italic font-normal text-[#8D9F96]">Segera diumumkan</span>
+                      )}
                     </div>
                   </div>
-                ))}
-              </div>
-            </>
-          ) : (
-            <div className="py-16 text-center">
-              <p className="text-sm text-[#6B7280]">
-                Jadwal belum tersedia untuk bulan ini
-              </p>
+
+                  {/* Imam */}
+                  <div className="col-span-4 flex flex-col justify-center relative z-10 mt-2 sm:mt-0">
+                    <span className="sm:hidden text-[#8D9F96] text-[10px] font-bold uppercase">Imam</span>
+                    <div className={`font-medium ${row.isThisWeek ? "text-base text-[#8D9F96]" : "text-sm text-[#8D9F96]"}`}>
+                      {row.imam ?? (
+                        <span className="text-sm italic font-normal text-[#8D9F96]">Segera diumumkan</span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
-          )}
+          </div>
+        ) : (
+          <div className="rounded-lg border border-dashed border-[#F0EBE1] bg-white py-16 text-center shadow-ambient">
+            <p className="text-sm text-[#8D9F96]">Jadwal belum tersedia untuk bulan ini</p>
+          </div>
+        )}
+
+        {/* ========== FOOTER NOTE & ACTION ========== */}
+        <div className="mt-6 flex justify-between items-center text-sm text-[#8D9F96]">
+          <p>* Jadwal dapat berubah sewaktu-waktu</p>
+          <UnduhPDFButton />
         </div>
-      </section>
+
+      </div>
     </div>
   );
 }
+
