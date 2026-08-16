@@ -14,12 +14,6 @@ const KATEGORI_LABEL: Record<string, string> = {
   kajian: "Kajian",
 };
 
-const KATEGORI_BADGE: Record<string, string> = {
-  pengumuman: "bg-[#EAF2EB] text-[#346739]",
-  kegiatan: "bg-[#EFF6FF] text-[#2563EB]",
-  kajian: "bg-[#FFF7ED] text-[#C2410C]",
-};
-
 function KategoriLabel(k: Kategori): string {
   const map: Record<Kategori, string> = {
     semua: "Semua",
